@@ -1,0 +1,116 @@
+Introduction to R and Data Science: Lesson 4 - Fun with experiments
+========================================================
+author: Dai ZJ
+transition: rotate
+width: 1650
+height: 1050
+
+```{r setup, include=FALSE}
+opts_chunk$set(cache=TRUE)
+```
+
+Experiment
+========================================================
+```{r}
+set.seed(1)
+good.students.score <- rnorm(50,75,15)
+summary(good.students.score)
+bad.students.score <- rnorm(50,65,15)
+summary(bad.students.score)
+```
+
+Experiment
+========================================================
+```{r}
+# initialise a data.frame
+all.students <- data.frame(
+  score =  c(good.students.score, bad.students.score),
+  mean = c(rep(75,50), rep(65,50)),
+  std = rep(15,100)
+                          )
+head(all.students)
+```
+
+Experiment (3)
+========================================================
+```{r}
+mean.score <- mean(all.students$score)
+
+above.avg <- all.students[all.students$score > mean.score,]
+summary(above.avg$score)
+below.avg <- all.students[all.students$score <= mean.score,]
+summary(below.avg$score)
+```
+
+
+
+Experiment (4)
+========================================================
+```{r}
+# give another test of similar difficulty to the above average group
+
+names(above.avg) <- c("first.score", names(above.avg)[-1])
+above.avg$second.score <- mapply(function(mean,std) {
+  rnorm(1,mean,std)
+}, above.avg$mean, above.avg$std)
+
+summary(above.avg[c("first.score","second.score")])
+```
+
+Experiment (5)
+========================================================
+```{r}
+# give another test of similar difficulty to the above average group
+model <- lm(second.score ~ first.score, data = above.avg)
+model.no.intercept <- lm(second.score ~ first.score-1, data = above.avg)
+summary(model.no.intercept)
+```
+
+Experiemnt (6)
+========================================================
+```{r}
+plot(above.avg[c("first.score","second.score")])
+abline(0, coef(model.no.intercept))
+abline(0, 1)
+```
+
+Experiment - Coin Toss
+========================================================
+We toss a coin continuously until we observe a particular pattern
+
+Left side of the room will win if we see Head-Tail-Tail appear first
+Right of the room will win if we see Head-Tail-Head appear first
+
+Which side is more likely to win?
+- A. Even chances
+- B. Left side is more likely to win
+- C. Right side is more likely to win
+
+Experiment - Coin Toss
+========================================================
+```{r}
+ht <- factor(x = c("H","T"))
+sample(ht,3,replace = TRUE)
+
+no.to.pattern <-function (pattern = factor(c("H","T","T"))) {
+  browser()
+  tosses <- sample(ht,3,replace = TRUE)
+  no.tosses <- 3
+  while(!identical(tosses, pattern)) {
+    no.tosses <- no.tosses + 1
+    tosses <- c(tosses[-1], sample(ht,1))
+  }
+  no.tosses
+}
+no.to.pattern()
+```
+
+Modelling - Linear Regression
+========================================================
+```{r}
+animal <- read.csv("Animals2.csv")
+m <- lm(brain ~ body, data = animal)
+#plot(m)
+# Obtain some summary statistics of the model
+summary(m)
+```

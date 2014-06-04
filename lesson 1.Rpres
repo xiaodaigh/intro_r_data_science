@@ -1,0 +1,448 @@
+Introduction to R and Data Science: Lesson 1
+========================================================
+author: Dai ZJ
+transition: rotate
+width: 1650
+height: 1050
+```{r setup, include=FALSE}
+opts_chunk$set(cache=TRUE)
+```
+
+About Me
+========================================================  
+- Name: Dai Zhuo Jia (ZJ)
+- Australian-Chinese
+- B.Sc (Pure maths) and Master of Statistics
+- Been a useR since 2003
+- Author of R package ShinySky (https://github.com/AnalytixWare/ShinySky)
+
+What is R?
+========================================================  
+**R** is 
+- a programming *environment*, not just a language
+- for doing statistics (2000's - analytics, 2010's data science)
+- first developed in New Zealand in 1998 by **R**oss Ihaka and **R**obert Gentleman
+- it's actually based on the S language deviced in mid-1970's
+
+
+Why Learn R?
+========================================================
+- Data Science is one of fastest growing fields
+- R is one of the premiere languages in this field
+
+What is R great for?
+========================================================
+- Statistical Analysis
+
+```{r}
+summary(cars)
+```
+
+What is R great for?
+========================================================  
+- Graphing
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
+Starting out
+========================================================  
+- Install R (http://cran.rstudio.com/)
+- Install RStudio (http://www.rstudio.com/ide/download/desktop)
+- Go to the console
+- type 1 + 1, then enter. You get
+
+```{r}
+1 + 1
+```
+
+R is interactive
+========================================================  
+- The result of what you type will get reflected right away
+- R does not do integer arithmetics, so 3 / 2 does NOT give you 1
+```{r}
+3 / 2
+```
+
+Arithmetic in R
+========================================================
+Operation  | Usage | Usage
+------------- | ------------- | -------------
+Addition  | a + b | 
+Subtraction  | a - b
+Mulitplication  | a * b
+Divison  | a / b
+Exponetiation | a ^ b or a ** b
+Modulo | a %% b | 5 %% 3 gives 2
+Matrix Mult | a %*% b | 
+  
+Variables
+========================================================
+  You can set values to variables, called **assignment**
+  
+  - a = 1
+- b <- 2
+- 3 -> d
+
+```{r}
+a = 1
+b <- 2
+3 -> d
+e <- a + b + d
+e
+```
+
+Variable Name Conventions
+========================================================
+  Rule | Usage &  Example
+------------- | ------------- 
+  Can use alphanumeric | a-z A-Z 0-9
+. and _ can be used |  var.name & var_name are valid name
+Cannot start with numbers or _ | 1name & _name are NOT allowed
+Most other symbols (e.g. ,!~`'"-\$ ) can NOT be used | abc! is NOT a valid name 
+Case SENSITIVE | abc & ABC are two distinct variable names
+                    
+Disregard all rules (except case sensivity) with back-tick \\`
+```{r}
+`1 whatever name you want !$` <- 100
+`1 whatever name you want !$`
+```
+                    
+Is this a valid variable name?
+========================================================
+- a_
+- 1a2
+- a1b
+- ._
+- _abc
+- .89
+                    
+Vectors in R
+========================================================
+One of most useful and powerful features of R is working with vectors
+
+The main command is **c** whichs stands for **c**ombine
+
+```{r}
+primes.1.to.5 <- c(2,3,5,7,11)
+sum(primes.1.to.5)
+diff(primes.1.to.5)
+```
+
+More Vector Operations
+========================================================
+
+```{r}
+primes.1.to.5 <- c(2,3,5,7,11)
+max(primes.1.to.5)
+min(primes.1.to.5)
+```
+
+Set Operations
+========================================================
+```{r}
+vector.a <- c(1,2,3)
+vector.b <- c(3,4,5)
+vector.c <- c(vector.a,vector.b)
+vector.c
+unique(vector.c)
+intersect(vector.a, vector.b)
+vector.c.sorted <- sort(vector.c, decreasing = TRUE)
+```
+
+Sorting
+========================================================
+```{r}
+vector.c.desc <- sort(vector.c, decreasing = TRUE)
+vector.c.desc
+sort(vector.c.desc)
+```
+
+Arithmetic Operations on vectors
+========================================================
+Every element in the vector happens
+```{r}
+numbers3 <- 1:5
+numbers3 * 2
+```
+
+What happens internally
+- R needs two vectors of the SAME length
+- so 2 gets converted to c(2,2,2,2,2)
+- then c(1,2,3,4,5) * c(2,2,2) = c(1 * 2, 2 * 2, 3 * 2,4 *2, 5 *2)
+- gives c(2,4,6,8,10)
+
+Vector Recycling
+========================================================
+```{r}
+numbers3 <- 1:5
+numbers3 * c(1,2)
+```
+
+Can you understand why?
+- R needs two vectors of the SAME length
+- so it **recycles** the shorter vector
+- so c(1, 2) gets repeated up to c(1, 2, 1, 2, 1)
+- c(1,2,3,4,5) * c(1,2,1,2,1) = c(1 * 2, 2 * 2, 3 * 1, 4 * 2, 5 * 1)
+- gives c(1, 4,3 ,8 ,5)
+
+Exercise
+========================================================
+```{r, eval=FALSE}
+sum(2:5)
+diff(10:15)
+2:5 - 1
+2:5 * 3
+1:5 * 1:3
+```
+
+Exercise (Solution)
+========================================================
+```{r}
+sum(2:5)
+diff(10:15)
+2:5 - 1
+2:5 * 3
+1:5 * 1:3
+```
+
+Number Indexing
+========================================================
+```{r}
+numbers10 <- 1:5
+numbers10[2]
+numbers10[2:4]
+numbers10[4:7]
+```
+
+Boolean
+========================================================
+Boolean is the TRUE/FALSE data type
+- TRUE or T
+- FALSE or T
+- == tests for equality e.g. 1 == 1 is TRUE 0 == 2 is FALSE
+- 2 > 1 evaluates to TRUE
+- 2 < 3 evaluates to FALSE
+
+Boolean (TRUE/FALSE) Indexing
+========================================================
+```{r}
+numbers10 <- 1:5
+numbers10[c(T, F, T, F, T)]
+```
+
+Filtering
+========================================================
+Find all multiples of 2 less than or equal to 10
+```{r}
+numbers10 <- 1:10
+numbers10[c(FALSE,TRUE)] # cycling
+numbers10 %% 2 == 0
+numbers10[numbers10 %% 2 == 0]
+```
+
+Exercise
+========================================================
+- Write a piece that will find all the multiple of 3s under 100
+- Write a piece that will find all the multiple of 5s less than or equal to 100
+- Find those numbers that are either multiples of 3 and/or multiples of 5, no repeats allowed
+- Find their sum
+
+
+Exercise (Solution)
+========================================================
+```{r}
+multiple.3 <- (1:100)[1:100 %% 3 == 0]
+multiple.5 <- (1:100)[1:100 %% 5 == 0]
+final.ans <- unique(c(multiple.3, multiple.5))
+sum(final.ans)
+
+final.ans <- (1:100)[1:100 %% 3 == 0 | 1:100 %% 5 == 0]
+sum(final.ans)
+```
+
+Boolean Operations
+========================================================
+Name  | R Symbol | Example
+------------- | ------------- | -------------
+And  | & | 1 == 1 & 0 == 0
+Or  | &#124;  | T &#124; F
+Not | ! | 0 != 0, !1 == 1
+
+Truth Table
+========================================================
+and (&)
+
+a  | b | a & b
+------------- | ------------- | -------------
+FALSE | FALSE | FALSE
+FALSE | TRUE | FALSE
+TRUE | FALSE | FALSE
+TRUE | TRUE | TRUE
+
+or (|)
+
+a  | b | a &#124; b
+------------- | ------------- | -------------
+FALSE | FALSE | FALSE
+FALSE | TRUE | TRUE
+TRUE | FALSE | TRUE
+TRUE | TRUE | TRUE
+
+Exercise
+========================================================
+Find the sum of all numbers below 100 that are a multiple of 3 but NOT a multiple of 5
+
+Exercise (Solution)
+========================================================
+Find the sum of all numbers below 100 that are a multiple of 3 but NOT a multiple of 5
+```{r}
+numbers100 <- 1:100
+final <- numbers100[numbers100 %% 3 == 0 & !numbers100 %% 5 ==0]
+sum(final)
+```
+
+Vector's elements must be of the same type
+========================================================
+  You can a vector of numbers, boolean, and strings (characters)
+```{r}
+c(1,2,3)
+c(T,F,T)
+c(10,T,F,T,100)
+```
+
+Vector's elements must be of the same type
+========================================================
+If you mix the types it will converted to first, strings, and second, numberics.
+```{r}
+c("a","b","c")
+c(1,"a",T)
+```
+
+Reading in data
+========================================================
+- read.csv - allows you to read csv files
+- read.xls - from the gdata package allows you to read xls files
+
+
+```{r}
+training <- read.csv("~/Dropbox/AnalytixWare/Data/Kaggle/cs-training.csv")
+
+# view the data
+# View(training)
+
+require(gdata)
+data.dict <- read.xls("~/Dropbox/AnalytixWare/Data/Kaggle/Data Dictionary.xls")
+```
+
+Regression
+========================================================
+  Linear Regression
+- Finding the **line** of best fit?
+
+Why did the name of regression come from?
+- What does regression have to do the best fit? Nothing
+- Came from study of test scores
+
+
+
+Simple Data Exploration
+========================================================
+  ```{r}
+# give a frequency count of the unique values
+table(training$SeriousDlqin2yrs)
+
+# 10026 customers has defaulted 
+# 139974 has not
+# want to build a modle that can predict who is more likley to be in the 1 (defaulted) group
+
+names(training)
+```
+
+
+Simple plot
+========================================================
+```{r}
+# you can't tell anything
+# definitely not the right way to visualise this type of data
+plot(training$age, training$SeriousDlqin2yrs)
+```
+
+Good/Bad Odds (odds ratio)
+========================================================
+  ```{r}
+freq <- table(training$age, training$SeriousDlqin2yrs)
+head(freq)
+gb.odds <- freq[,1] / freq[,2]
+```
+
+Good/Bad Odds (odds ratio)
+========================================================
+  ```{r}
+# plot the Good/Bad Odds (odds ratio)
+plot(gb.odds)
+```
+
+Good/Bad Odds (odds ratio)
+========================================================
+  ```{r}
+# plot the Good/Bad Odds (odds ratio)
+plot(rownames(freq),gb.odds)
+```
+
+What about for MonthlyIncome (1)
+========================================================
+  ```{r}
+freq <- table(training$MonthlyIncome, training$SeriousDlqin2yrs)
+gb.odds <- freq[,1] / freq[,2]
+plot(gb.odds)
+```
+
+
+What about for MonthlyIncome (2)
+========================================================
+  ```{r}
+plot(gb.odds)
+```
+
+pretty & cut (1)
+========================================================
+  ```{r}
+cut.points <- pretty(training$MonthlyIncome[training$MonthlyIncome < 25000])
+cut.points
+MonthlyIncome.cut <- cut(training$MonthlyIncome, cut.points)
+table(MonthlyIncome.cut)
+```
+
+pretty & cut (2)
+========================================================
+  ```{r}
+freq <- table(MonthlyIncome.cut, training$SeriousDlqin2yrs)
+gb.odds <- freq[,1] / freq[,2]
+plot(gb.odds)
+lines(lowess(gb.odds))
+```
+
+Summary
+========================================================
+  - Use Good/Bad Odds (odds ratio) for binary outcome data
+- Grouping data into bins can be an effective strategy (pretty & cut)
+
+Logistic Regression Model
+========================================================
+  - Perfect for binary outcome data
+- $$ \log(\frac{p}{1-p}) =  \alpha_0 + \alpha_1 \times x_1 $$
+  - Use the binning approach
+
+Seeking Help
+========================================================
+  The documentation will show in the **Help** tab
+```{r ,eval=FALSE}
+?sum
+??deeper_search
+```
+
+Useful websites
+- stackoverflow.com General programmings questions
+

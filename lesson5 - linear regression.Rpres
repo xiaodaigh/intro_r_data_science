@@ -1,0 +1,25 @@
+Introduction to R and Data Science: Lesson 4 - Fun with experiments
+========================================================
+author: Dai ZJ
+transition: rotate
+width: 1650
+height: 1050
+
+Regression
+========================================================
+  Linear Regression
+- Finding the **line** of best fit?
+
+Why did the name of regression come from?
+- What does regression have to do the best fit? Nothing
+- Came from study of test scores
+
+Modelling - Linear Regression
+========================================================
+```{r}
+animal <- read.csv("Animals2.csv")
+m <- lm(brain ~ body, data = animal)
+#plot(m)
+# Obtain some summary statistics of the model
+summary(m)
+```

@@ -23,7 +23,6 @@ What is R?
 - first developed in New Zealand in 1998 by **R**oss Ihaka and **R**obert Gentleman
 - it's actually based on the S language deviced in mid-1970's
 
-
 Why Learn R?
 ========================================================
 - Data Science is one of fastest growing fields
@@ -101,9 +100,9 @@ Matrix Mult | a %*% b |
   
 Variables
 ========================================================
-  You can set values to variables, called **assignment**
+You can set values to variables, called **assignment**
   
-  - a = 1
+- a = 1
 - b <- 2
 - 3 -> d
 
@@ -123,9 +122,9 @@ e
 
 Variable Name Conventions
 ========================================================
-  Rule | Usage &  Example
+Rule | Usage &  Example
 ------------- | ------------- 
-  Can use alphanumeric | a-z A-Z 0-9
+Can use alphanumeric | a-z A-Z 0-9
 . and _ can be used |  var.name & var_name are valid name
 Cannot start with numbers or _ | 1name & _name are NOT allowed
 Most other symbols (e.g. ,!~`'"-\$ ) can NOT be used | abc! is NOT a valid name 
@@ -179,7 +178,6 @@ diff(primes.1.to.5)
 
 More Vector Operations
 ========================================================
-
 
 ```r
 primes.1.to.5 <- c(2,3,5,7,11)
@@ -514,7 +512,7 @@ sum(final)
 
 Vector's elements must be of the same type
 ========================================================
-  You can a vector of numbers, boolean, and strings (characters)
+You can a vector of numbers, boolean, and strings (characters)
 
 ```r
 c(1,2,3)
@@ -562,209 +560,9 @@ c(1,"a",T)
 ```
 
 
-Reading in data
-========================================================
-- read.csv - allows you to read csv files
-- read.xls - from the gdata package allows you to read xls files
-
-
-
-```r
-training <- read.csv("~/Dropbox/AnalytixWare/Data/Kaggle/cs-training.csv")
-
-# view the data
-# View(training)
-
-require(gdata)
-data.dict <- read.xls("~/Dropbox/AnalytixWare/Data/Kaggle/Data Dictionary.xls")
-```
-
-
-Regression
-========================================================
-  Linear Regression
-- Finding the **line** of best fit?
-
-Why did the name of regression come from?
-- What does regression have to do the best fit? Nothing
-- Came from study of test scores
-
-
-
-Simple Data Exploration
-========================================================
-  
-  ```r
-  # give a frequency count of the unique values
-  table(training$SeriousDlqin2yrs)
-  ```
-  
-  ```
-  
-       0      1 
-  139974  10026 
-  ```
-  
-  ```r
-  
-  # 10026 customers has defaulted 
-  # 139974 has not
-  # want to build a modle that can predict who is more likley to be in the 1 (defaulted) group
-  
-  names(training)
-  ```
-  
-  ```
-   [1] "X"                                   
-   [2] "SeriousDlqin2yrs"                    
-   [3] "RevolvingUtilizationOfUnsecuredLines"
-   [4] "age"                                 
-   [5] "NumberOfTime30.59DaysPastDueNotWorse"
-   [6] "DebtRatio"                           
-   [7] "MonthlyIncome"                       
-   [8] "NumberOfOpenCreditLinesAndLoans"     
-   [9] "NumberOfTimes90DaysLate"             
-  [10] "NumberRealEstateLoansOrLines"        
-  [11] "NumberOfTime60.89DaysPastDueNotWorse"
-  [12] "NumberOfDependents"                  
-  ```
-
-
-
-Simple plot
-========================================================
-
-```r
-# you can't tell anything
-# definitely not the right way to visualise this type of data
-plot(training$age, training$SeriousDlqin2yrs)
-```
-
-![plot of chunk unnamed-chunk-24](lesson_1-figure/unnamed-chunk-24.png) 
-
-
-Good/Bad Odds (odds ratio)
-========================================================
-  
-  ```r
-  freq <- table(training$age, training$SeriousDlqin2yrs)
-  head(freq)
-  ```
-  
-  ```
-      
-         0   1
-    0    1   0
-    21 170  13
-    22 398  36
-    23 571  70
-    24 718  98
-    25 832 121
-  ```
-  
-  ```r
-  gb.odds <- freq[,1] / freq[,2]
-  ```
-
-
-Good/Bad Odds (odds ratio)
-========================================================
-  
-  ```r
-  # plot the Good/Bad Odds (odds ratio)
-  plot(gb.odds)
-  ```
-  
-  ![plot of chunk unnamed-chunk-26](lesson_1-figure/unnamed-chunk-26.png) 
-
-
-Good/Bad Odds (odds ratio)
-========================================================
-  
-  ```r
-  # plot the Good/Bad Odds (odds ratio)
-  plot(rownames(freq),gb.odds)
-  ```
-  
-  ![plot of chunk unnamed-chunk-27](lesson_1-figure/unnamed-chunk-27.png) 
-
-
-What about for MonthlyIncome (1)
-========================================================
-  
-  ```r
-  freq <- table(training$MonthlyIncome, training$SeriousDlqin2yrs)
-  gb.odds <- freq[,1] / freq[,2]
-  plot(gb.odds)
-  ```
-  
-  ![plot of chunk unnamed-chunk-28](lesson_1-figure/unnamed-chunk-28.png) 
-
-
-
-What about for MonthlyIncome (2)
-========================================================
-  
-  ```r
-  plot(gb.odds)
-  ```
-  
-  ![plot of chunk unnamed-chunk-29](lesson_1-figure/unnamed-chunk-29.png) 
-
-
-pretty & cut (1)
-========================================================
-  
-  ```r
-  cut.points <- pretty(training$MonthlyIncome[training$MonthlyIncome < 25000])
-  cut.points
-  ```
-  
-  ```
-  [1]     0  5000 10000 15000 20000 25000
-  ```
-  
-  ```r
-  MonthlyIncome.cut <- cut(training$MonthlyIncome, cut.points)
-  table(MonthlyIncome.cut)
-  ```
-  
-  ```
-  MonthlyIncome.cut
-        (0,5e+03]   (5e+03,1e+04] (1e+04,1.5e+04] (1.5e+04,2e+04] 
-            54225           46091           13035            3181 
-  (2e+04,2.5e+04] 
-              935 
-  ```
-
-
-pretty & cut (2)
-========================================================
-  
-  ```r
-  freq <- table(MonthlyIncome.cut, training$SeriousDlqin2yrs)
-  gb.odds <- freq[,1] / freq[,2]
-  plot(gb.odds)
-  lines(lowess(gb.odds))
-  ```
-  
-  ![plot of chunk unnamed-chunk-31](lesson_1-figure/unnamed-chunk-31.png) 
-
-
-Summary
-========================================================
-  - Use Good/Bad Odds (odds ratio) for binary outcome data
-- Grouping data into bins can be an effective strategy (pretty & cut)
-
-Logistic Regression Model
-========================================================
-  - Perfect for binary outcome data
-- $$ \log(\frac{p}{1-p}) =  \alpha_0 + \alpha_1 \times x_1 $$
-  - Use the binning approach
-
 Seeking Help
 ========================================================
-  The documentation will show in the **Help** tab
+The documentation will show in the **Help** tab
 
 ```r
 ?sum

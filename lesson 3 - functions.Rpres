@@ -1,0 +1,83 @@
+Lesson 3 - Function
+========================================================
+author: Dai ZJ
+transition: rotate
+width: 1650
+height: 1050
+
+```{r setup, include=FALSE}
+opts_chunk$set(cache=TRUE)
+```
+
+Function
+========================================================
+A function takes some inputs and produce an output
+- example of functions: sum, min, max
+- you can define your own function
+```{r}
+# create a funciton that adds two numbers together
+# the output of the function is by default the function's last line
+add2 <- function(a,b) {
+  a + b
+}
+
+# create a function that returns T is a is even
+# or one can specify a returned value via the return function
+is.even <- function(a) {
+  if(a %% 2 ==0) {
+    return(TRUE)
+  } else {
+    return(FALSE)
+  }
+}
+
+is.even(10)
+is.even(99)
+```
+
+R is a functional language
+========================================================
+- Narrowly speaking funcitonal languages are programming languages where functions play a key and prominent role
+- In R you can pass functions as arguments to functions
+  - In a sense functions are treated like any other data
+  - this is a hallmark of functional programming languages
+  - The most hardcore functional languages don't use loops like **for** and **while**
+
+R is a functional language
+========================================================
+- There are two broad types of functions
+  - primitive
+  - user defined
+```{r}
+# primitive function has the
+sum
+
+# user-defined
+# as you can see typing the functions names gives you the source code of that function
+is.even
+```
+
+Exercise
+========================================================
+```{r}
+strReverse <- function(x) {
+  sapply(lapply(strsplit(x, NULL), rev), paste, collapse="")
+}
+
+#
+a <- 100:999
+a <- setdiff(101:999,seq(100,990,by=10))
+a.pair <- combn(a,2)
+
+a.product <- a.pair[1,] * a.pair[2,]
+
+product.char <- as.character(a.product)
+w <- which(product.char == strReverse(product.char))
+w
+max(a.product[w])
+```
+        
+
+
+
+

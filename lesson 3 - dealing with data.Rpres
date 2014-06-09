@@ -9,21 +9,7 @@ height: 1050
 opts_chunk$set(cache=TRUE)
 ```
 
-Reading in data
-========================================================
-- read.csv - allows you to read csv files
-- read.xls - from the gdata package allows you to read xls files
 
-
-```{r}
-training <- read.csv("~/Dropbox/AnalytixWare/Data/Kaggle/cs-training.csv")
-
-# view the data
-# View(training)
-
-require(gdata)
-data.dict <- read.xls("~/Dropbox/AnalytixWare/Data/Kaggle/Data Dictionary.xls")
-```
 
 Simple Data Exploration
 ========================================================

@@ -212,6 +212,22 @@ numbers10 <- 1:5
 numbers10[2]
 numbers10[2:4]
 numbers10[4:7]
+
+# you can also use indexing to change the data to this
+numbers10[2] <- 100
+numbers10
+numbers10[c(1,3:4)] <- c(999, 999, 999)
+numbers10
+```
+
+Exercises
+========================================================
+Create a vector (1001, 1000, 999, ...., 2, 1, 0, 1, 2,...,1001)
+
+Exercises (Solution)
+========================================================
+```{r}
+c(1001:0,1:1001)
 ```
 
 Boolean
@@ -242,8 +258,8 @@ numbers10[numbers10 %% 2 == 0]
 
 Exercise
 ========================================================
-- Write a piece that will find all the multiple of 3s under 100
-- Write a piece that will find all the multiple of 5s less than or equal to 100
+- Store all the multiple of 3s under 100 in a vector
+- Store all the multiple of 5s less than or equal to 100 in a vector
 - Find those numbers that are either multiples of 3 and/or multiples of 5, no repeats allowed
 - Find their sum
 
@@ -251,11 +267,13 @@ Exercise
 Exercise (Solution)
 ========================================================
 ```{r}
+# solution 1
 multiple.3 <- (1:100)[1:100 %% 3 == 0]
 multiple.5 <- (1:100)[1:100 %% 5 == 0]
 final.ans <- unique(c(multiple.3, multiple.5))
 sum(final.ans)
 
+# solution 2
 final.ans <- (1:100)[1:100 %% 3 == 0 | 1:100 %% 5 == 0]
 sum(final.ans)
 ```
@@ -312,10 +330,50 @@ c(10,T,F,T,100)
 
 Vector's elements must be of the same type
 ========================================================
-If you mix the types it will converted to first, strings, and second, numberics.
+If you mix the types it will converted to first, strings, and second, numerics.
 ```{r}
 c("a","b","c")
 c(1,"a",T)
+```
+
+The factor data-type
+========================================================
+We have studied
+- numerics (integers and real numbers)
+- boolean (true/false)
+- strings (letters, and other characters and symbols)
+
+Factors is a data type that is unique to R
+- A factor is a finite set of values
+- E.g. Male, Female can be the distinct values for a factor
+```{r}
+mf <- factor(c("Male","Female"))
+mf
+# levels of a factor refers to the possible distinct values
+levels(mf)
+```
+
+Factors - continued
+========================================================
+- The *levels* are the external presentation of the factors
+- Internally it's stored as integers (this fact is significant and can lead to some elegant code)
+```{r}
+mf
+as.numeric(mf)
+```
+
+- Factors can be ordinal or non-ordinal
+- Ordinal - there is some natural order structure to it e.g. Income Brackets
+- non-ordinal - no necessary order to it e..g apple, oranges, banana
+  
+Factors - Basic summary
+========================================================
+```{r}
+summary(iris$Species)
+
+plot(iris$Species)
+
+table(iris$Species)
 ```
 
 Seeking Help
@@ -324,7 +382,12 @@ The documentation will show in the **Help** tab
 ```{r ,eval=FALSE}
 ?sum
 ??deeper_search
+
+# getting examples
+example(min)
 ```
+
+- The power of tab: type the first few characters of a function then press tab
 
 Useful websites
 - stackoverflow.com General programmings questions

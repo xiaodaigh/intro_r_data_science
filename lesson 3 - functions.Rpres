@@ -9,11 +9,28 @@ height: 1050
 opts_chunk$set(cache=TRUE)
 ```
 
+R is a functional language
+========================================================
+- A function takes some inputs and produce an output
+- funcitonal languages are programming languages where functions play a key and prominent role
+- In R you can pass functions as arguments to functions
+  - In a sense functions are treated like any other data
+  - this is a hallmark of functional programming languages
+  - The most hardcore functional languages don't use loops like **for** and **while**
+
+Primitive & user-defined functions
+========================================================
+- There are two broad types of functions
+  - primitive e.g max, min, sum
+  - user defined
+```{r}
+# primitive function has the
+sum
+```
+
 Function
 ========================================================
-A function takes some inputs and produce an output
-- example of functions: sum, min, max
-- you can define your own function
+You can define your own function
 ```{r}
 # create a funciton that adds two numbers together
 # the output of the function is by default the function's last line
@@ -35,27 +52,46 @@ is.even(10)
 is.even(99)
 ```
 
-R is a functional language
+User-defined function
 ========================================================
-- Narrowly speaking funcitonal languages are programming languages where functions play a key and prominent role
-- In R you can pass functions as arguments to functions
-  - In a sense functions are treated like any other data
-  - this is a hallmark of functional programming languages
-  - The most hardcore functional languages don't use loops like **for** and **while**
-
-R is a functional language
-========================================================
-- There are two broad types of functions
-  - primitive
-  - user defined
+You Can see the function's source by entering the functions name in the console
 ```{r}
-# primitive function has the
-sum
-
-# user-defined
-# as you can see typing the functions names gives you the source code of that function
+# see the source code for is.even
 is.even
 ```
+
+Functions & Closures (Advanced topic)
+========================================================
+- Function is just like any other data
+- So a function can also return a function
+```{r}
+# create a function that starts counting from n
+# and each time you run it it increments by one
+
+increment <- function(n) {
+  n <- n - 1
+  
+  increment.fn <- function() {
+    n <<- n + 1
+    return(n)
+  }
+  
+  return(increment.fn)
+}
+
+# create a function that start counting at 8
+incr8 <- increment(8)
+```
+
+Function & Closures (cont)
+========================================================
+```{r}
+incr
+# let's see this a few times
+incr8()
+incr8()
+```
+
 
 Exercise
 ========================================================
@@ -73,11 +109,5 @@ a.product <- a.pair[1,] * a.pair[2,]
 
 product.char <- as.character(a.product)
 w <- which(product.char == strReverse(product.char))
-w
 max(a.product[w])
 ```
-        
-
-
-
-

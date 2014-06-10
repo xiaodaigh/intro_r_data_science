@@ -54,4 +54,8 @@ while(i <= 2) {
   i <- i + 1
   print(i)
 }
-``
+```
+
+Exercises
+========================================================
+Find all prime numbers below 1000

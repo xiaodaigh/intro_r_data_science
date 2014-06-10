@@ -75,8 +75,21 @@ for(i in 1:3) {
 while loop
 ========================================================
 
+```r
+i <- 0
+while(i <= 2) {
+  i <- i + 1
+  print(i)
+}
+```
 
 ```
-Error in parse(text = x, srcfile = src) : 
-  attempt to use zero-length variable name
+[1] 1
+[1] 2
+[1] 3
 ```
+
+
+Exercises
+========================================================
+Find all prime numbers below 1000

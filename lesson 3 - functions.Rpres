@@ -12,7 +12,7 @@ opts_chunk$set(cache=TRUE)
 R is a functional language
 ========================================================
 - A function takes some inputs and produce an output
-- funcitonal languages are programming languages where functions play a key and prominent role
+- Funcitonal languages are programming languages where functions play a key and prominent role
 - In R you can pass functions as arguments to functions
   - In a sense functions are treated like any other data
   - this is a hallmark of functional programming languages
@@ -60,6 +60,19 @@ You Can see the function's source by entering the functions name in the console
 is.even
 ```
 
+Defining your own function
+========================================================
+```{r}
+my.func <- function(x, y, z = 2 , ...) {
+  x2 <- x * x
+  y2 <- y * y
+	
+	other.args <- list(...)
+	
+	return(x2 + y2 +  z + length(other.args))
+}
+```
+
 Functions & Closures (Advanced topic)
 ========================================================
 - Function is just like any other data
@@ -92,6 +105,33 @@ incr8()
 incr8()
 ```
 
+
+Recursion - Fibonacci Numbers
+========================================================
+```{r}
+# returns the nth Fibonacci number
+fib <- function(n) {
+	if(n %in% c(1,2)) {
+		return(1)
+	} else {
+		return(fib(n - 1) + fib(n - 2))
+	}
+}
+```
+
+
+Fibonacci Numbers
+========================================================
+```{r}
+# returns the nth Fibonacci number
+fib2 <- function(n) {
+	if(n %in% c(1,2)) {
+		return(1)
+	} else {
+		return(fib(n - 1) + fib(n - 2))
+	}
+}
+```
 
 Exercise
 ========================================================

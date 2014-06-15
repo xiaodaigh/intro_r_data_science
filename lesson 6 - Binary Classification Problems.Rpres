@@ -1,0 +1,97 @@
+Lesson 3 - Dealing with Data
+========================================================
+author: Dai ZJ
+transition: rotate
+width: 1650
+height: 1050
+
+```{r setup, include=FALSE}
+opts_chunk$set(cache=TRUE)
+```
+
+Simple Data Exploration
+========================================================
+```{r}
+# give a frequency count of the unique values
+table(training$SeriousDlqin2yrs)
+
+# 10026 customers has defaulted 
+# 139974 has not
+# want to build a modle that can predict who is more likley to be in the 1 (defaulted) group
+
+names(training)
+```
+
+Simple plot
+========================================================
+```{r}
+# you can't tell anything
+# definitely not the right way to visualise this type of data
+plot(training$age, training$SeriousDlqin2yrs)
+```
+
+Good/Bad Odds (odds ratio)
+========================================================
+```{r}
+freq <- table(training$age, training$SeriousDlqin2yrs)
+head(freq)
+gb.odds <- freq[,1] / freq[,2]
+```
+
+Good/Bad Odds (odds ratio)
+========================================================
+```{r}
+# plot the Good/Bad Odds (odds ratio)
+plot(gb.odds)
+```
+
+Good/Bad Odds (odds ratio)
+========================================================
+```{r}
+# plot the Good/Bad Odds (odds ratio)
+plot(rownames(freq),gb.odds)
+```
+
+What about for MonthlyIncome (1)
+========================================================
+```{r}
+freq <- table(training$MonthlyIncome, training$SeriousDlqin2yrs)
+gb.odds <- freq[,1] / freq[,2]
+plot(gb.odds)
+```
+
+
+What about for MonthlyIncome (2)
+========================================================
+```{r}
+plot(gb.odds)
+```
+
+pretty & cut (1)
+========================================================
+```{r}
+cut.points <- pretty(training$MonthlyIncome[training$MonthlyIncome < 25000])
+cut.points
+MonthlyIncome.cut <- cut(training$MonthlyIncome, cut.points)
+table(MonthlyIncome.cut)
+```
+
+pretty & cut (2)
+========================================================
+```{r}
+freq <- table(MonthlyIncome.cut, training$SeriousDlqin2yrs)
+gb.odds <- freq[,1] / freq[,2]
+plot(gb.odds)
+lines(lowess(gb.odds))
+```
+
+Summary
+========================================================
+- Use Good/Bad Odds (odds ratio) for binary outcome data
+- Grouping data into bins can be an effective strategy (pretty & cut)
+
+Logistic Regression Model
+========================================================
+- Perfect for binary outcome data
+- $$ \log(\frac{p}{1-p}) =  \alpha_0 + \alpha_1 \times x_1 $$
+- Use the binning approach

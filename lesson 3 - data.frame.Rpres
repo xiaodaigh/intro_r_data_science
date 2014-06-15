@@ -8,7 +8,7 @@ height: 1050
 opts_chunk$set(cache=TRUE)
 ```
 
-Reading in data
+Reading in stuctured data
 ========================================================
 - read.csv - allows you to read csv files
 - read.xls - from the gdata package allows you to read xls files
@@ -134,7 +134,7 @@ cars[,3] <- NULL
 head(cars)
 ```
 
-data.frame - removing columns 
+data.frame - removing columns cont
 ========================================================
 ```{r}
 cars$new.vector <- new.vector

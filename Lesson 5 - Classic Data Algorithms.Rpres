@@ -1,0 +1,50 @@
+Lesson 5 - Classic Data Science Method
+========================================================
+author: Dai ZJ
+width: 1650
+height: 1050
+```{r setup, include=FALSE}
+opts_chunk$set(cache=TRUE)
+```
+
+Classic Algorithms
+========================================================
+Bread of butter
+- Linear Regression (lm)
+- K-means algorithms (kmeans)
+- Logistic Regression (glm)
+- Decision Tree (rpart)
+
+Kmeans
+========================================================
+Finding clusters of points by locating the **centre** point of clusters
+- Barclays Premiere League (BPL)
+  - Twenty teams play each other 2 times per season
+  - Team earn 3 points of each win, 1 for a draw and 0 for a loss
+  - The team with most points win
+- Can we identify the number of tiers of teams?
+
+BPL
+========================================================
+```{r}
+bpl <- read.csv("bpl.csv")
+bpl
+# compute the points for each team
+require(dplyr)
+bpl <- mutate(bpl, pts = W*3 + D)
+head(bpl)
+```
+
+Kmeans
+========================================================
+The kmeans
+```{r}
+# number of unique pts
+# the number of groups cannot be greater than the number of point
+fit <- kmeans(bpl$pts, 3)
+plot(bpl$pts,y=rep(0,nrow(bpl)), col = fit$cluster)
+points(fit$centers, rep(0,length(fit$centers)), pch = 2)
+
+bpl$cluster <- fit$cluster
+
+```

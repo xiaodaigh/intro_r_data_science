@@ -1,0 +1,52 @@
+Lesson 3 - apply & ply family function
+=====================================
+author: Dai ZJ
+transition: rotate
+width: 1650
+height: 1050
+
+Motivation
+=====================================
+```{r}
+# want to compute the sum or some other value
+
+## Prepare a simple matix
+x <- cbind(x1 = 3, x2 = c(4:1, 2:5))
+
+# column sum
+col.sums1 <- apply(x, 2, sum)
+
+# this is equiavlent to
+col.sums2 <- NULL
+for(i in 1:ncol(x)) {
+  col.sums2[colnames(x)[i]] <- sum(x[,i])
+}
+```
+
+The **apply** function
+=====================================
+```{r}
+# want to perform some calculation on every row or column of an array
+
+## Prepare a simple matix
+x <- cbind(x1 = 3, x2 = c(4:1, 2:5))
+
+# column sum
+col.sums1 <- apply(x, 2, sum)
+
+# this is equiavlent to
+col.sums2 <- NULL
+for(i in 1:ncol(x)) {
+  col.sums2[colnames(x)[i]] <- sum(x[,i])
+}
+```
+
+apply & and ply-family functions
+=====================================
+- The apply family functions is the most unique
+- Most of what they can do can also be done with loops
+- But apply is much faster
+
+apply & and ply-family functions
+=====================================
+The apply family functions is the most unique

@@ -64,6 +64,7 @@ R is interactive
 3 / 2
 ```
 
+
 Arithmetic in R
 ========================================================
 Operation  | Usage | Usage
@@ -101,12 +102,7 @@ Can use alphanumeric | a-z A-Z 0-9
 Cannot start with numbers or _ | 1name & _name are NOT allowed
 Most other symbols (e.g. ,!~`'"-\$ ) can NOT be used | abc! is NOT a valid name 
 Case SENSITIVE | abc & ABC are two distinct variable names
-                    
-Disregard all rules (except case sensivity) with back-tick \\`
-```{r}
-`1 whatever name you want !$` <- 100
-`1 whatever name you want !$`
-```
+
                     
 Is this a valid variable name?
 ========================================================
@@ -116,7 +112,15 @@ Is this a valid variable name?
 - ._
 - _abc
 - .89
-                    
+
+Disregard all rules if you use backtick (`)
+========================================================
+Disregard all rules (except case sensivity) with back-tick \\`
+```{r}
+`1 whatever name you want !$` <- 100
+`1 whatever name you want !$`
+```
+
 Vectors in R
 ========================================================
 One of most useful and powerful features of R is working with vectors
@@ -212,7 +216,6 @@ numbers10 <- 1:5
 numbers10[2]
 numbers10[2:4]
 numbers10[4:7]
-
 # you can also use indexing to change the data to this
 numbers10[2] <- 100
 numbers10
@@ -220,14 +223,30 @@ numbers10[c(1,3:4)] <- c(999, 999, 999)
 numbers10
 ```
 
+Number Indexing - removal
+========================================================
+```{r}
+# you can remove the **i**th element by doing this
+i = 4
+numbers10[-i] # this will remove the 4th element
+# however numbers10 is actually not changed 
+numbers10
+# to change the content of numbers10
+numbers10 <- numbers10[-i]
+```
+
 Exercises
 ========================================================
-Create a vector (1001, 1000, 999, ...., 2, 1, 0, 1, 2,...,1001)
+- Create a vector (5, ...., 2, 1, 0, 1, 2,...,5)
+- Remove the 0 element from the vector
 
 Exercises (Solution)
 ========================================================
 ```{r}
-c(1001:0,1:1001)
+x <- c(5:0,1:5)
+x
+x1 <- x[-6]
+x1
 ```
 
 Boolean
@@ -263,7 +282,6 @@ Exercise
 - Find those numbers that are either multiples of 3 and/or multiples of 5, no repeats allowed
 - Find their sum
 
-
 Exercise (Solution)
 ========================================================
 ```{r}
@@ -272,7 +290,6 @@ multiple.3 <- (1:100)[1:100 %% 3 == 0]
 multiple.5 <- (1:100)[1:100 %% 5 == 0]
 final.ans <- unique(c(multiple.3, multiple.5))
 sum(final.ans)
-
 # solution 2
 final.ans <- (1:100)[1:100 %% 3 == 0 | 1:100 %% 5 == 0]
 sum(final.ans)

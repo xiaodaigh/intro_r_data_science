@@ -1,25 +1,91 @@
-Introduction to R and Data Science: Lesson 4 - Fun with experiments
+Lesson 5 - Linear Regression
 ========================================================
 author: Dai ZJ
 transition: rotate
-width: 1650
-height: 1050
 
 Regression
 ========================================================
-  Linear Regression
+Linear Regression
 - Finding the **line** of best fit?
 
 Why did the name of regression come from?
 - What does regression have to do the best fit? Nothing
-- Came from study of test scores
+- Came from study of father and son heights
+
+The data
+========================================================
+Use the animal dataset
+- body the body mass of a list of animals
+- brain the brain szie of a list of animals
+```{r}
+animal <- read.csv("Animals2.csv")
+head(animal)
+```
+
+First step - inspect the data
+========================================================
+```{r}
+require(dplyr)
+plot(select(animal,brain,body))
+```
+
+First step - inspect the data
+========================================================
+```{r}
+filter(animal,brain > 3000)
+filter(animal, body > 8000)
+
+```
+
+First step - inspect the data
+========================================================
+```{r}
+animal.1 <- filter(animal, brain <= 3000, body <=8000)
+plot(select(animal.1,body,brain))
+```
+
+
+First step - inspect the data
+========================================================
+```{r}
+filter(animal.1, brain >= 1200)
+animal.2 <- filter(animal.1, X != "Human")
+```
+
+First step - inspect the data
+========================================================
+```{r}
+plot(select(animal.2,body,brain))
+```
+
+Modelling - Linear Regression
+========================================================
+- The **lm** function is used for linear regression
+- lm stands for linear models
+```{r}
+m <- lm(brain ~ body, data = animal.2)
+# Obtain some summary statistics of the model
+summary(m)
+```
 
 Modelling - Linear Regression
 ========================================================
 ```{r}
-animal <- read.csv("Animals2.csv")
-m <- lm(brain ~ body, data = animal)
-#plot(m)
+m <- lm(brain ~ body, data = animal.2)
 # Obtain some summary statistics of the model
+summary(m)
+```
+
+Modelling - Linear Regression
+========================================================
+```{r}
+m <- lm(brain ~ log(body), data = animal.2)
+summary(m)
+```
+
+Modelling - Linear Regression
+========================================================
+```{r}
+m <- lm(brain ~ log(body) - 1, data = filter(animal, body > 8000))
 summary(m)
 ```

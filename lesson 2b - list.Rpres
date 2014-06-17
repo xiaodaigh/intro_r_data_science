@@ -2,7 +2,7 @@ List
 ========================================================
 author: Dai ZJ
   
-List is one of the most common data-types
+List is THE R data structure
 ========================================================
 ```{r}
 a.list <- NULL
@@ -13,7 +13,7 @@ a.list
 a.list <- list(element1 = 1, element2 = c(1,2,3))
 ```
 
-List is one of the most common data-types
+List
 ========================================================
 - Each list can have many child elements
 - Child Elements are access by the $. E.g. list.name$child.element
@@ -40,7 +40,6 @@ a.list[c("element1","element2")] # gives a list
 # [[ ]] gives a vector
 a.list[["element1"]] 
 ```
-
 
 Exercises
 ========================================================

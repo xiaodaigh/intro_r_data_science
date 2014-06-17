@@ -134,6 +134,6 @@ Exercises
 ========================================================
 - Print all numbers below 100 skipping any number that is divisible by 2
   - Hint use the %% operation
-- Write a program that can find at least one factor of non-prime integer
+- Find the prime factors of 24747. E.g. 15 has two factors, 3 and 5. 
   - a prime is a number that is wholly divisible by 1 or itself. The first few primes are 2, 3, 5, 7, 11
 - (Advanced) Find the sum of all primes less than 100

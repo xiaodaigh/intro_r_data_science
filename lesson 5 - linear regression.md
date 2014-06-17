@@ -169,56 +169,74 @@ Modelling - Linear Regression
 ========================================================
 
 ```r
-m <- lm(brain ~ log(body), data = animal.2)
-summary(m)
+plot(select(animal.2,body, brain))
+abline(m)
 ```
 
-```
-
-Call:
-lm(formula = brain ~ log(body), data = animal.2)
-
-Residuals:
-   Min     1Q Median     3Q    Max 
--153.8  -75.7  -44.9   55.3  351.3 
-
-Coefficients:
-            Estimate Std. Error t value Pr(>|t|)    
-(Intercept)    54.21      15.17    3.57  0.00072 ***
-log(body)      43.78       4.97    8.81  3.2e-12 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 109 on 57 degrees of freedom
-Multiple R-squared:  0.577,	Adjusted R-squared:  0.569 
-F-statistic: 77.6 on 1 and 57 DF,  p-value: 3.16e-12
-```
+![plot of chunk unnamed-chunk-9](lesson 5 - linear regression-figure/unnamed-chunk-9.png) 
 
 Modelling - Linear Regression
 ========================================================
 
 ```r
-m <- lm(brain ~ log(body) - 1, data = filter(animal, body > 8000))
+m <- lm(log(brain) ~ log(body), data = animal.2)
 summary(m)
 ```
 
 ```
 
 Call:
-lm(formula = brain ~ log(body) - 1, data = filter(animal, body > 
-    8000))
+lm(formula = log(brain) ~ log(body), data = animal.2)
 
 Residuals:
-    1     2     3 
--17.2 -39.3  46.1 
+   Min     1Q Median     3Q    Max 
+-1.674 -0.490 -0.035  0.475  1.664 
 
 Coefficients:
-          Estimate Std. Error t value Pr(>|t|)  
-log(body)     9.53       2.57    3.71    0.066 .
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   2.1139     0.0914    23.1   <2e-16 ***
+log(body)     0.7353     0.0299    24.6   <2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 44.5 on 2 degrees of freedom
-Multiple R-squared:  0.873,	Adjusted R-squared:  0.81 
-F-statistic: 13.8 on 1 and 2 DF,  p-value: 0.0655
+Residual standard error: 0.659 on 57 degrees of freedom
+Multiple R-squared:  0.914,	Adjusted R-squared:  0.912 
+F-statistic:  603 on 1 and 57 DF,  p-value: <2e-16
+```
+
+How to assess linear regression models?
+========================================================
+- Check if the coefficients are significant
+- Check the R-square
+  - It represent the proportion of variance in the data explained by the model. It is a number from 0 to 1.00. The higher the better
+- Assess the data visually
+- Try a few transformations of the raw data and assess
+
+Importance of visual inspection
+========================================================
+
+```r
+m <- lm(log(brain) ~ log(body), data = animal.2)
+summary(m)
+```
+
+```
+
+Call:
+lm(formula = log(brain) ~ log(body), data = animal.2)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-1.674 -0.490 -0.035  0.475  1.664 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   2.1139     0.0914    23.1   <2e-16 ***
+log(body)     0.7353     0.0299    24.6   <2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.659 on 57 degrees of freedom
+Multiple R-squared:  0.914,	Adjusted R-squared:  0.912 
+F-statistic:  603 on 1 and 57 DF,  p-value: <2e-16
 ```

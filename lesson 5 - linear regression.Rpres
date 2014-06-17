@@ -79,13 +79,28 @@ summary(m)
 Modelling - Linear Regression
 ========================================================
 ```{r}
-m <- lm(brain ~ log(body), data = animal.2)
-summary(m)
+plot(select(animal.2,body, brain))
+abline(m)
 ```
 
 Modelling - Linear Regression
 ========================================================
 ```{r}
-m <- lm(brain ~ log(body) - 1, data = filter(animal, body > 8000))
+m <- lm(log(brain) ~ log(body), data = animal.2)
+summary(m)
+```
+
+How to assess linear regression models?
+========================================================
+- Check if the coefficients are significant
+- Check the R-square
+  - It represent the proportion of variance in the data explained by the model. It is a number from 0 to 1.00. The higher the better
+- Assess the data visually
+- Try a few transformations of the raw data and assess
+
+Importance of visual inspection
+========================================================
+```{r}
+m <- lm(log(brain) ~ log(body), data = animal.2)
 summary(m)
 ```

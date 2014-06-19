@@ -41,7 +41,7 @@ require(dplyr)
 plot(select(animal,brain,body))
 ```
 
-![plot of chunk unnamed-chunk-2](lesson 5 - linear regression-figure/unnamed-chunk-2.png) 
+![plot of chunk unnamed-chunk-2](lesson 5 - Linear Regression-figure/unnamed-chunk-2.png) 
 
 First step - inspect the data
 ========================================================
@@ -75,7 +75,7 @@ animal.1 <- filter(animal, brain <= 3000, body <=8000)
 plot(select(animal.1,body,brain))
 ```
 
-![plot of chunk unnamed-chunk-4](lesson 5 - linear regression-figure/unnamed-chunk-4.png) 
+![plot of chunk unnamed-chunk-4](lesson 5 - Linear Regression-figure/unnamed-chunk-4.png) 
 
 
 First step - inspect the data
@@ -101,7 +101,7 @@ First step - inspect the data
 plot(select(animal.2,body,brain))
 ```
 
-![plot of chunk unnamed-chunk-6](lesson 5 - linear regression-figure/unnamed-chunk-6.png) 
+![plot of chunk unnamed-chunk-6](lesson 5 - Linear Regression-figure/unnamed-chunk-6.png) 
 
 Modelling - Linear Regression
 ========================================================
@@ -173,7 +173,7 @@ plot(select(animal.2,body, brain))
 abline(m)
 ```
 
-![plot of chunk unnamed-chunk-9](lesson 5 - linear regression-figure/unnamed-chunk-9.png) 
+![plot of chunk unnamed-chunk-9](lesson 5 - Linear Regression-figure/unnamed-chunk-9.png) 
 
 Modelling - Linear Regression
 ========================================================
@@ -212,31 +212,39 @@ How to assess linear regression models?
 - Assess the data visually
 - Try a few transformations of the raw data and assess
 
+Exercise
+========================================================
+- Using the cars data.frame Build a linear model to predict "dist" the stopping distance using speed
+- Explain the result
+
+
 Importance of visual inspection
 ========================================================
+A single point, that is far away from the other points can cause big swing in results
+- these points can be called outliers, but another name is leverage points
 
 ```r
-m <- lm(log(brain) ~ log(body), data = animal.2)
-summary(m)
+cars1 <- rbind(cars,c(100,200))
+lm(dist ~ speed, data = cars1)
 ```
 
 ```
 
 Call:
-lm(formula = log(brain) ~ log(body), data = animal.2)
-
-Residuals:
-   Min     1Q Median     3Q    Max 
--1.674 -0.490 -0.035  0.475  1.664 
+lm(formula = dist ~ speed, data = cars1)
 
 Coefficients:
-            Estimate Std. Error t value Pr(>|t|)    
-(Intercept)   2.1139     0.0914    23.1   <2e-16 ***
-log(body)     0.7353     0.0299    24.6   <2e-16 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 0.659 on 57 degrees of freedom
-Multiple R-squared:  0.914,	Adjusted R-squared:  0.912 
-F-statistic:  603 on 1 and 57 DF,  p-value: <2e-16
+(Intercept)        speed  
+       8.61         2.20  
 ```
+
+Importance of visual inspection
+========================================================
+A single point, that is far away from the other points can cause big swing in results
+- these points can be called outliers, but another name is leverage points
+
+```r
+plot(cars1)
+```
+
+![plot of chunk unnamed-chunk-12](lesson 5 - Linear Regression-figure/unnamed-chunk-12.png) 

@@ -98,9 +98,25 @@ How to assess linear regression models?
 - Assess the data visually
 - Try a few transformations of the raw data and assess
 
+Exercise
+========================================================
+- Using the cars data.frame Build a linear model to predict "dist" the stopping distance using speed
+- Explain the result
+
+
 Importance of visual inspection
 ========================================================
+A single point, that is far away from the other points can cause big swing in results
+- these points can be called outliers, but another name is leverage points
 ```{r}
-m <- lm(log(brain) ~ log(body), data = animal.2)
-summary(m)
+cars1 <- rbind(cars,c(100,200))
+lm(dist ~ speed, data = cars1)
+```
+
+Importance of visual inspection
+========================================================
+A single point, that is far away from the other points can cause big swing in results
+- these points can be called outliers, but another name is leverage points
+```{r}
+plot(cars1)
 ```

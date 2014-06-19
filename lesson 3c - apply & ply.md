@@ -25,20 +25,33 @@ The apply function
 
 The apply function (code)
 =====================================
-```{r}
+
+```r
 ## Prepare a simple matix
 x <- cbind(x1 = 3, x2 = c(4:1, 2:4))
 
 # column sum
 col.sums1 <- apply(x, 2, sum)
 col.sums1
+```
 
+```
+x1 x2 
+21 19 
+```
+
+```r
 # this is equiavlent to
 col.sums2 <- NULL
 for(i in 1:ncol(x)) {
   col.sums2[colnames(x)[i]] <- sum(x[,i])
 }
 col.sums2
+```
+
+```
+x1 x2 
+21 19 
 ```
 
 The other ply functions
@@ -54,11 +67,31 @@ In the same family of functions
   
 The other ply functions (code)
 =====================================
-```{r}
+
+```r
 x <- list(a = 1:10, beta = exp(-3:3), logic = c(TRUE,FALSE,FALSE,TRUE))
 # compute the list mean for each list element
 lapply(x, mean)
+```
+
+```
+$a
+[1] 5.5
+
+$beta
+[1] 4.535
+
+$logic
+[1] 0.5
+```
+
+```r
 sapply(x, mean)
+```
+
+```
+    a  beta logic 
+5.500 4.535 0.500 
 ```
 
 Take aways
@@ -76,8 +109,33 @@ Exercises (Solution)
 =====================================
 - Using the apply function and find out the mean speed and dist in the cars data set
 - Do the same with lapply and sapply
-```{r}
+
+```r
 apply(cars, 2, mean)
+```
+
+```
+speed  dist 
+15.40 42.98 
+```
+
+```r
 lapply(cars, mean)
+```
+
+```
+$speed
+[1] 15.4
+
+$dist
+[1] 42.98
+```
+
+```r
 sapply(cars, mean)
+```
+
+```
+speed  dist 
+15.40 42.98 
 ```

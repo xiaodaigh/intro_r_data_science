@@ -1,14 +1,16 @@
 Lesson 5 - Classic Data Science Method
 ========================================================
 author: Dai ZJ
-width: 1650
-height: 1050
+#width: 1650
+#height: 1050
 ```{r setup, include=FALSE}
 opts_chunk$set(cache=TRUE)
 ```
 
 Classic Algorithms
 ========================================================
+http://www.datasciencecentral.com/forum/topics/funny-comic-about-football
+http://www.analyticbridge.com/profiles/blogs/another-funny-cartoon-about-innumeracy
 Bread of butter
 - Linear Regression (lm)
 - K-means algorithms (kmeans)
@@ -45,6 +47,13 @@ fit <- kmeans(bpl$pts, 6)
 plot(bpl$pts,y=rep(0,nrow(bpl)), col = fit$cluster)
 points(fit$centers, rep(0,length(fit$centers)), pch = 21, bg = "black")
 bpl$cluster <- fit$cluster
+```
+
+Kmeans
+========================================================
+The kmeans
+```{r}
+fit
 ```
 
 How many clusters?

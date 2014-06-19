@@ -17,6 +17,7 @@ R is a functional language
   - In a sense functions are treated like any other data
   - this is a hallmark of functional programming languages
   - The most hardcore functional languages don't use loops like **for** and **while**
+  - In R you can use for and while loops
 
 Primitive & user-defined functions
 ========================================================
@@ -28,9 +29,27 @@ Primitive & user-defined functions
 sum
 ```
 
-Function
+Defining your own function
 ========================================================
-You can define your own function
+- The ... is only applicable in function. It means all other arguments
+```{r}
+my.func <- function(x, y, z = 2, ...) {
+  x2 <- x * x
+  y2 <- y * y
+  
+	other.args <- list(...)
+  for(a in other.args) {
+    print(paste("printing ", a))
+  }
+  
+	return(x2 + y2 +  z + length(other.args))
+}
+
+my.func(1,2, w = 4, z = 5, a = 8)
+```
+
+Define your own Function
+========================================================
 ```{r}
 # create a funciton that adds two numbers together
 # the output of the function is by default the function's last line
@@ -54,35 +73,16 @@ is.even(99)
 
 User-defined function
 ========================================================
-You Can see the function's source by entering the functions name in the console
+You can see the function's source by entering the functions name in the console
 ```{r}
 # see the source code for is.even
 is.even
 ```
 
-Defining your own function
-========================================================
-- The ... is only applicable in function. It means all other arguments
-```{r}
-my.func <- function(x, y, z = 2 , ...) {
-  x2 <- x * x
-  y2 <- y * y
-	
-	other.args <- list(...)
-  for(a in other.args) {
-    print(paste("printing ", a))
-  }
-  
-	return(x2 + y2 +  z + length(other.args))
-}
-
-my.func(1,2, w = 4, z = 5, a = 8)
-```
-
 Exercise
 ========================================================
 - Write a function that returns TRUE if passed an odd number
-- Write a function that returns accepts an argument **x** and **...**. It returns the sum of x and ...
+- Write a function that accepts an argument **x** and **...**. It returns the sum of x and ...
 
 Exercise (Solutions)
 ========================================================
@@ -103,6 +103,17 @@ addthem <- function(x, ...) {
   x
 }
 ```
+
+Debugging
+========================================================
+RStudio offers a step by step debugging tool
+- Insert **browser()** any where you want to stop the code
+- or **browser(expr = some.condition )** then the debugging process will only be triggered if some.condition is TRUE
+Commands while in debug mode
+- n - next line
+- c - continue until next break
+- Q - quit the debugger
+
 
 Functions & Closures (Advanced topic)
 ========================================================

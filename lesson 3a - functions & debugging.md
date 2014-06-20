@@ -5,9 +5,7 @@ transition: rotate
 #width: 1650
 #height: 1050
 
-```{r setup, include=FALSE}
-opts_chunk$set(cache=TRUE)
-```
+
 
 R is a functional language
 ========================================================
@@ -24,15 +22,21 @@ Primitive & user-defined functions
 - There are two broad types of functions
   - primitive e.g max, min, sum
   - user defined
-```{r}
+
+```r
 # primitive function has the
 sum
+```
+
+```
+function (..., na.rm = FALSE)  .Primitive("sum")
 ```
 
 Defining your own function
 ========================================================
 - The ... is only applicable in function. It means all other arguments
-```{r}
+
+```r
 my.func <- function(x, y, z = 2, ...) {
   x2 <- x * x
   y2 <- y * y
@@ -48,15 +52,35 @@ my.func <- function(x, y, z = 2, ...) {
 my.func(1,2, w = 4, z = 5, a = 8)
 ```
 
+```
+[1] "printing  4"
+[1] "printing  8"
+```
+
+```
+[1] 12
+```
+
 Defining your own function (cont)
 ========================================================
-```{r}
+
+```r
 my.func(1,2, w = 4, z = 5, a = 8)
+```
+
+```
+[1] "printing  4"
+[1] "printing  8"
+```
+
+```
+[1] 12
 ```
 
 Define your own Function
 ========================================================
-```{r}
+
+```r
 # create a funciton that adds two numbers together
 # the output of the function is by default the function's last line
 add2 <- function(a,b) {
@@ -76,18 +100,41 @@ is.even <- function(a) {
 
 Definte your own function
 ========================================================
-```{r}
+
+```r
 is.even(10)
+```
+
+```
+[1] TRUE
+```
+
+```r
 is.even(99)
+```
+
+```
+[1] FALSE
 ```
 
 
 User-defined function
 ========================================================
 You can see the function's source by entering the functions name in the console
-```{r}
+
+```r
 # see the source code for is.even
 is.even
+```
+
+```
+function(a) {
+  if(a %% 2 ==0) {
+    return(TRUE)
+  } else {
+    return(FALSE)
+  }
+}
 ```
 
 Exercise
@@ -99,7 +146,8 @@ Exercise (Solutions)
 ========================================================
 - Write a function that returns TRUE if passed an odd number
 - Write a function that returns accepts an argument **x** and **...**. It returns the sum of x and ...
-```{r}
+
+```r
 # Checks if x is odd
 is.odd <- function(x) {
   x %% 2 == 1
@@ -129,7 +177,8 @@ Exercise
 ========================================================
 Debug this function
 write a a function that check
-```{r}
+
+```r
 my.func <- function(a,b) {
   a.over.b <- a/b
   mean(a.over.b)
@@ -138,11 +187,16 @@ my.func <- function(a,b) {
 my.func(1:3, c(2,0,1))
 ```
 
+```
+[1] Inf
+```
+
 Exercise (solution)
 ========================================================
 Debug this function
 write a a function that check
-```{r}
+
+```r
 my.func <- function(a,b) {
   browser()
   a.over.b <- a/b
@@ -152,11 +206,20 @@ my.func <- function(a,b) {
 my.func(1:3, c(2,0,1))
 ```
 
+```
+Called from: my.func(1:3, c(2, 0, 1))
+```
+
+```
+[1] Inf
+```
+
 Functions & Closures (Advanced topic)
 ========================================================
 - Function is just like any other data
 - So a function can also return a function
-```{r}
+
+```r
 # create a function that starts counting from n
 # and each time you run it it increments by one
 increment <- function(n) {
@@ -176,36 +239,12 @@ incr8 <- increment(8)
 
 Function & Closures (cont)
 ========================================================
-```{r}
-incr
-# let's see this a few times
-incr8()
-incr8()
+
+
+
+
+
+
 ```
-
-
-Recursion - Fibonacci Numbers
-========================================================
-```{r}
-# returns the nth Fibonacci number
-fib <- function(n) {
-	if(n %in% c(1,2)) {
-		return(1)
-	} else {
-		return(fib(n - 1) + fib(n - 2))
-	}
-}
-```
-
-Fibonacci Numbers
-========================================================
-```{r}
-# returns the nth Fibonacci number
-fib2 <- function(n) {
-	if(n %in% c(1,2)) {
-		return(1)
-	} else {
-		return(fib(n - 1) + fib(n - 2))
-	}
-}
+Error in eval(expr, envir, enclos) : object 'incr' not found
 ```

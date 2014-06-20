@@ -2,8 +2,8 @@ Lesson 2 - data.frame
 ========================================================
 author: Dai ZJ
 transition: rotate
-width: 1650
-height: 1050
+#width: 1650
+#height: 1050
 ```{r setup, include=FALSE}
 opts_chunk$set(cache=TRUE)
 ```
@@ -45,8 +45,26 @@ data.farme structrue
 - e.g. cars$speed
 ```{r}
 head(cars$speed)
+```
+
+data.farme structrue
+========================================================
+- Let data be a data.frame
+- Then data[1] wouldl give u the firs column of data
+- then data[,1] gives the first column as a vector
+```{r}
 head(cars[1]) # keeps only the first colunm, but is still a data.frame
 head(cars[,1]) # keeps the first column as vector
+cars[1,] # keeps the first row of data
+```
+
+data.farme structrue
+========================================================
+Let rows and columns be vectors of integers then you access the rows columns of a data.frame
+- data[rows,]
+- data[, columns]
+- data[rows, columns]
+```{r}
 cars[1,] # keeps the first row of data
 ```
 
@@ -156,4 +174,22 @@ new.cars <- cbind(cars, new.vector)
 head(new.cars)
 cars.head.tails <- rbind(head(cars),tail(cars))
 cars.head.tails
+```
+
+Exercises
+========================================================
+- Using the cars data.frame
+- Create a new column called ratio = dist / speed
+- Create a new column ratio2 = ratio^2
+- remove the column ratio
+- What is the sum of ratio2
+
+
+Exercises (Solution)
+========================================================
+```{r}
+cars$ratio <- cars$speed/cars$dist
+cars$ratio2 <- cars$ratio^2\
+cars$raio <- NULL
+sum(cars$ratio)
 ```

@@ -2,8 +2,8 @@ Lesson 3 - The ply family of functions
 =====================================
 author: Dai ZJ
 transition: rotate
-width: 1650
-height: 1050
+#width: 1650
+#height: 1050
 
 apply & and ply-family of functions
 =====================================
@@ -39,6 +39,9 @@ col.sums1
 x1 x2 
 21 19 
 ```
+
+The apply functio(code)
+=====================================
 
 ```r
 # this is equiavlent to
@@ -85,7 +88,12 @@ $logic
 [1] 0.5
 ```
 
+The other ply functions (code)
+=====================================
+
 ```r
+x <- list(a = 1:10, beta = exp(-3:3), logic = c(TRUE,FALSE,FALSE,TRUE))
+# compute the list mean for each list element
 sapply(x, mean)
 ```
 

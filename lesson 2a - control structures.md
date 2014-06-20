@@ -4,14 +4,13 @@ author: Dai ZJ
 transition: rotate
 #width: 1650
 #height: 1050
-```{r setup, include=FALSE}
-opts_chunk$set(cache=TRUE)
-```
+
 
 Conditional branching - if
 ========================================================
 The if statement is perhaps the most ubiquituous programming construct
-```{r}
+
+```r
 something.is.true <- TRUE
 something.else.is.true <- TRUE
 
@@ -24,11 +23,16 @@ if (something.is.true) {
 }
 ```
 
+```
+NULL
+```
+
 Conditional branching - if example
 ========================================================
 Compute the income tax
 - http://www.iras.gov.sg/irashome/page04.aspx?id=1190
-```{r}
+
+```r
 income <- 110000
 if (income <= 20000) {
   tax <- 0
@@ -53,24 +57,45 @@ if (income <= 20000) {
 tax
 ```
 
-ifelse
-========================================================
-By assigning a value based on the true or false
-
-```{r}
-a <- ifelse(TRUE, 1, 2)
-a
-b <- ifelse(a == 0, 1, 2)
-b
+```
+[1] 6800
 ```
 
 ifelse
 ========================================================
-```{r}
+By assigning a value based on the true or false
+
+
+```r
+a <- ifelse(TRUE, 1, 2)
+a
+```
+
+```
+[1] 1
+```
+
+```r
+b <- ifelse(a == 0, 1, 2)
+b
+```
+
+```
+[1] 2
+```
+
+ifelse
+========================================================
+
+```r
 # ifelse works on vectors
 v <- 1:5
 v1 <- ifelse(v < 3, v, v * 2)
 v1
+```
+
+```
+[1]  1  2  6  8 10
 ```
 
 for loop
@@ -78,20 +103,34 @@ for loop
 - If possible in R you should avoid using for loops
 - The R programming style prefers vectorization
   - As much as possible AVOID code that deals with each element individual
-```{r}
+
+```r
 for(i in 1:3) {
   print(i)
 }
 ```
 
+```
+[1] 1
+[1] 2
+[1] 3
+```
+
 while loop
 ========================================================
-```{r}
+
+```r
 i <- 0
 while(i <= 2) {
   i <- i + 1
   print(i)
 }
+```
+
+```
+[1] 1
+[1] 2
+[1] 3
 ```
 
 Exercises

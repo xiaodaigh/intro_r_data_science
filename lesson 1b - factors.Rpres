@@ -1,0 +1,44 @@
+Lesson 1a - Factors
+========================================================
+author: Dai ZJ
+transition: rotate
+#width: 1650
+#height: 1050
+```{r setup, include=FALSE}
+opts_chunk$set(cache=TRUE)
+```
+
+The factor data-type
+========================================================
+Factors is a data type that is unique to R
+- A factor is a finite set of values
+- E.g. Male, Female can be the distinct values for a factor
+```{r}
+mf <- factor(c("Male","Female"))
+mf
+# levels of a factor refers to the possible distinct values
+levels(mf)
+```
+
+Factors - continued
+========================================================
+- The *levels* are the external presentation of the factors
+- Internally it's stored as integers (this fact is significant and can lead to some elegant code)
+```{r}
+mf
+as.numeric(mf)
+```
+
+- Factors can be ordinal or non-ordinal
+- Ordinal - there is some natural order structure to it e.g. Income Brackets
+- non-ordinal - no necessary order to it e..g apple, oranges, banana
+  
+Factors - Basic summary
+========================================================
+```{r}
+summary(iris$Species)
+
+plot(iris$Species)
+
+table(iris$Species)
+```

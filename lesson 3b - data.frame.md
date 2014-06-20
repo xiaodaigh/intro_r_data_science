@@ -2,8 +2,8 @@ Lesson 2 - data.frame
 ========================================================
 author: Dai ZJ
 transition: rotate
-width: 1650
-height: 1050
+#width: 1650
+#height: 1050
 
 
 Reading in stuctured data
@@ -62,6 +62,12 @@ head(cars$speed)
 [1] 4 4 7 7 8 9
 ```
 
+data.farme structrue
+========================================================
+- Let data be a data.frame
+- Then data[1] wouldl give u the firs column of data
+- then data[,1] gives the first column as a vector
+
 ```r
 head(cars[1]) # keeps only the first colunm, but is still a data.frame
 ```
@@ -83,6 +89,22 @@ head(cars[,1]) # keeps the first column as vector
 ```
 [1] 4 4 7 7 8 9
 ```
+
+```r
+cars[1,] # keeps the first row of data
+```
+
+```
+  speed dist
+1     4    2
+```
+
+data.farme structrue
+========================================================
+Let rows and columns be vectors of integers then you access the rows columns of a data.frame
+- data[rows,]
+- data[, columns]
+- data[rows, columns]
 
 ```r
 cars[1,] # keeps the first row of data
@@ -238,7 +260,7 @@ Histogram to investigate the correlation
 hist(cars$dist)
 ```
 
-![plot of chunk unnamed-chunk-10](lesson 3b - data.frame-figure/unnamed-chunk-10.png) 
+![plot of chunk unnamed-chunk-12](lesson 3b - data.frame-figure/unnamed-chunk-12.png) 
 
 Basic Distribution Analysis
 ========================================================
@@ -248,7 +270,7 @@ A basic scatterplot
 plot(cars)
 ```
 
-![plot of chunk unnamed-chunk-11](lesson 3b - data.frame-figure/unnamed-chunk-11.png) 
+![plot of chunk unnamed-chunk-13](lesson 3b - data.frame-figure/unnamed-chunk-13.png) 
 
 Basic Distribution Analysis
 ========================================================
@@ -257,7 +279,7 @@ Basic Distribution Analysis
 boxplot(cars)
 ```
 
-![plot of chunk unnamed-chunk-12](lesson 3b - data.frame-figure/unnamed-chunk-12.png) 
+![plot of chunk unnamed-chunk-14](lesson 3b - data.frame-figure/unnamed-chunk-14.png) 
 
 data.frame - creating new columns
 ========================================================
@@ -398,4 +420,24 @@ cars.head.tails
 48    24   93
 49    24  120
 50    25   85
+```
+
+Exercises
+========================================================
+- Using the cars data.frame
+- Create a new column called ratio = dist / speed
+- Create a new column ratio2 = ratio^2
+- remove the column ratio
+- What is the sum of ratio2
+
+
+Exercises (Solution)
+========================================================
+
+
+```
+Error in parse(text = x, srcfile = src) : <text>:2:28: unexpected input
+1: cars$ratio <- cars$speed/cars$dist
+2: cars$ratio2 <- cars$ratio^2\
+                              ^
 ```

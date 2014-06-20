@@ -1,8 +1,8 @@
 Lesson 3 - Modern data manipulation
 ========================================================
 author: Dai ZJ
-width: 1650
-height: 1050
+#width: 1650
+#height: 1050
 
 
 Modern data manipulation

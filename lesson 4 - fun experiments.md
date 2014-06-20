@@ -1,9 +1,9 @@
-Introduction to R and Data Science: Lesson 4 - Fun with experiments
+Lesson 4 - Fun with experiments
 ========================================================
 author: Dai ZJ
 transition: rotate
-width: 1650
-height: 1050
+#width: 1650
+#height: 1050
 
 
 
@@ -142,7 +142,7 @@ abline(0, coef(model.no.intercept))
 abline(0, 1)
 ```
 
-![plot of chunk unnamed-chunk-6](lesson 4 - fun experiments-figure/unnamed-chunk-6.png) 
+![plot of chunk unnamed-chunk-6](lesson 4 - Fun Experiments-figure/unnamed-chunk-6.png) 
 
 Experiment - Coin Toss
 ========================================================

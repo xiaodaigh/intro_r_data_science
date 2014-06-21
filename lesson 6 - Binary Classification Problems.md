@@ -5,17 +5,20 @@ transition: rotate
 #width: 1650
 #height: 1050
 
-```{r setup, include=FALSE}
-opts_chunk$set(cache=TRUE)
-```
+
 
 Read in the data
 ========================================================
-```{r}
+
+```r
 # read in the Kaggle sampled data
 # from the Kaggle give me some credit competition
 training <- read.csv("~/Dropbox/AnalytixWare/Data/Kaggle/cs-training-sample.csv")
 nrow(training)
+```
+
+```
+[1] 15000
 ```
 
 The data
@@ -25,10 +28,19 @@ Try to build a model that predicts that
 
 Simple Data Exploration
 ========================================================
-```{r}
+
+```r
 # give a frequency count of the unique values
 table(training$SeriousDlqin2yrs)
+```
 
+```
+
+    0     1 
+14032   968 
+```
+
+```r
 # 968 customers has defaulted 
 # 14032 has not
 # want to build a modle that can predict who is more likley to be in the 1 (defaulted) group
@@ -36,19 +48,53 @@ table(training$SeriousDlqin2yrs)
 names(training)
 ```
 
+```
+ [1] "X"                                   
+ [2] "X.1"                                 
+ [3] "SeriousDlqin2yrs"                    
+ [4] "RevolvingUtilizationOfUnsecuredLines"
+ [5] "age"                                 
+ [6] "NumberOfTime30.59DaysPastDueNotWorse"
+ [7] "DebtRatio"                           
+ [8] "MonthlyIncome"                       
+ [9] "NumberOfOpenCreditLinesAndLoans"     
+[10] "NumberOfTimes90DaysLate"             
+[11] "NumberRealEstateLoansOrLines"        
+[12] "NumberOfTime60.89DaysPastDueNotWorse"
+[13] "NumberOfDependents"                  
+```
+
 Simple plot
 ========================================================
-```{r}
+
+```r
 # you can't tell anything
 # definitely not the right way to visualise this type of data
 plot(training$age, training$SeriousDlqin2yrs)
 ```
 
+![plot of chunk unnamed-chunk-3](lesson 6 - Binary Classification Problems-figure/unnamed-chunk-3.png) 
+
 Default Rate
 ========================================================
-```{r}
+
+```r
 freq <- table(training$age, training$SeriousDlqin2yrs)
 head(freq)
+```
+
+```
+    
+       0  1
+  21  12  1
+  22  42  2
+  23  44  4
+  24  93 14
+  25  68 15
+  26 107  8
+```
+
+```r
 gb.odds <- freq[,1] / freq[,2]
 # dr stands for default rate
 dr <- freq[,2] / (freq[,1] + freq[,2])
@@ -56,61 +102,110 @@ dr <- freq[,2] / (freq[,1] + freq[,2])
 
 Default Rate
 ========================================================
-```{r}
+
+```r
 # plot the Good/Bad Odds (odds ratio)
 plot(dr)
 ```
 
+![plot of chunk unnamed-chunk-5](lesson 6 - Binary Classification Problems-figure/unnamed-chunk-5.png) 
+
 Default Rate
 ========================================================
-```{r}
+
+```r
 # plot the Good/Bad Odds (odds ratio)
 plot(sort(unique(training$age)), dr)
+```
 
+![plot of chunk unnamed-chunk-6](lesson 6 - Binary Classification Problems-figure/unnamed-chunk-6.png) 
+
+```r
 #lines(lowess(dr))
 ```
 
 What about for MonthlyIncome (1)
 ========================================================
-```{r}
+
+```r
 freq <- table(training$MonthlyIncome, training$SeriousDlqin2yrs)
 dr <- freq[,1] / (freq[,1] + freq[,2])
 plot(dr)
 ```
 
+![plot of chunk unnamed-chunk-7](lesson 6 - Binary Classification Problems-figure/unnamed-chunk-7.png) 
+
 
 What about for MonthlyIncome (2)
 ========================================================
-```{r}
+
+```r
 plot(dr)
 ```
 
+![plot of chunk unnamed-chunk-8](lesson 6 - Binary Classification Problems-figure/unnamed-chunk-8.png) 
+
 pretty & cut (1)
 ========================================================
-```{r}
+
+```r
 cut.points <- pretty(training$MonthlyIncome)
 cut.points
+```
+
+```
+[1]       0  500000 1000000 1500000 2000000 2500000 3000000 3500000
+```
+
+```r
 MonthlyIncome.cut <- cut(training$MonthlyIncome, cut.points)
 table(MonthlyIncome.cut)
 ```
 
-pretty & cut (2)
-========================================================
-```{r}
-require(dplyr)
-cut.points <- pretty(filter(training, MonthlyIncome < 25000)$MonthlyIncome)
-cut.points
-MonthlyIncome.cut <- cut(training$MonthlyIncome, c(-Inf,cut.points, Inf))
-table(MonthlyIncome.cut)
+```
+MonthlyIncome.cut
+      (0,5e+05]   (5e+05,1e+06] (1e+06,1.5e+06] (1.5e+06,2e+06] 
+          11864               0               0               0 
+(2e+06,2.5e+06] (2.5e+06,3e+06] (3e+06,3.5e+06] 
+              0               0               1 
 ```
 
 pretty & cut (2)
 ========================================================
-```{r}
+
+```r
+require(dplyr)
+cut.points <- pretty(filter(training, MonthlyIncome < 25000)$MonthlyIncome)
+cut.points
+```
+
+```
+[1]     0  5000 10000 15000 20000 25000
+```
+
+```r
+MonthlyIncome.cut <- cut(training$MonthlyIncome, c(-Inf,cut.points, Inf))
+table(MonthlyIncome.cut)
+```
+
+```
+MonthlyIncome.cut
+       (-Inf,0]       (0,5e+03]   (5e+03,1e+04] (1e+04,1.5e+04] 
+            176            5378            4604            1369 
+(1.5e+04,2e+04] (2e+04,2.5e+04]  (2.5e+04, Inf] 
+            309              84             121 
+```
+
+pretty & cut (2)
+========================================================
+
+```r
 freq <- table(MonthlyIncome.cut, training$SeriousDlqin2yrs)
 dr <- freq[,2] / (freq[,1] + freq[,2])
 plot(dr, type = "b")
 ```
+
+![plot of chunk unnamed-chunk-11](lesson 6 - Binary Classification Problems-figure/unnamed-chunk-11.png) 
 
 Summary
 ========================================================
@@ -126,7 +221,8 @@ Exercise
 
 Exercise (Solution)
 ========================================================
-```{r}
+
+```r
 cut.points.10 <- pretty(filter(training,MonthlyIncome<25000)$MonthlyIncome, n= 10)
 Monthly.Income.cut10 <- cut(training$MonthlyIncome, c(-Inf,cut.points.10,Inf))
 freq <- table(Monthly.Income.cut10, training$SeriousDlqin2yrs)
@@ -134,10 +230,13 @@ dr <- freq[,2] / (freq[,1] + freq[,2])
 plot(dr)
 ```
 
+![plot of chunk unnamed-chunk-12](lesson 6 - Binary Classification Problems-figure/unnamed-chunk-12.png) 
+
 Can we group the data into bins with an unbroken DR% trends?
 ========================================================
 Yes. Let's implement a simple monotone classifier (maximum likelihood monotone classifier)
-```{r}
+
+```r
 # source willl run the source code in another file
 source("mlmc.r")
 binning <- mlmc(training$MonthlyIncome, training$SeriousDlqin2yrs)
@@ -150,7 +249,8 @@ Exercise
 
 Exercise (Solution)
 ========================================================
-```{r}
+
+```r
 # source willl run the source code in another file
 source("mlmc.r")
 binning <- mlmc(training$NumberOfDependents, training$SeriousDlqin2yrs)
@@ -175,7 +275,8 @@ Logistic Regression Model
 ========================================================
 Weight of evidence (WOE) transformation
 - commonly used in banking
-```{r}
+
+```r
 # create woe transformation from raw data and provided cut points (cp)
 woe <- function(raw, default, cp) {
   raw.cut <- addNA(cut(raw,c(-Inf,cp,Inf)))
@@ -192,9 +293,35 @@ woe.mi <- woe(training$MonthlyIncome, training$SeriousDlqin2yrs, mlmc.mi$cp)
 
 Logistic Regression Model
 ========================================================
-```{r}
+
+```r
 m <- glm(SeriousDlqin2yrs ~ woe.mi, data=training, family = binomial)
 summary(m)
+```
+
+```
+
+Call:
+glm(formula = SeriousDlqin2yrs ~ woe.mi, family = binomial, data = training)
+
+Deviance Residuals: 
+   Min      1Q  Median      3Q     Max  
+-0.432  -0.383  -0.357  -0.304   2.730  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept)  -2.6739     0.0336  -79.54   <2e-16 ***
+woe.mi       -1.0000     0.1144   -8.74   <2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 7177.9  on 14999  degrees of freedom
+Residual deviance: 7097.3  on 14998  degrees of freedom
+AIC: 7101
+
+Number of Fisher Scoring iterations: 5
 ```
 
 Exercise 
@@ -208,7 +335,8 @@ How to assess the performance?
 - AIC - lower the better, can be used to compare differnt models using the same data
 - Area under the curve
   - also called GINI, accuracy ratio (AR)
-```{r}
+
+```r
 #install.packages("pROC")
 require(pROC)
 g <- roc(SeriousDlqin2yrs ~ woe.mi,data=training)
@@ -217,7 +345,8 @@ g <- roc(SeriousDlqin2yrs ~ woe.mi,data=training)
 Predict 
 ========================================================
 Scoring out another dataset
-```{r}
+
+```r
 scores <- predict(m, training[7500:15000,])
 save(m, file="model.data")
 load(file="model.data")
@@ -229,7 +358,8 @@ Typically modelling practise
 - Use the other 30% to validate your model (holdout sample)
 - If you have the luxury use an "out-of-time" sample
   - a data differnt to your model sample periods
-```{r}
+
+```r
 training.sample <- training[sample(1:nrow(training), size = nrow(training)*0.7), ]
 ```
 

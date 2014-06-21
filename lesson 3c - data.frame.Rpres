@@ -1,0 +1,198 @@
+Lesson 2 - data.frame
+========================================================
+author: Dai ZJ
+transition: rotate
+#width: 1650
+#height: 1050
+```{r setup, include=FALSE}
+opts_chunk$set(cache=TRUE)
+```
+
+Reading in stuctured data
+========================================================
+- read.csv - allows you to read csv files
+- read.xls - from the gdata package allows you to read xls files
+
+
+```{r}
+training <- read.csv("~/Dropbox/AnalytixWare/Data/Kaggle/cs-training-sample.csv")
+require(gdata)
+data.dict <- read.xls("~/Dropbox/AnalytixWare/Data/Kaggle/Data Dictionary.xls")
+
+# view the data
+# Viewz(training)
+
+```
+
+data.farme
+========================================================
+- In other languages (e.g. SAS) it call be called dataset, tables
+- One of the most important data structures in R
+- A data.frame is collection of **equal** length vectors
+- **iris** and **cars** are two data.frames that come with R
+- **head** function and **tails** function will show you the first & last few rows of the data.frame
+```{r}
+head(cars)
+```
+
+data.farme structrue
+========================================================
+- has row.names and by default they are integers
+- each column is a vector and can be accessed with $
+- e.g. cars$speed
+- data.frame is like a list with vector elements of the same length
+```{r}
+head(cars$speed)
+```
+
+data.farme structrue
+========================================================
+- Let data be a data.frame
+- Then data[1] would give u the first column of data
+- then data[,1] gives the first column as a vector
+```{r}
+head(cars[1]) # keeps only the first colunm, but is still a data.frame
+head(cars[,1]) # keeps the first column as vector
+cars[1,] # keeps the first row of data
+```
+
+data.farme structrue
+========================================================
+Let rows and columns be vectors of integers then you access the rows columns of a data.frame
+- data[rows,]
+- data[, columns]
+- data[rows, columns]
+```{r}
+cars[1,] # keeps the first row of data
+```
+
+data.frame subsetting
+========================================================
+- Indexing are of the form data.frame[rows, columns]
+- data.frame[, columns] means show all rows
+- data.frame[rows, ] means show all columns
+```{r}
+cars[5:10,] # the 5th to 10th row
+```
+
+data.frame subsetting
+========================================================
+```{r}
+cars[5:10, 2] # the 5th to 10th row's second vector
+cars[5:10, ][2]
+```
+
+Exercise
+========================================================
+- What is the average speed?
+- Find the row in the cars data.frame with the highest dist
+
+Exercise (Solution)
+========================================================
+```{r}
+mean(cars$speed)
+cars[cars$dist == max(cars$dist),]
+```
+
+data.frame functions
+========================================================
+```{r}
+nrow(cars) # number of rows
+ncol(cars) # number of columns
+summary(cars)
+```
+
+data.frame functions
+========================================================
+```{r}
+names(cars)
+head(row.names(cars))
+head(rownames(cars))
+``` 
+
+data.frame functions
+========================================================
+```{r}
+# you can use the columns as vectors 
+head(cars$dist / cars$speed)
+``` 
+
+Histogram
+========================================================
+```{r}
+hist(cars$dist)
+``` 
+
+Scatterplot
+========================================================
+```{r}
+plot(cars)
+``` 
+
+Basic Distribution Analysis
+========================================================
+```{r}
+boxplot(cars)
+```
+
+data.frame - creating new columns
+========================================================
+```{r}
+cars$dist.over.speed <- cars$dist / cars$speed
+head(cars)
+```
+
+data.frame - creating new columns (cont)
+========================================================
+```{r}
+new.vector <- cars$dist / cars$speed
+cars$new.vector <- new.vector
+head(cars)
+```
+
+data.frame - removing columns
+========================================================
+```{r}
+cars$new.vector <- NULL
+head(cars)
+cars[,3] <- NULL
+head(cars)
+```
+
+data.frame - removing columns cont
+========================================================
+```{r}
+cars$new.vector <- new.vector
+head(cars)
+cars[,"new.vector"] <- NULL
+head(cars)
+```
+
+data.frame - cbind & rbind
+========================================================
+- cbind - column bind
+- rbind - row bind
+```{r}
+new.cars <- cbind(cars, new.vector)
+head(new.cars)
+cars.head.tails <- rbind(head(cars),tail(cars))
+cars.head.tails
+```
+
+Exercises
+========================================================
+- Using the cars data.frame
+- Create a new column called ratio = dist / speed
+- Create a new column ratio2 = ratio^2
+- remove the column ratio
+- What is the sum of ratio2
+
+
+Exercises (Solution)
+========================================================
+```{r}
+cars$ratio <- cars$speed/cars$dist
+cars$ratio2 <- cars$ratio^2\
+cars$raio <- NULL
+sum(cars$ratio)
+```

@@ -1,4 +1,4 @@
-Lesson 1a - Factors
+Lesson 1b - Factors
 ========================================================
 author: Dai ZJ
 transition: rotate
@@ -37,8 +37,12 @@ Factors - Basic summary
 ========================================================
 ```{r}
 summary(iris$Species)
-
 plot(iris$Species)
+```
 
+Factors - Basic summary
+========================================================
+```{r}
+# frequency
 table(iris$Species)
 ```

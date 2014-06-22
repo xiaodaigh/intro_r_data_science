@@ -1,4 +1,4 @@
-Lesson 3 - Logistic Regression
+Lesson 5 - Logistic Regression
 ========================================================
 author: Dai ZJ
 transition: rotate
@@ -52,7 +52,7 @@ Default Rate
 ```{r}
 freq <- table(training$age, training$SeriousDlqin2yrs)
 head(freq)
-gb.odds <- freq[,1] / freq[,2]
+#gb.odds <- freq[,1] / freq[,2]
 # dr stands for default rate
 dr <- freq[,2] / (freq[,1] + freq[,2])
 ```
@@ -87,7 +87,33 @@ What about for MonthlyIncome (2)
 ```{r}
 plot(dr)
 ```
+cut 
+========================================================
+```{r}
+# cut(vector, cut.points)
+x <- c(1,2,5,7)
+cut.points <- c(-Inf,3,6,10,Inf)
+x
+x.cut <- cut(x, cut.points)
+v <- data.frame(x, x.cut = x.cut, x.cut.prety = 
+                  cut(x,pretty(x)))
+#View(v)
+```
 
+Exercise
+========================================================
+- cut the age variable into roughly 10 ranges
+- compute the default rate for the cut factor
+  - Hint: you can use table(cut.factor, SeriousDlq2yrs) to determine the default rate
+
+Exercise (solution)
+========================================================
+```{r}
+age.cut <- cut(training$age, c(-Inf,pretty(training$age,10),Inf))
+freq <- table(age.cut, training$SeriousDlqin2yrs)
+dr <- freq[,2] / (freq[,1] + freq[,2])
+data.frame(dr = dr)
+```
 pretty & cut (1)
 ========================================================
 ```{r}
@@ -112,7 +138,8 @@ pretty & cut (2)
 ```{r}
 freq <- table(MonthlyIncome.cut, training$SeriousDlqin2yrs)
 dr <- freq[,2] / (freq[,1] + freq[,2])
-plot(dr, type = "b")
+#plot(dr, type = "b")
+barplot(dr)
 ```
 
 Summary
@@ -144,8 +171,14 @@ Yes. Let's implement a simple monotone classifier (maximum likelihood monotone c
 # source willl run the source code in another file
 source("mlmc.r")
 binning <- mlmc(training$MonthlyIncome, training$SeriousDlqin2yrs)
+binning
 ```
 
+Binning
+================================
+```{r}
+binning
+```
 Exercise
 ========================================================
 - Use the mlmc function to create binnings for NumberOfDependents. Explain the resutls
@@ -191,6 +224,13 @@ woe <- function(raw, default, cp) {
 
 mlmc.mi <- mlmc(training$MonthlyIncome, training$SeriousDlqin2yrs)
 woe.mi <- woe(training$MonthlyIncome, training$SeriousDlqin2yrs, mlmc.mi$cp)
+
+#tot.bad <- sum(mlmc.mi$tbl[,2])
+
+#woe <-log( mlmc.mi$tbl[,1] / mlmc.mi$tbl[,2]) - log(tot.good/tot.bad )
+
+#a <- cbind(mlmc.mi$tbl,woe)
+
 ```
 
 Logistic Regression Model
@@ -224,8 +264,42 @@ table(cut(training$age,c(-Inf,mlmc.age$cp[-l],Inf)), training$SeriousDlqin2yrs)
 
 Exercise 
 ========================================================
-- Create the woe version of all the varibles in the dataset
+- Create the woe version of age and monthly income varibles in the dataset
+  - use mlmc(raw, default)
 - Fit a logistics regression
+  - glm(SeriousDlq2yrs ~ woe1 + woe2, data = training, family = binomial)
+  
+```{r}
+# code at https://github.com/xiaodaigh/
+#intro_r_data_science/blob/master/woe.r
+woe <- function(raw, default, cp) {
+  raw.cut <- addNA(cut(raw,c(-Inf,cp,Inf)))
+  freq <- table(raw.cut, default)
+  tot.b <- sum(default)
+  tot.g <- length(default) - tot.b
+  woe.res <- log(freq[,1] / freq[,2]) - log(tot.g / tot.b)
+  woe.res[raw.cut]
+}
+```
+
+Area under the curve
+========================================================
+```{r}
+
+binning <- mlmc(training$MonthlyIncome, training$SeriousDlqin2yrs)
+b <- binning.neg$tbl[,2]
+g <- binning.neg$tbl[,1]
+cb <- cumsum(b)
+cg <- cumsum(g)
+tot.b <- sum(b)
+tot.g <- sum(g)
+
+# cumulative prop.population
+prop.population <- (cb + cg) / (tot.b + tot.g)
+prop.bad <- cb / tot.b
+plot(prop.population, prop.bad, type="b")
+abline(0,1)
+```
 
 Area under the curve
 ========================================================

@@ -1,4 +1,5 @@
 mlmc <- function(raw, default) {
+  #browser()
   # obtain a frequency of the good bad by each value of raw
   freq <- table(raw, default)
   # number of bads

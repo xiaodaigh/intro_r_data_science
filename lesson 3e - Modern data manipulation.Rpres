@@ -91,7 +91,8 @@ The iris data.frame
 require(dplyr)
 # create an intermediate "grouped data"
 iris.grouped <- group_by(iris,Species)
-iris.summ <- summarise(iris.grouped, Avg.Petal.Length = mean(Petal.Length))
+iris.summ <- summarise(iris.grouped, Avg.Petal.Length = mean(Petal.Length),
+      cnt = n())
 iris.summ
 ```
 
@@ -127,7 +128,8 @@ Exercise (Solution)
 ========================================================
 Write a dplyr program that computes the median Sepal.Width for each species
 ```{r}
-iris %.% group_by(Species) %.% summarise(Avg.Sepal.Width = median(Sepal.Width))
+require(dplyr)
+iris %.% group_by(Species) %.% summarise(Avg.Sepal.Width = median(Sepal.Width), cnt = n(), d.cnt = n_distinct(Species))
 ```
 
 The filter() 
@@ -196,9 +198,10 @@ Exercises
 Exercises (solution)
 ========================================================
 ```{r}
+# chaining solution
 iris %.%  
-  mutate(petal.ratio = Petal.Width / Petal.Length) %.%
-  filter(petal.ratio < 0.3) %.%
+  mutate(petal.ratio = Petal.Width / Petal.Length) %.% #creating a new var 
+  filter(petal.ratio < 0.3) %.% # filtering.
   group_by(Species) %.%
   summarise(mean.ratio = mean(petal.ratio), cnt = n()) 
 ```

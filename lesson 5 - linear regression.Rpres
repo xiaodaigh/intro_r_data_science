@@ -104,7 +104,7 @@ summary(m)
 
 How to assess linear regression models?
 ========================================================
-- Check if the coefficients are significant
+- Check if the coefficients are significant (p-val < 0.05)
 - Check the R-square
   - It represent the proportion of variance in the data explained by the model. It is a number from 0 to 1.00. The higher the better
 - Assess the data visually
@@ -112,8 +112,21 @@ How to assess linear regression models?
 
 Exercise
 ========================================================
+- Basic form of linear model
+  - m <- lm(dependent ~ column1 + column2, data = some.data.frame)
+  - depend is the column that you wish to build a model to predict
+- abline(m) will plot the model
 - Using the cars data.frame Build a linear model to predict "dist" the stopping distance using speed
 - Explain the result
+- install.packages("nutshell")
+
+Importance of visual inspection
+========================================================
+```{r}
+m <- lm(dist ~ speed , data=cars)
+plot(select(cars,speed,dist))
+abline(m)
+```
 
 Importance of visual inspection
 ========================================================

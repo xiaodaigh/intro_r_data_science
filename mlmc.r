@@ -1,13 +1,23 @@
 mlmc <- function(raw, default) {
+  # obtain a frequency of the good bad by each value of raw
   freq <- table(raw, default)
+  # number of bads
   b <- freq[,2]
+  # number of goods
   g <- freq[,1]
+  # cumulative b
   cb <- cumsum(b)
+  # cumulative g
   cg <- cumsum(g)
+  
+  
   cp <- NULL
   done <- FALSE
+  # look for maximum cut points
   while(!done) {
+    # cumulative bad rate
     dr <- cb / (cb + cg)
+    # where is the maximum cumulative bad rate
     i <- which.max(dr)
     
     if (i == length(cb)) {

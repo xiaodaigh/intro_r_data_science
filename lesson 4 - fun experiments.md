@@ -5,8 +5,6 @@ transition: rotate
 #width: 1650
 #height: 1050
 
-
-
 Experiment
 ========================================================
 

@@ -24,6 +24,9 @@ nrow(training)
 The data
 ========================================================
 SeriousDlqin2yrs - 1 means the customer was in serious delinquency
+Terminology
+- Bad - customer has serious delinquency
+- Good - customer does not have serious delinquency
 Try to build a model that predicts that
 
 Simple Data Exploration
@@ -295,23 +298,24 @@ Logistic Regression Model
 ========================================================
 
 ```r
-m <- glm(SeriousDlqin2yrs ~ woe.mi, data=training, family = binomial)
+m <- glm(relevel(as.factor(SeriousDlqin2yrs),ref="1") ~ woe.mi, data=training, family = binomial)
 summary(m)
 ```
 
 ```
 
 Call:
-glm(formula = SeriousDlqin2yrs ~ woe.mi, family = binomial, data = training)
+glm(formula = relevel(as.factor(SeriousDlqin2yrs), ref = "1") ~ 
+    woe.mi, family = binomial, data = training)
 
 Deviance Residuals: 
    Min      1Q  Median      3Q     Max  
--0.432  -0.383  -0.357  -0.304   2.730  
+-2.730   0.304   0.357   0.383   0.432  
 
 Coefficients:
             Estimate Std. Error z value Pr(>|z|)    
-(Intercept)  -2.6739     0.0336  -79.54   <2e-16 ***
-woe.mi       -1.0000     0.1144   -8.74   <2e-16 ***
+(Intercept)   2.6739     0.0336   79.54   <2e-16 ***
+woe.mi        1.0000     0.1144    8.74   <2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -322,6 +326,48 @@ Residual deviance: 7097.3  on 14998  degrees of freedom
 AIC: 7101
 
 Number of Fisher Scoring iterations: 5
+```
+
+How to intepret the coefficients?
+========================================================
+- Intercept = a = 2.67386
+- The average portfolio log(Good Bad Odds) is 2.67386
+- $ln(p/(1-p)) = a + bx$ where p is probability of good
+- ln(Prob(Good) / Prob(Bad)) = 2.67386 + 1 * WOE.Monthly Income
+- woe = ln(Goods/Bads) - ln(overall Goods/Overall Bad)
+
+Logistic Regression Model
+========================================================
+Weight of evidence (WOE) transformation
+- commonly used in banking
+
+```r
+# create woe transformation from raw data and provided cut points (cp)
+mlmc.age <- mlmc(training$age, training$SeriousDlqin2yrs)
+woe.age <- woe(training$age, training$SeriousDlqin2yrs, mlmc.mi$cp)
+# collapse last two bins
+l <- length(mlmc.age$cp)
+woe.age <- woe(training$age, training$SeriousDlqin2yrs, mlmc.age$cp[-l])
+table(cut(training$age,c(-Inf,mlmc.age$cp[-l],Inf)), training$SeriousDlqin2yrs)
+```
+
+```
+           
+               0    1
+  (-Inf,30]  910  133
+  (30,43]   3122  302
+  (43,47]   1276  106
+  (47,49]    725   59
+  (49,52]   1011   80
+  (52,54]    647   46
+  (54,55]    323   22
+  (55,58]    994   59
+  (58,59]    317   16
+  (59,62]   1000   45
+  (62,67]   1402   44
+  (67,74]   1186   33
+  (74,82]    790   18
+  (82, Inf]  329    5
 ```
 
 Exercise 
@@ -352,7 +398,43 @@ save(m, file="model.data")
 load(file="model.data")
 ```
 
-Typically modelling practise
+Sampling
+========================================================
+sample(X, size)
+- X is a vector
+- size the number of elements to sample WITHOUT replacement from x
+
+Random Seed
+========================================================
+- set.seed to set the random seed so your sampling is repeatable
+
+```r
+set.seed(1)
+sample(1:10, 3)
+```
+
+```
+[1] 3 4 5
+```
+
+```r
+sample(1:10, 3)
+```
+
+```
+[1] 10  2  8
+```
+
+```r
+set.seed(1)
+sample(1:10, 3)
+```
+
+```
+[1] 3 4 5
+```
+
+Typical modelling practise
 ========================================================
 -Sample 70% of the data to build the model (development sample)
 - Use the other 30% to validate your model (holdout sample)

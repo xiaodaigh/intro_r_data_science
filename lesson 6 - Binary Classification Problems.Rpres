@@ -21,6 +21,9 @@ nrow(training)
 The data
 ========================================================
 SeriousDlqin2yrs - 1 means the customer was in serious delinquency
+Terminology
+- Bad - customer has serious delinquency
+- Good - customer does not have serious delinquency
 Try to build a model that predicts that
 
 Simple Data Exploration
@@ -193,8 +196,30 @@ woe.mi <- woe(training$MonthlyIncome, training$SeriousDlqin2yrs, mlmc.mi$cp)
 Logistic Regression Model
 ========================================================
 ```{r}
-m <- glm(SeriousDlqin2yrs ~ woe.mi, data=training, family = binomial)
+m <- glm(relevel(as.factor(SeriousDlqin2yrs),ref="1") ~ woe.mi, data=training, family = binomial)
 summary(m)
+```
+
+How to intepret the coefficients?
+========================================================
+- Intercept = a = 2.67386
+- The average portfolio log(Good Bad Odds) is 2.67386
+- $ln(p/(1-p)) = a + bx$ where p is probability of good
+- ln(Prob(Good) / Prob(Bad)) = 2.67386 + 1 * WOE.Monthly Income
+- woe = ln(Goods/Bads) - ln(overall Goods/Overall Bad)
+
+Logistic Regression Model
+========================================================
+Weight of evidence (WOE) transformation
+- commonly used in banking
+```{r}
+# create woe transformation from raw data and provided cut points (cp)
+mlmc.age <- mlmc(training$age, training$SeriousDlqin2yrs)
+woe.age <- woe(training$age, training$SeriousDlqin2yrs, mlmc.mi$cp)
+# collapse last two bins
+l <- length(mlmc.age$cp)
+woe.age <- woe(training$age, training$SeriousDlqin2yrs, mlmc.age$cp[-l])
+table(cut(training$age,c(-Inf,mlmc.age$cp[-l],Inf)), training$SeriousDlqin2yrs)
 ```
 
 Exercise 
@@ -223,7 +248,25 @@ save(m, file="model.data")
 load(file="model.data")
 ```
 
-Typically modelling practise
+Sampling
+========================================================
+sample(X, size)
+- X is a vector
+- size the number of elements to sample WITHOUT replacement from x
+
+Random Seed
+========================================================
+- set.seed to set the random seed so your sampling is repeatable
+```{r}
+set.seed(1)
+sample(1:10, 3)
+sample(1:10, 3)
+
+set.seed(1)
+sample(1:10, 3)
+```
+
+Typical modelling practise
 ========================================================
 -Sample 70% of the data to build the model (development sample)
 - Use the other 30% to validate your model (holdout sample)

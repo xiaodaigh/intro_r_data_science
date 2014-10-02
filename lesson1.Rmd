@@ -1,15 +1,12 @@
-Introduction to R and Data Science: Lesson 1
-========================================================
-author: Dai ZJ
-transition: rotate
-#width: 1650
-#height: 1050
-```{r setup, include=FALSE}
-opts_chunk$set(cache=TRUE)
-```
+---
+title: 'Introduction to R and Data Science: Lesson 1'
+author: "ZJ"
+date: "2 October, 2014"
+output: ioslides_presentation
+---
 
-About Me
-========================================================  
+## About Me
+
 - Name: Dai Zhuo Jia (ZJ)
 - Australian-Chinese
 - B.Sc (Pure maths) and Master of Statistics
@@ -17,38 +14,40 @@ About Me
 - Author of R package ShinySky (https://github.com/AnalytixWare/ShinySky)
 - Worked in Banking (risk analysis) in Australia and Singapore
 
-What is R?
-========================================================  
+## What is R?
+
 **R** is 
+
 - a programming *environment*, not just a language
 - for doing statistics (2000's - analytics, 2010's data science)
 - first developed in New Zealand in 1998 by **R**oss Ihaka and **R**obert Gentleman
 - it's actually based on the S language deviced in mid-1970's
 - S is for statistics
 
-Why Learn R?
-========================================================
+## Why Learn R?
+
 - Data Science is one of fastest growing fields
 - R is one of the premiere languages in this field
 
-What is R great for?
-========================================================
+
+## What is R great for?
+
 - Statistical Analysis
 
 ```{r}
 summary(cars)
 ```
 
-What is R great for?
-========================================================  
+## What is R great for?
+  
 - Graphing
 
 ```{r, echo=FALSE}
 plot(cars)
 ```
 
-Starting out
-========================================================  
+## Starting out
+  
 - Install R (http://cran.rstudio.com/)
 - Install RStudio (http://www.rstudio.com/ide/download/desktop)
 - Go to the console
@@ -58,8 +57,8 @@ Starting out
 1 + 1
 ```
 
-R is interactive
-========================================================  
+## R is interactive
+  
 - The result of what you type will get reflected right away
 - R does not do integer arithmetics, so 3 / 2 does NOT give you 1
 ```{r}
@@ -67,20 +66,22 @@ R is interactive
 ```
 
 
-Arithmetic in R
-========================================================
-Operation  | Usage | Usage
+## Arithmetic in R
+
+Operation  | Usage | Example 
 ------------- | ------------- | -------------
 Addition  | a + b | 
-Subtraction  | a - b
-Mulitplication  | a * b
-Divison  | a / b
-Exponetiation | a ^ b or a ** b
+Subtraction  | a - b | 
+Mulitplication  | a * b | 
+Divison  | a / b | 
+Exponetiation | a ^ b or a ** b | 
 Modulo | a %% b | 5 %% 3 gives 2
 Matrix Mult | a %*% b | 
-  
-Variables
-========================================================
+
+
+
+## Variables
+
 You can set values to variables, called **assignment**
 ```{r}
 a = 1
@@ -90,8 +91,8 @@ e <- a + b + d
 e
 ```
 
-Variable Name Conventions
-========================================================
+## Variable Name Conventions
+
 Rule | Usage &  Example
 ------------- | ------------- 
 Can use alphanumeric | a-z A-Z 0-9
@@ -101,8 +102,8 @@ Most other symbols (e.g. ,!~`'"-\$ ) can NOT be used | abc! is NOT a valid name
 Case SENSITIVE | abc & ABC are two distinct variable names
 
                     
-Is this a valid variable name?
-========================================================
+## Is this a valid variable name?
+
 - a_
 - 1a2
 - a1b
@@ -110,16 +111,16 @@ Is this a valid variable name?
 - _abc
 - .89
 
-Disregard all rules if you use backtick (`)
-========================================================
+## Disregard all rules if you use backtick (`)
+
 Disregard all rules (except case sensivity) with back-tick \\`
 ```{r}
 `1 whatever name you want !$` <- 100
 `1 whatever name you want !$`
 ```
 
-Vectors in R
-========================================================
+## Vectors in R
+
 One of most useful and powerful features of R is working with vectors
 
 The main command is **c** whichs stands for **c**ombine
@@ -130,16 +131,16 @@ sum(primes.1.to.5)
 diff(primes.1.to.5)
 ```
 
-More Vector Operations
-========================================================
+## More Vector Operations
+
 ```{r}
 primes.1.to.5 <- c(2,3,5,7,11)
 max(primes.1.to.5)
 min(primes.1.to.5)
 ```
 
-Set Operations
-========================================================
+## Set Operations
+
 ```{r}
 vector.a <- c(1,2,3)
 vector.b <- c(3,4,5)
@@ -149,8 +150,8 @@ unique(vector.c)
 intersect(vector.a, vector.b)
 ```
 
-Sorting
-========================================================
+## Sorting
+
 ```{r}
 vector.c.desc <- sort(vector.c, decreasing = TRUE)
 vector.c.desc
@@ -159,40 +160,40 @@ sort(vector.c.desc)
 order(vector.c.desc)
 ```
 
-Exercise
-========================================================
+## Exercise
 
 
-Arithmetic Operations on vectors
-========================================================
+
+## Arithmetic Operations on vectors
+
 Every element in the vector happens
 ```{r}
 numbers3 <- 1:5
 numbers3 * 2
 ```
 
-What happens internally
+## What happens internally
 - R needs two vectors of the SAME length
 - so 2 gets converted to c(2,2,2,2,2)
 - then c(1,2,3,4,5) * c(2,2,2) = c(1 * 2, 2 * 2, 3 * 2,4 *2, 5 *2)
 - gives c(2,4,6,8,10)
 
-Vector Recycling
-========================================================
+## Vector Recycling
+
 ```{r}
 numbers3 <- 1:5
 numbers3 * c(1,2)
 ```
 
-Can you understand why?
+## Can you understand why?
 - R needs two vectors of the SAME length
 - so it **recycles** the shorter vector
 - so c(1, 2) gets repeated up to c(1, 2, 1, 2, 1)
 - c(1,2,3,4,5) * c(1,2,1,2,1) = c(1 * 2, 2 * 2, 3 * 1, 4 * 2, 5 * 1)
 - gives c(1, 4,3 ,8 ,5)
 
-Exercise
-========================================================
+## Exercise
+
 What is the output of 
 ```{r, eval=FALSE}
 sum(2:5)
@@ -201,8 +202,8 @@ diff(10:15)
 1:5 * 1:3
 ```
 
-Exercise (Solution)
-========================================================
+## Exercise (Solution) {.smaller}
+
 ```{r}
 sum(2:5)
 diff(10:15)
@@ -210,8 +211,8 @@ diff(10:15)
 1:5 * 1:3
 ```
 
-Number Indexing
-========================================================
+## Number Indexing {.smaller}
+
 ```{r}
 numbers10 <- 1:5
 numbers10[2]
@@ -224,10 +225,10 @@ numbers10[c(1,3:4)] <- c(999, 999, 999)
 numbers10
 ```
 
-Number Indexing - removal
-========================================================
+## Number Indexing - removal
+
 ```{r}
-# you can remove the **i**th element by doing this
+# you can remove the i-th element by doing this
 i = 4
 numbers10[-i] # this will remove the 4th element
 # however numbers10 is actually not changed 
@@ -236,13 +237,13 @@ numbers10
 numbers10 <- numbers10[-i]
 ```
 
-Exercises
-========================================================
+## Exercises
+
 - Create a vector (5, ...., 2, 1, 0, 1, 2,...,5)
 - Remove the 0 element from the vector
 
-Exercises (Solution)
-========================================================
+## Exercises (Solution)
+
 ```{r}
 x <- c(5:0,1:5)
 x
@@ -250,41 +251,42 @@ x1 <- x[-6]
 x1
 ```
 
-Boolean
-========================================================
+## Boolean
+
 Boolean is the TRUE/FALSE data type
+
 - TRUE or T
 - FALSE or T
 - == tests for equality e.g. 1 == 1 is TRUE 0 == 2 is FALSE
 - 2 > 1 evaluates to TRUE
 - 2 < 3 evaluates to FALSE
 
-Boolean (TRUE/FALSE) Indexing
-========================================================
+## Boolean (TRUE/FALSE) Indexing
+
 ```{r}
 numbers10 <- 1:5
 numbers10[c(T, F, T, F, T)]
 ```
 
-Filtering
-========================================================
+## Filtering
+
 Find all multiples of 2 less than or equal to 10
 ```{r}
 numbers10 <- 1:10
-numbers10[c(FALSE,TRUE)] # cycling
+numbers10[c(FALSE,TRUE)] # recycling
 numbers10 %% 2 == 0
 numbers10[numbers10 %% 2 == 0]
 ```
 
-Exercise
-========================================================
+## Exercise
+
 - Store all the multiple of 3s under 100 in a vector
 - Store all the multiple of 5s less than or equal to 100 in a vector
 - Find those numbers that are either multiples of 3 and/or multiples of 5, no repeats allowed
 - Find their sum
 
-Exercise (Solution)
-========================================================
+## Exercise (Solution)
+
 ```{r}
 # solution 1
 multiple.3 <- (1:100)[1:100 %% 3 == 0]
@@ -296,17 +298,15 @@ final.ans <- (1:100)[1:100 %% 3 == 0 | 1:100 %% 5 == 0]
 sum(final.ans)
 ```
 
-Boolean Operations
-========================================================
+## Boolean Operations
+
 Name  | R Symbol | Example
 ------------- | ------------- | -------------
 And  | & | 1 == 1 & 0 == 0
 Or  | &#124;  | T &#124; F
 Not | ! | 0 != 0, !1 == 1
 
-Truth Table
-========================================================
-and (&)
+## Truth Table | and (&)
 
 a  | b | a & b
 ------------- | ------------- | -------------
@@ -315,7 +315,7 @@ FALSE | TRUE | FALSE
 TRUE | FALSE | FALSE
 TRUE | TRUE | TRUE
 
-or (|)
+## Truth Table | or (|)
 
 a  | b | a &#124; b
 ------------- | ------------- | -------------
@@ -324,12 +324,12 @@ FALSE | TRUE | TRUE
 TRUE | FALSE | TRUE
 TRUE | TRUE | TRUE
 
-Exercise
-========================================================
+## Exercise
+
 Find the sum of all numbers below 100 that are a multiple of 3 but NOT a multiple of 5
 
-Exercise (Solution)
-========================================================
+## Exercise (Solution)
+
 Find the sum of all numbers below 100 that are a multiple of 3 but NOT a multiple of 5
 ```{r}
 numbers100 <- 1:100
@@ -337,8 +337,8 @@ final <- numbers100[numbers100 %% 3 == 0 & !numbers100 %% 5 ==0]
 sum(final)
 ```
 
-More useful Boolean functions
-========================================================
+## More useful Boolean functions
+
 ```{r}
 # returns true if ANY element of the argument vector is TRUE
 any(c(F,T,F))
@@ -347,8 +347,8 @@ all(c(F,T,F))
 all(c(T,T,T))
 ```
 
-More useful vector functions - which family
-========================================================
+## More useful vector functions - which family
+
 The **which** family of functions is extremely useful
 - **which** accepts a vector of boolean and returns the index of the true position
 - **which.min** & **which.max** returns the index of the FIRST minimum/maximum value
@@ -358,14 +358,14 @@ which(1:10 > 5)
 which.min(c(1:3,0,0,4:6))
 ```
 
-Exercise
-========================================================
+## Exercise
+
 - Write a function that accepts two vectors as input and returns TRUE
   - if all the elements of the first vector is larger than the second vector
   - OR if one and only one element is in the first vector is larger then the second vector
 
-Exercise (Solution)
-========================================================
+## Exercise (Solution)
+
 ```{r}
 ans.func <- function(x,y) {
   if(all(x >y)) {
@@ -377,65 +377,25 @@ ans.func <- function(x,y) {
 }
 ```
 
-Vector's elements must be of the same type
-========================================================
-You can a vector of numbers, boolean, and strings (characters)
+## Vector's elements must be of the same type
+
+You can have vectors of numbers, boolean, and strings (characters)
 ```{r}
 c(1,2,3)
 c(T,F,T)
 c(10,T,F,T,100)
 ```
 
-Vector's elements must be of the same type
-========================================================
+## Vector's elements must be of the same type
+
 If you mix the types it will converted to first, strings, and second, numerics.
 ```{r}
 c("a","b","c")
 c(1,"a",T)
 ```
 
-The factor data-type
-========================================================
-We have studied
-- numerics (integers and real numbers)
-- boolean (true/false)
-- strings (letters, and other characters and symbols)
+## Seeking Help
 
-Factors is a data type that is unique to R
-- A factor is a finite set of values
-- E.g. Male, Female can be the distinct values for a factor
-```{r}
-mf <- factor(c("Male","Female"))
-mf
-# levels of a factor refers to the possible distinct values
-levels(mf)
-```
-
-Factors - continued
-========================================================
-- The *levels* are the external presentation of the factors
-- Internally it's stored as integers (this fact is significant and can lead to some elegant code)
-```{r}
-mf
-as.numeric(mf)
-```
-
-- Factors can be ordinal or non-ordinal
-- Ordinal - there is some natural order structure to it e.g. Income Brackets
-- non-ordinal - no necessary order to it e..g apple, oranges, banana
-  
-Factors - Basic summary
-========================================================
-```{r}
-summary(iris$Species)
-
-plot(iris$Species)
-
-table(iris$Species)
-```
-
-Seeking Help
-========================================================
 The documentation will show in the **Help** tab
 ```{r ,eval=FALSE}
 ?sum
@@ -445,7 +405,7 @@ The documentation will show in the **Help** tab
 example(min)
 ```
 
-- The power of tab: type the first few characters of a function then press tab
+## Tips
 
-Useful websites
+- The power of TAB: type the first few characters of a function then press tab
 - stackoverflow.com General programmings questions

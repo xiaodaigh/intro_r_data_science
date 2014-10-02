@@ -1,16 +1,20 @@
-Lesson 1b - Factors
-========================================================
-author: Dai ZJ
-transition: rotate
-#width: 1650
-#height: 1050
-```{r setup, include=FALSE}
-opts_chunk$set(cache=TRUE)
-```
+---
+title: "Lesson 1b - Factors"
+author: "ZJ"
+date: "2 October, 2014"
+output: ioslides_presentation
+---
 
-The factor data-type
-========================================================
+## The factor data-type
+
+We have studied
+
+- numerics (integers and real numbers)
+- boolean (true/false)
+- strings (letters, and other characters and symbols)
+
 Factors is a data type that is unique to R
+
 - A factor is a finite set of values
 - E.g. Male, Female can be the distinct values for a factor
 ```{r}
@@ -20,8 +24,8 @@ mf
 levels(mf)
 ```
 
-Factors - continued
-========================================================
+## Factors - continued
+
 - The *levels* are the external presentation of the factors
 - Internally it's stored as integers (this fact is significant and can lead to some elegant code)
 ```{r}
@@ -29,20 +33,26 @@ mf
 as.numeric(mf)
 ```
 
+## Factors - continued
+
 - Factors can be ordinal or non-ordinal
 - Ordinal - there is some natural order structure to it e.g. Income Brackets
 - non-ordinal - no necessary order to it e..g apple, oranges, banana
   
-Factors - Basic summary
-========================================================
+## Factors - Basic summary
+
 ```{r}
 summary(iris$Species)
+```
+
+## Factors - Basic summary
+
+```{r}
 plot(iris$Species)
 ```
 
-Factors - Basic summary
-========================================================
+## Factors - Basic summary
+
 ```{r}
-# frequency
 table(iris$Species)
 ```

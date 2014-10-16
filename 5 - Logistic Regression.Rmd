@@ -1,16 +1,12 @@
-Lesson 5 - Logistic Regression
-========================================================
-author: Dai ZJ
-transition: rotate
-#width: 1650
-#height: 1050
+---
+title: "Lesson 5b - Logistic Regression"
+author: "ZJ"
+date: "16 October, 2014"
+output: ioslides_presentation
+---
 
-```{r setup, include=FALSE}
-opts_chunk$set(cache=TRUE)
-```
+## Read in the data
 
-Read in the data
-========================================================
 ```{r}
 # read in the Kaggle sampled data
 # from the Kaggle give me some credit competition
@@ -18,16 +14,19 @@ training <- read.csv("~/Dropbox/AnalytixWare/Data/Kaggle/cs-training-sample.csv"
 nrow(training)
 ```
 
-The data
-========================================================
+## The data
+
 SeriousDlqin2yrs - 1 means the customer was in serious delinquency
+
 Terminology
+
 - Bad - customer has serious delinquency
 - Good - customer does not have serious delinquency
+
 Try to build a model that predicts that
 
-Simple Data Exploration
-========================================================
+## Simple Data Exploration
+
 ```{r}
 # give a frequency count of the unique values
 table(training$SeriousDlqin2yrs)
@@ -39,16 +38,16 @@ table(training$SeriousDlqin2yrs)
 names(training)
 ```
 
-Simple plot
-========================================================
+## Simple plot
+
 ```{r}
 # you can't tell anything
 # definitely not the right way to visualise this type of data
 plot(training$age, training$SeriousDlqin2yrs)
 ```
 
-Default Rate
-========================================================
+## Default Rate
+
 ```{r}
 freq <- table(training$age, training$SeriousDlqin2yrs)
 head(freq)
@@ -57,15 +56,15 @@ head(freq)
 dr <- freq[,2] / (freq[,1] + freq[,2])
 ```
 
-Default Rate
-========================================================
+## Default Rate
+
 ```{r}
 # plot the Good/Bad Odds (odds ratio)
 plot(dr)
 ```
 
-Default Rate
-========================================================
+## Default Rate
+
 ```{r}
 # plot the Good/Bad Odds (odds ratio)
 plot(sort(unique(training$age)), dr)
@@ -73,8 +72,8 @@ plot(sort(unique(training$age)), dr)
 #lines(lowess(dr))
 ```
 
-What about for MonthlyIncome (1)
-========================================================
+## What about for MonthlyIncome (1)
+
 ```{r}
 freq <- table(training$MonthlyIncome, training$SeriousDlqin2yrs)
 dr <- freq[,1] / (freq[,1] + freq[,2])
@@ -82,13 +81,14 @@ plot(dr)
 ```
 
 
-What about for MonthlyIncome (2)
-========================================================
+## What about for MonthlyIncome (2)
+
 ```{r}
 plot(dr)
 ```
-cut 
-========================================================
+
+## cut 
+
 ```{r}
 # cut(vector, cut.points)
 x <- c(1,2,5,7)
@@ -100,22 +100,23 @@ v <- data.frame(x, x.cut = x.cut, x.cut.prety =
 #View(v)
 ```
 
-Exercise
-========================================================
+## Exercise
+
 - cut the age variable into roughly 10 ranges
 - compute the default rate for the cut factor
   - Hint: you can use table(cut.factor, SeriousDlq2yrs) to determine the default rate
 
-Exercise (solution)
-========================================================
+## Exercise (solution)
+
 ```{r}
 age.cut <- cut(training$age, c(-Inf,pretty(training$age,10),Inf))
 freq <- table(age.cut, training$SeriousDlqin2yrs)
 dr <- freq[,2] / (freq[,1] + freq[,2])
 data.frame(dr = dr)
 ```
-pretty & cut (1)
-========================================================
+
+## pretty & cut (1)
+
 ```{r}
 cut.points <- pretty(training$MonthlyIncome)
 cut.points
@@ -123,8 +124,8 @@ MonthlyIncome.cut <- cut(training$MonthlyIncome, cut.points)
 table(MonthlyIncome.cut)
 ```
 
-pretty & cut (2)
-========================================================
+## pretty & cut (2)
+
 ```{r}
 require(dplyr)
 cut.points <- pretty(filter(training, MonthlyIncome < 25000)$MonthlyIncome)
@@ -133,8 +134,8 @@ MonthlyIncome.cut <- cut(training$MonthlyIncome, c(-Inf,cut.points, Inf))
 table(MonthlyIncome.cut)
 ```
 
-pretty & cut (2)
-========================================================
+## pretty & cut (2)
+
 ```{r}
 freq <- table(MonthlyIncome.cut, training$SeriousDlqin2yrs)
 dr <- freq[,2] / (freq[,1] + freq[,2])
@@ -142,20 +143,20 @@ dr <- freq[,2] / (freq[,1] + freq[,2])
 barplot(dr)
 ```
 
-Summary
-========================================================
+## Summary
+
 - Use ratios for binary outcome data
 - Grouping data into bins can be an effective strategy (pretty & cut)
 
-Exercise
-========================================================
+## Exercise
+
 - Explore the documentation for pretty (e.g. type ?pretty into the console)
 - Cut the MonthlyIncome into roughly 10 cutpoints instead
 - plot the default rate. Is there a clear trend?
 - How do you explain where income goes up but default rate goes down?
 
-Exercise (Solution)
-========================================================
+## Exercise (Solution)
+
 ```{r}
 cut.points.10 <- pretty(filter(training,MonthlyIncome<25000)$MonthlyIncome, n= 10)
 Monthly.Income.cut10 <- cut(training$MonthlyIncome, c(-Inf,cut.points.10,Inf))
@@ -164,8 +165,8 @@ dr <- freq[,2] / (freq[,1] + freq[,2])
 plot(dr)
 ```
 
-Can we group the data into bins with an unbroken DR% trends?
-========================================================
+## Can we group the data into bins with an unbroken DR% trends?
+
 Yes. Let's implement a simple monotone classifier (maximum likelihood monotone classifier)
 ```{r}
 # source willl run the source code in another file
@@ -174,18 +175,19 @@ binning <- mlmc(training$MonthlyIncome, training$SeriousDlqin2yrs)
 binning
 ```
 
-Binning
-================================
+## Binning
+
 ```{r}
 binning
 ```
-Exercise
-========================================================
+
+## Exercise
+
 - Use the mlmc function to create binnings for NumberOfDependents. Explain the resutls
 - Use the mlmc function to create binnings for -NumberOfDependents (i.e. negative Number of Dependents). Explain the results what can you say about the MLMC algorithm
 
-Exercise (Solution)
-========================================================
+## Exercise (Solution)
+
 ```{r}
 # source willl run the source code in another file
 source("mlmc.r")
@@ -193,22 +195,22 @@ binning <- mlmc(training$NumberOfDependents, training$SeriousDlqin2yrs)
 binning.neg <- mlmc(-training$NumberOfDependents, training$SeriousDlqin2yrs)
 ```
 
-Logistic Regression Model
-========================================================
+## Logistic Regression Model
+
 - Perfect for binary outcome data
 - p is probability of non-default
 - $$ \log(\frac{p}{1-p}) =  \alpha_0 + \alpha_1 \times x_1 $$
 - Use the binning approach
 
-Logistic Regression Model
-========================================================
+## Logistic Regression Model
+
 - Perfect for binary outcome data
 - p is probability of non-default
 - $$ \log(\frac{p}{1-p}) =  \alpha_0 + \alpha_1 \times x_1 $$
 - Use the binning approach
 
-Logistic Regression Model
-========================================================
+## Logistic Regression Model
+
 Weight of evidence (WOE) transformation
 - commonly used in banking
 ```{r}
@@ -233,23 +235,23 @@ woe.mi <- woe(training$MonthlyIncome, training$SeriousDlqin2yrs, mlmc.mi$cp)
 
 ```
 
-Logistic Regression Model
-========================================================
+## Logistic Regression Model
+
 ```{r}
 m <- glm(relevel(as.factor(SeriousDlqin2yrs),ref="1") ~ woe.mi, data=training, family = binomial)
 summary(m)
 ```
 
-How to intepret the coefficients?
-========================================================
+## How to intepret the coefficients?
+
 - Intercept = a = 2.67386
 - The average portfolio log(Good Bad Odds) is 2.67386
 - $ln(p/(1-p)) = a + bx$ where p is probability of good
 - ln(Prob(Good) / Prob(Bad)) = 2.67386 + 1 * WOE.Monthly Income
 - woe = ln(Goods/Bads) - ln(overall Goods/Overall Bad)
 
-Logistic Regression Model
-========================================================
+## Logistic Regression Model
+
 Weight of evidence (WOE) transformation
 - commonly used in banking
 ```{r}
@@ -262,8 +264,8 @@ woe.age <- woe(training$age, training$SeriousDlqin2yrs, mlmc.age$cp[-l])
 table(cut(training$age,c(-Inf,mlmc.age$cp[-l],Inf)), training$SeriousDlqin2yrs)
 ```
 
-Exercise 
-========================================================
+## Exercise
+
 - Create the woe version of age and monthly income varibles in the dataset
   - use mlmc(raw, default)
 - Fit a logistics regression
@@ -282,8 +284,8 @@ woe <- function(raw, default, cp) {
 }
 ```
 
-Area under the curve
-========================================================
+## Area under the curve
+
 ```{r}
 
 binning <- mlmc(training$MonthlyIncome, training$SeriousDlqin2yrs)
@@ -301,8 +303,8 @@ plot(prop.population, prop.bad, type="b")
 abline(0,1)
 ```
 
-Area under the curve
-========================================================
+## Area under the curve
+
 How to assess the performance?
 - AIC - lower the better, can be used to compare differnt models using the same data
 - Area under the curve
@@ -313,8 +315,8 @@ require(pROC)
 g <- roc(SeriousDlqin2yrs ~ woe.mi,data=training)
 ```
 
-Predict 
-========================================================
+## Predict 
+
 Scoring out another dataset
 ```{r}
 scores <- predict(m, training[7500:15000,])
@@ -322,14 +324,14 @@ save(m, file="model.data")
 load(file="model.data")
 ```
 
-Sampling
-========================================================
+## Sampling
+
 sample(X, size)
 - X is a vector
 - size the number of elements to sample WITHOUT replacement from x
 
-Random Seed
-========================================================
+## Random Seed
+
 - set.seed to set the random seed so your sampling is repeatable
 ```{r}
 set.seed(1)
@@ -340,8 +342,8 @@ set.seed(1)
 sample(1:10, 3)
 ```
 
-Typical modelling practise
-========================================================
+## Typical modelling practise
+
 -Sample 70% of the data to build the model (development sample)
 - Use the other 30% to validate your model (holdout sample)
 - If you have the luxury use an "out-of-time" sample
@@ -350,9 +352,10 @@ Typical modelling practise
 training.sample <- training[sample(1:nrow(training), size = nrow(training)*0.7), ]
 ```
 
-Exercise
-========================================================
+## Exercise
+
 - Follow the modelling practise
 - Build a logistc model using 70% training
 - Score out the 30% holdout sample
 - Compute the AUC (area under curve) for both the development and holdout sampel
+

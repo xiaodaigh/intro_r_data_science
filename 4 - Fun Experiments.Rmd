@@ -1,13 +1,9 @@
-Lesson 4 - Fun with experiments - sampling
-========================================================
-author: Dai ZJ
-transition: rotate
-#width: 1650
-#height: 1050
-
-```{r setup, include=FALSE}
-opts_chunk$set(cache=TRUE)
-```
+---
+title: "Lesson 4 - Fun Experiements"
+author: "ZJ"
+date: "16 October, 2014"
+output: ioslides_presentation
+---
 
 Experiment
 ========================================================

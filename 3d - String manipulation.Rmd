@@ -1,9 +1,12 @@
-Lesson 3b - Practical String Manipulation
-========================================================
-author: Dai ZJ
+---
+title: "Lesson 3b - Practical String Manipulation"
+author: "ZJ"
+date: "16 October, 2014"
+output: ioslides_presentation
+---
 
-Strings
-========================================================
+## Strings
+
 - A string of characters
 - Strings can be enclosed in "" or ''
 ```{r}
@@ -13,8 +16,8 @@ b <- as.character(123)
 b
 ```
 
-Basic String manipulation - paste cont
-========================================================
+## Basic String manipulation - paste cont
+
 - One of the most common string functions is **paste**
 - it can concatenate strings together
 ```{r}
@@ -22,8 +25,8 @@ Basic String manipulation - paste cont
 paste(c("a","b","c"), c(1,2,3))
 ```
 
-Basic String functions
-========================================================
+## Basic String functions
+
 ```{r}
 # nchar gives the number of characters in a string
 nchar("?~!abc")
@@ -31,28 +34,28 @@ nchar("?~!abc")
 substr("abcef", 3, 4)
 ```
 
-Letters
-========================================================
+## Letters
+
 ```{r}
 # a vector of the alphabet
 letters
 ```
 
-Exercise
-========================================================
+## Exercise
+
 - Create this string "a1b2c3...z26"
 - Write a function that reverses a string
 
 Exercise (Solution)
-========================================================
+
 - Create this string "a1b2c3...z26"
 ```{r}
 # create the string a1b2c3...z26
 paste0(letters,1:26,collapse = "")
 ```
 
-Exercise (Solution)
-========================================================
+## Exercise (Solution)
+
 - Write a function that reverses a string (advanced)
 ```{r}
 # a funciton that reverse a string
@@ -70,8 +73,8 @@ strReverse <- function(x) {
 }
 ```
 
-String Split
-========================================================
+## String Split
+
 One of the most useuful functions is to be able to break up a string into a vector
 ```{r}
 # split the string into a vector by " "
@@ -80,15 +83,15 @@ strsplit("a b c", " ")
 strsplit("a b c", NULL)
 ```
 
-Exercise
-========================================================
+## Exercise
+
 - A palidrome is string that when reverse is the same as the original string. E.g. aabaa is a palindrome while abab is not. Write a function that tests if a string is a palindrome
-- **combn(vector,n)** is a function that takes a vector and n and returns all n element ombinations of the vector. E.g try combn(c(1:3), 2)
+- **combn(vector,n)** is a function that takes a vector and n and returns all n element combinations of the vector. E.g try combn(c(1:3), 2)
 - (Advanced) Find the largest palindrome integer that is the product of two 2-digits integers
   - You may find the **which** function useful
 
-Exercise (Solution)
-========================================================
+## Exercise (Solution)
+
 ```{r}
 # an efficient version of string reverse function
 strReverse <- function(x) {
@@ -102,8 +105,8 @@ is.palindrome <- function(s) {
 }
 ```
 
-Exercise (Solution) cont
-========================================================
+## Exercise (Solution) cont
+
 ```{r}
 # all possible 2-digit integers
 a <- 10:99

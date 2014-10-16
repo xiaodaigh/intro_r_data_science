@@ -33,19 +33,26 @@ A Google search will usually tell you the package you need
 # install.packages("devtools")
 
 # install a package from github
-# devtools::install_github("dplyr")
+# devtools::install_github("hadley/dplyr")
 ```
 
 ## Package Basics
 
 - Once a package has been installed you can use the **require** or **library** functions to include them
-```{r}
+```{r, echo=FALSE}
 # either of the below is sufficient to include the package in your code
-require(dplyr)
-library(dplyr)
+library(dplyr) # errors immediately if package is not installed
+require(dplyr) # does not raise an error immediately; so you can use it to check if a package exists
+
+# if the package is not installed
+if(!require(dplyr)) {
+  install.packages("dplyr")
+  library(dplyr)
+}
+
 ```
 
-## Pakcage Basics
+## Package Basics
 
 You can access a package's functions via ::
 ```{r}

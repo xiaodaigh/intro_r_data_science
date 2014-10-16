@@ -1,19 +1,20 @@
-Lesson 5 - Linear Regression
-========================================================
-author: Dai ZJ
-transition: rotate
+---
+title: "Lesson 5 - Linear Regresssion"
+author: "ZJ"
+date: "16 October, 2014"
+output: ioslides_presentation
+---
 
-Regression
-========================================================
+## Regression
+
 Linear Regression
+
 - Finding the **line** of best fit?
 
-Why did the name of regression come from?
-- What does regression have to do the best fit? 
+## The data
 
-The data
-========================================================
 Use the animal dataset
+
 - body the body mass of a list of animals
 - brain the brain szie of a list of animals
 ```{r}
@@ -21,15 +22,15 @@ animal <- read.csv("Animals2.csv")
 head(animal)
 ```
 
-First step - inspect the data
-========================================================
-```{r}
-require(dplyr)
-plot(select(animal,brain,body))
+## First step - inspect the data
+
+```{r,message=FALSE}
+require(dplyr) # the 'select' function is from dplyr
+plot(select(animal,brain,body)) # select is from dplyr
 ```
 
-First step - inspect the data
-========================================================
+## First step - inspect the data
+
 Remove outliers
 ```{r}
 filter(animal, brain > 3000)
@@ -37,44 +38,44 @@ filter(animal, body > 8000)
 
 ```
 
-First step - inspect the data
-========================================================
+## First step - inspect the data
+
 ```{r}
 animal.1 <- filter(animal, brain <= 3000, body <=8000)
 plot(select(animal.1,body,brain))
 ```
 
-First step - inspect the data
-========================================================
+## First step - inspect the data
+
 ```{r}
 filter(animal.1, brain >= 1200)
 animal.2 <- filter(animal.1, X != "Human")
 ```
 
-First step - inspect the data
-========================================================
+## First step - inspect the data
+
 ```{r}
 plot(select(animal.2,body,brain))
 ```
 
-Modelling - Linear Regression
-========================================================
+## Modelling - Linear Regression
+
 - The **lm** function is used for linear regression
 - lm stands for linear models
-- $y = a + bx + e$
+- $$ y = a + bx + e $$
 - e is the error
 ```{r}
 m <- lm(brain ~ body, data = animal.2)
 ```
 
-Modelling - Linear Regression
-========================================================
+## Modelling - Linear Regression {.smaller}
+
 ```{r}
 summary(m)
 ```
 
-What to look for?
-========================================================
+## What to look for?
+
 - The coefficients
 - The p-value of coefficients
   - a test was performed to make sure that the coefficients is statistically significant
@@ -82,36 +83,36 @@ What to look for?
   - a 5% threshold is usually used
 - R-squared - a measure of the proportion of variation in the data explained by the model
 
-What to look for?
-========================================================
+## What to look for? {.smaller}
+
 ```{r}
 summary(m)
 ```
 
-Modelling - Linear Regression
-========================================================
+## Modelling - Linear Regression
+
 ```{r}
 plot(select(animal.2,body, brain))
 abline(m)
 ```
 
-Modelling - Linear Regression
-========================================================
+## Modelling - Linear Regression {.smaller}
+
 ```{r}
 m <- lm(log(brain) ~ log(body), data = animal.2)
 summary(m)
 ```
 
-How to assess linear regression models?
-========================================================
+## How to assess linear regression models?
+
 - Check if the coefficients are significant (p-val < 0.05)
 - Check the R-square
   - It represent the proportion of variance in the data explained by the model. It is a number from 0 to 1.00. The higher the better
 - Assess the data visually
 - Try a few transformations of the raw data and assess
 
-Exercise
-========================================================
+## Exercise
+
 - Basic form of linear model
   - m <- lm(dependent ~ column1 + column2, data = some.data.frame)
   - depend is the column that you wish to build a model to predict
@@ -120,16 +121,16 @@ Exercise
 - Explain the result
 - install.packages("nutshell")
 
-Importance of visual inspection
-========================================================
+## Importance of visual inspection
+
 ```{r}
 m <- lm(dist ~ speed , data=cars)
 plot(select(cars,speed,dist))
 abline(m)
 ```
 
-Importance of visual inspection
-========================================================
+## Importance of visual inspection
+
 A single point, that is far away from the other points can cause big swing in results
 - these points can be called outliers, but another name is leverage points
 ```{r}
@@ -137,16 +138,16 @@ cars1 <- rbind(cars,c(100,200))
 lm(dist ~ speed, data = cars1)
 ```
 
-Importance of visual inspection
-========================================================
+## Importance of visual inspection
+
 A single point, that is far away from the other points can cause big swing in results
 - these points can be called outliers, but another name is leverage points
 ```{r}
 plot(cars1)
 ```
 
-Multipe Linear Regression
-========================================================
+## Multipe Linear Regression
+
 Multiple explanatory variable
 $y = a + b_1x_1 + b_2x_2 + ... + b_nx_n$
 where x_n are the data and a the intercept and b_i's the coefficients
@@ -159,15 +160,16 @@ names(team.batting.00to08)
 runs.mdl <- lm(runs ~ singles + doubles, data = team.batting.00to08)
 ```
 
-Multipe Linear Regression
-========================================================
+## Multipe Linear Regression {.smaller}
+
 ```{r}
 summary(runs.mdl)
 ```
 
-Things to watch out for
-========================================================
-$ y = a + 2x_1 + 3x_2 $
+## Things to watch out for
+
+$$ y = a + 2x_1 + 3x_2 $$
+
 - The intepretation is: *holding everything constant* for every unit increase in x_1, y increases by 2,
 - What if x_1 and x_2 are highly correlated?
 - Highly correlated data can cause **multicollinearity**

@@ -1,32 +1,34 @@
-Lesson 5 - Classic Data Science Method - kmeans
-========================================================
-author: Dai ZJ
-#width: 1650
-#height: 1050
-```{r setup, include=FALSE}
-opts_chunk$set(cache=TRUE)
-```
+---
+title: "Lesson 5 - kmeans"
+author: "ZJ"
+date: "16 October, 2014"
+output: ioslides_presentation
+---
 
-Classic Algorithms
-========================================================
-http://www.datasciencecentral.com/forum/topics/funny-comic-about-football
-http://www.analyticbridge.com/profiles/blogs/another-funny-cartoon-about-innumeracy
+## Classic Algorithms
+
+- http://www.datasciencecentral.com/forum/topics/funny-comic-about-football
+- http://www.analyticbridge.com/profiles/blogs/another-funny-cartoon-about-innumeracy
+
 Bread of butter
+
 - Linear Regression (lm)
 - K-means algorithms (kmeans)
 - Logistic Regression (glm)
 
-Kmeans
-========================================================
+## Kmeans
+
 Finding clusters of points by locating the **centre** point of clusters
+
 - Barclays Premiere League (BPL)
   - Twenty teams play each other 2 times per season
   - Team earn 3 points of each win, 1 for a draw and 0 for a loss
   - The team with most points win
+  
 - Can we identify the number of tiers of teams?
 
-BPL
-========================================================
+## BPL
+
 ```{r}
 bpl <- read.csv("bpl.csv")
 bpl
@@ -36,8 +38,8 @@ bpl <- mutate(bpl, pts = W*3 + D)
 head(bpl)
 ```
 
-Kmeans
-========================================================
+## Kmeans
+
 The kmeans
 ```{r}
 # number of unique pts
@@ -48,15 +50,15 @@ points(fit$centers, rep(0,length(fit$centers)), pch = 21, bg = "black")
 bpl$cluster <- fit$cluster
 ```
 
-Kmeans
-========================================================
+## Kmeans
+
 The kmeans
 ```{r}
 fit
 ```
 
-How many clusters?
-========================================================
+## How many clusters?
+
 - Often choosing the number of clusters is more art than science
 - How good a clustering is measured by the sum within cluster sum of squares (withinss)
 - The (Euclidean) distance squared from the members of the clusters to the centre points
@@ -67,8 +69,8 @@ fit$withinss
 fit$tot.withinss
 ```
 
-How many clusters - elbow approach
-========================================================
+## How many clusters - elbow approach
+
 - Run kmeans based on 2 to as many clusters as you like
 - plot the withinss by number of k for all the kmeans runs
 - look for the elbow in the plot
@@ -83,16 +85,16 @@ plot(2:length(unique(bpl$pts)), tot.withinss, type="b")
 # you can see clearly very big improvements from 
 ```
 
-Results check
-========================================================
+## Results check
+
 - Look at the results
 ```{r}
 fit <- kmeans(bpl$pts, 5)
 bpl$cluster <- fit$cluster
 ```
 
-Kmeans - Multidimensional
-========================================================
+## Kmeans - Multidimensional
+
 - Let's analysis the Iris dataset again
 - We know there are 3 species
 ```{r}
@@ -100,15 +102,15 @@ fit.iris <- kmeans(select(iris,Sepal.Length:Petal.Width), 3)
 fit.iris
 ```
 
-Kmeans - Multidimensional
-========================================================
+## Kmeans - Multidimensional
+
 - Let's see how it did
 ```{r}
 iris.cluster <- mutate(iris, cluster = fit.iris$cluster)
 table(iris.cluster[,c("Species","cluster")])
 ```
 
-Exercise
-========================================================
+## Exercise
+
 Use the elbow approach find the appropriate number of clusters for iris
 Can you use the result to come up with a classification rule for iris Species

@@ -1,9 +1,12 @@
-List
-========================================================
-author: Dai ZJ
-  
-List is THE R data structure
-========================================================
+---
+title: "Lists"
+author: "ZJ"
+date: "3 October, 2014"
+output: ioslides_presentation
+---
+
+## List is THE R data structure
+
 ```{r}
 a.list <- NULL
 a.list$element1 <- 1
@@ -13,16 +16,16 @@ a.list
 a.list <- list(element1 = 1, element2 = c(1,2,3))
 ```
 
-List
-========================================================
+## List
+
 - Each list can have many child elements
 - Child Elements are access by the $. E.g. list.name$child.element
 - The child element can be of any type. E.g. you can have a list of lists
 - The child elements don't have to be the same type of things
 - Useful for grouping related information together
 
-Funtions you can apply to lists
-========================================================
+## Funtions you can apply to lists
+
 ```{r}
 # the structure of the list
 str(a.list)
@@ -30,8 +33,8 @@ str(a.list)
 names(a.list)
 ```
 
-Accessing Elements
-========================================================
+## Accessing Elements
+
 ```{r}
 # access child elements by string name 
 # [ ] gives a list
@@ -41,16 +44,20 @@ a.list[c("element1","element2")] # gives a list
 a.list[["element1"]] 
 ```
 
-Exercises
-========================================================
+## Exercises
+
 Create a list named dog, with 3 child elements 
 - weight.kg = 3, 
 - age.yrs = 2, 
 - name = "Lassie"
 
-Exercises (Solution)
-========================================================
+## Exercises (Solution)
+
 ```{r}
-# Create a list named dog, with 3 child elements weight.kg = 3, age.yrs = 2, name = "Lassie"
+# Create a list named dog, 
+# with 3 child elements 
+# weight.kg = 3, 
+# age.yrs = 2, 
+# name = "Lassie"
 dog <- list(weight.kg = 3, age.yrs = 2, name = "Lassie")
 ```

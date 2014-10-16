@@ -1,20 +1,17 @@
-Lesson 3c - data.frame
-========================================================
-author: Dai ZJ
-transition: rotate
-#width: 1650
-#height: 1050
-```{r setup, include=FALSE}
-opts_chunk$set(cache=TRUE)
-```
+---
+title: "Lesson 3c - data.frame"
+author: "ZJ"
+date: "3 October, 2014"
+output: ioslides_presentation
+---
 
-Reading in stuctured data
-========================================================
+## Reading in stuctured data
+
 - read.csv - allows you to read csv files
 - read.xls - from the gdata package allows you to read xls files
 
 
-```{r}
+```{r, results='hide'}
 training <- read.csv("~/Dropbox/AnalytixWare/Data/Kaggle/cs-training-sample.csv")
 require(gdata)
 data.dict <- read.xls("~/Dropbox/AnalytixWare/Data/Kaggle/Data Dictionary.xls")
@@ -24,8 +21,8 @@ data.dict <- read.xls("~/Dropbox/AnalytixWare/Data/Kaggle/Data Dictionary.xls")
 
 ```
 
-data.farme
-========================================================
+## data.farme
+
 - In other languages (e.g. SAS) it call be called dataset, tables
 - One of the most important data structures in R
 - A data.frame is collection of **equal** length vectors
@@ -35,8 +32,8 @@ data.farme
 head(cars)
 ```
 
-data.farme structrue
-========================================================
+## data.farme structrue
+
 - has row.names and by default they are integers
 - each column is a vector and can be accessed with $
 - e.g. cars$speed
@@ -45,8 +42,8 @@ data.farme structrue
 head(cars$speed)
 ```
 
-data.farme structrue
-========================================================
+## data.farme structrue
+
 - Let data be a data.frame
 - Then data[1] would give u the first column of data
 - then data[,1] gives the first column as a vector
@@ -56,8 +53,8 @@ head(cars[,1]) # keeps the first column as vector
 cars[1,] # keeps the first row of data
 ```
 
-data.farme structrue
-========================================================
+## data.farme structrue
+
 Let rows and columns be vectors of integers then you access the rows columns of a data.frame
 - data[rows,]
 - data[, columns]
@@ -66,8 +63,8 @@ Let rows and columns be vectors of integers then you access the rows columns of 
 cars[1,] # keeps the first row of data
 ```
 
-data.frame subsetting
-========================================================
+## data.frame subsetting
+
 - Indexing are of the form data.frame[rows, columns]
 - data.frame[, columns] means show all rows
 - data.frame[rows, ] means show all columns
@@ -75,83 +72,108 @@ data.frame subsetting
 cars[5:10,] # the 5th to 10th row
 ```
 
-data.frame subsetting
-========================================================
+## data.frame subsetting
+
 ```{r}
 cars[5:10, 2] # the 5th to 10th row's second vector
 cars[5:10, ][2]
 ```
 
-Exercise
-========================================================
+## Exercise
+
 - What is the average speed?
 - Find the row in the cars data.frame with the highest dist
 
-Exercise (Solution)
-========================================================
+## Exercise (Solution)
+
 ```{r}
 mean(cars$speed)
 cars[cars$dist == max(cars$dist),]
 ```
 
-data.frame functions
-========================================================
+## data.frame functions
+
 ```{r}
 nrow(cars) # number of rows
 ncol(cars) # number of columns
 summary(cars)
 ```
 
-data.frame functions
-========================================================
+## data.frame functions
+
 ```{r}
 names(cars)
 head(row.names(cars))
 head(rownames(cars))
 ``` 
 
-data.frame functions
-========================================================
+## data.frame functions
+
 ```{r}
 # you can use the columns as vectors 
 head(cars$dist / cars$speed)
 ``` 
 
-Histogram
-========================================================
+## Histogram
+
 ```{r}
 hist(cars$dist)
 ``` 
 
-Scatterplot
-========================================================
+## Density
+
+```{r}
+plot(density(cars$dist))
+``` 
+
+## Historgram & Density
+
+```{r}
+hist(cars$dist,freq=F)
+lines(density(cars$dist))
+``` 
+
+## Barplot
+
+```{r}
+barplot(cars$dist,freq=F)
+``` 
+
+## Scatterplot
+
 ```{r}
 plot(cars)
 ``` 
 
-Basic Distribution Analysis
-========================================================
+## Scatterplot with lines
+
+```{r}
+plot(cars, type="b") # b stands for both points and lines
+``` 
+
+## Basic Distribution Analysis
+
 ```{r}
 boxplot(cars)
 ```
 
-data.frame - creating new columns
-========================================================
+## data.frame - creating new columns
+
 ```{r}
 cars$dist.over.speed <- cars$dist / cars$speed
 head(cars)
 ```
 
-data.frame - creating new columns (cont)
-========================================================
+## data.frame - creating new columns (cont)
+
 ```{r}
 new.vector <- cars$dist / cars$speed
 cars$new.vector <- new.vector
 head(cars)
 ```
 
-data.frame - removing columns
-========================================================
+## data.frame - removing columns
+
 ```{r}
 cars$new.vector <- NULL
 head(cars)
@@ -159,8 +181,8 @@ cars[,3] <- NULL
 head(cars)
 ```
 
-data.frame - removing columns cont
-========================================================
+## data.frame - removing columns cont
+
 ```{r}
 cars$new.vector <- new.vector
 head(cars)
@@ -168,19 +190,24 @@ cars[,"new.vector"] <- NULL
 head(cars)
 ```
 
-data.frame - cbind & rbind
-========================================================
+## data.frame - cbind
+
 - cbind - column bind
-- rbind - row bind
 ```{r}
 new.cars <- cbind(cars, new.vector)
 head(new.cars)
+```
+
+## data.frame - rbind
+
+- rbind - row bind
+```{r}
 cars.head.tails <- rbind(head(cars),tail(cars))
 cars.head.tails
 ```
 
-Exercises
-========================================================
+## Exercises
+
 - Using the cars data.frame
 - Create a new column called ratio = dist / speed
 - Create a new column ratio2 = ratio^2
@@ -188,11 +215,11 @@ Exercises
 - What is the sum of ratio2
 
 
-Exercises (Solution)
-========================================================
+## Exercises (Solution)
+
 ```{r}
 cars$ratio <- cars$speed/cars$dist
-cars$ratio2 <- cars$ratio^2\
+cars$ratio2 <- cars$ratio^2
 cars$raio <- NULL
 sum(cars$ratio)
 ```

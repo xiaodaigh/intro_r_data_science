@@ -1,16 +1,12 @@
-Lesson 3 - Functions & Debugging
-========================================================
-author: Dai ZJ
-transition: rotate
-#width: 1650
-#height: 1050
+---
+title: "Lesson 3 - Functions & Debugging"
+author: "ZJ"
+date: "3 October, 2014"
+output: ioslides_presentation
+---
 
-```{r setup, include=FALSE}
-opts_chunk$set(cache=TRUE)
-```
+## R is a functional language
 
-R is a functional language
-========================================================
 - A function takes some inputs and produce an output
 - Funcitonal languages are programming languages where functions play a key and prominent role
 - In R you can pass functions as arguments to functions
@@ -19,8 +15,8 @@ R is a functional language
   - The most hardcore functional languages don't use loops like **for** and **while**
   - In R you can use for and while loops
 
-Primitive & user-defined functions
-========================================================
+## Primitive & user-defined functions
+
 - There are two broad types of functions
   - primitive e.g max, min, sum
   - user defined
@@ -29,33 +25,8 @@ Primitive & user-defined functions
 sum
 ```
 
-Defining your own function
-========================================================
-- The ... is only applicable in function. It means all other arguments
-```{r}
-my.func <- function(x, y, z = 2, ...) {
-  x2 <- x * x
-  y2 <- y * y
-  
-	other.args <- list(...)
-  for(a in other.args) {
-    print(paste("printing ", a))
-  }
-  
-	return(x2 + y2 +  z + length(other.args))
-}
+## Define your own Function
 
-my.func(1,2, w = 4, z = 5, a = 8)
-```
-
-Defining your own function (cont)
-========================================================
-```{r}
-my.func(1,2, w = 4, z = 5, a = 8)
-```
-
-Define your own Function
-========================================================
 ```{r}
 # create a funciton that adds two numbers together
 # the output of the function is by default the function's last line
@@ -74,29 +45,54 @@ is.even <- function(a) {
 }
 ```
 
-Definte your own function
-========================================================
+## Definte your own function
+
 ```{r}
 is.even(10)
 is.even(99)
 ```
 
 
-User-defined function
-========================================================
+## User-defined function
+
 You can see the function's source by entering the functions name in the console
 ```{r}
 # see the source code for is.even
 is.even
 ```
 
-Exercise
-========================================================
+## The ... argument
+
+- The ... is only applicable in function. It means all other arguments
+```{r}
+my.func <- function(x, y, z = 2, ...) {
+  x2 <- x * x
+  y2 <- y * y
+  
+  other.args <- list(...)
+  for(a in other.args) {
+    print(paste("printing ", a))
+  }
+  
+  return(x2 + y2 +  z + length(other.args))
+}
+
+my.func(1,2, w = 4, z = 5, a = 8)
+```
+
+## The ... argument (cont)
+
+```{r}
+my.func(1,2, w = 4, z = 5, a = 8)
+```
+
+## Exercise
+
 - Write a function that returns TRUE if passed an odd number
 - Write a function that accepts an argument **x** and **...**. It returns the sum of x and ...
 
-Exercise (Solutions)
-========================================================
+## Exercise (Solutions)
+
 - Write a function that returns TRUE if passed an odd number
 - Write a function that returns accepts an argument **x** and **...**. It returns the sum of x and ...
 ```{r}
@@ -115,9 +111,10 @@ addthem <- function(x, ...) {
 }
 ```
 
-Debugging
-========================================================
+## Debugging
+
 RStudio offers a step by step debugging tool
+
 - Insert **browser()** any where you want to stop the code
 - or **browser(expr = some.condition )** then the debugging process will only be triggered if some.condition is TRUE
 Commands while in debug mode
@@ -125,8 +122,8 @@ Commands while in debug mode
 - c - continue until next break
 - Q - quit the debugger
 
-Exercise
-========================================================
+## Exercise
+
 Debug this function
 write a a function that check
 ```{r}
@@ -138,8 +135,8 @@ my.func <- function(a,b) {
 my.func(1:3, c(2,0,1))
 ```
 
-Exercise (solution)
-========================================================
+## Exercise (solution)
+
 Debug this function
 write a a function that check
 ```{r}
@@ -152,8 +149,8 @@ my.func <- function(a,b) {
 my.func(1:3, c(2,0,1))
 ```
 
-Functions & Closures (Advanced topic)
-========================================================
+## Functions & Closures (Advanced topic)
+
 - Function is just like any other data
 - So a function can also return a function
 ```{r}
@@ -174,18 +171,18 @@ increment <- function(n) {
 incr8 <- increment(8)
 ```
 
-Function & Closures (cont)
-========================================================
+## Function & Closures (cont)
+
 ```{r}
-incr
+incr8
 # let's see this a few times
 incr8()
 incr8()
 ```
 
 
-Recursion - Fibonacci Numbers
-========================================================
+## Recursion - Fibonacci Numbers
+
 ```{r}
 # returns the nth Fibonacci number
 fib <- function(n) {
@@ -197,8 +194,8 @@ fib <- function(n) {
 }
 ```
 
-Fibonacci Numbers
-========================================================
+## Fibonacci Numbers
+
 ```{r}
 # returns the nth Fibonacci number
 fib2 <- function(n) {

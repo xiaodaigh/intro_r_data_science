@@ -76,7 +76,7 @@ Mulitplication  | a * b |
 Divison  | a / b | 
 Exponetiation | a ^ b or a ** b | 
 Modulo | a %% b | 5 %% 3 gives 2
-Matrix Mult | a %*% b | 
+Matrix Mult | a %*% b 
 
 
 
@@ -85,9 +85,9 @@ Matrix Mult | a %*% b |
 You can set values to variables, called **assignment**
 ```{r}
 a = 1
-b <- 2
+b <- 2 # preferred style
 3 -> d
-e <- a + b + d
+e <- a + b + d # preferred style
 e
 ```
 
@@ -121,7 +121,7 @@ Disregard all rules (except case sensivity) with back-tick \\`
 
 ## Vectors in R
 
-One of most useful and powerful features of R is working with vectors
+R has powerful builtin functions for working with vectors
 
 The main command is **c** whichs stands for **c**ombine
 
@@ -160,22 +160,17 @@ sort(vector.c.desc)
 order(vector.c.desc)
 ```
 
-## Exercise
-
-
-
 ## Arithmetic Operations on vectors
 
-Every element in the vector happens
 ```{r}
-numbers3 <- 1:5
-numbers3 * 2
+numbers3 <- 1:5 # a:b creates a vector of integers from (a, a + 1, ..., b)
+numbers3 * 2 # multiply every element by 2
 ```
 
 ## What happens internally
 - R needs two vectors of the SAME length
-- so 2 gets converted to c(2,2,2,2,2)
-- then c(1,2,3,4,5) * c(2,2,2) = c(1 * 2, 2 * 2, 3 * 2,4 *2, 5 *2)
+- so 2 gets converted to c(2, 2, 2, 2, 2)
+- Also c(1,2,3,4,5) * c(2, 2, 2, 2, 2) = c(1 * 2, 2 * 2, 3 * 2, 4 *2, 5 *2)
 - gives c(2,4,6,8,10)
 
 ## Vector Recycling
@@ -185,18 +180,34 @@ numbers3 <- 1:5
 numbers3 * c(1,2)
 ```
 
-## Can you understand why?
+## Vector Recycling cont
 - R needs two vectors of the SAME length
 - so it **recycles** the shorter vector
-- so c(1, 2) gets repeated up to c(1, 2, 1, 2, 1)
+- so c(1, 2) gets repeated up to length 5 - c(1, 2, 1, 2, 1)
 - c(1,2,3,4,5) * c(1,2,1,2,1) = c(1 * 2, 2 * 2, 3 * 1, 4 * 2, 5 * 1)
-- gives c(1, 4,3 ,8 ,5)
+- gives c(1, 4, 3 ,8 ,5)
+
+## Common vector functions
+```{r, eval=FALSE}
+sum # sums a vector; boolean T/F are treated as 1/0
+length # the length of the a vector
+diff # difference successive values
+cumsum # cumulative sum; the resultant vector is the same length as the previous one
+sign # 1 for positive numbers and -1 for negative numbers
+mean
+median
+max
+min
+range # the max and min
+sd # standard deviation
+```
+
 
 ## Exercise
 
 What is the output of 
 ```{r, eval=FALSE}
-sum(2:5)
+sum(4:7)
 diff(10:15)
 2:5 - 1
 1:5 * 1:3
@@ -205,7 +216,7 @@ diff(10:15)
 ## Exercise (Solution) {.smaller}
 
 ```{r}
-sum(2:5)
+sum(4:7)
 diff(10:15)
 2:5 - 1
 1:5 * 1:3
@@ -278,11 +289,21 @@ numbers10 %% 2 == 0
 numbers10[numbers10 %% 2 == 0]
 ```
 
+## Boolean as numbers
+
+- TRUE is treated as 1
+- FALSE is treated as 0
+```{r}
+TRUE + TRUE
+sum(T,F,T)
+F * 100
+```
+
 ## Exercise
 
 - Store all the multiple of 3s under 100 in a vector
 - Store all the multiple of 5s less than or equal to 100 in a vector
-- Find those numbers that are either multiples of 3 and/or multiples of 5, no repeats allowed
+- Find those numbers that are either multiples of 3 and/or multiples of 5, no repeats allowed (Hint: use unique)
 - Find their sum
 
 ## Exercise (Solution)
@@ -305,6 +326,7 @@ Name  | R Symbol | Example
 And  | & | 1 == 1 & 0 == 0
 Or  | &#124;  | T &#124; F
 Not | ! | 0 != 0, !1 == 1
+Xor | xor | xor(1 == 1, 2 == 2)
 
 ## Truth Table | and (&)
 
@@ -358,24 +380,7 @@ which(1:10 > 5)
 which.min(c(1:3,0,0,4:6))
 ```
 
-## Exercise
 
-- Write a function that accepts two vectors as input and returns TRUE
-  - if all the elements of the first vector is larger than the second vector
-  - OR if one and only one element is in the first vector is larger then the second vector
-
-## Exercise (Solution)
-
-```{r}
-ans.func <- function(x,y) {
-  if(all(x >y)) {
-    return(TRUE)
-  } else if (length(which(x > y))) {
-    return(TRUE)
-  }
-  return(FALSE)
-}
-```
 
 ## Vector's elements must be of the same type
 
@@ -403,6 +408,29 @@ The documentation will show in the **Help** tab
 
 # getting examples
 example(min)
+```
+
+## Vocab of R
+
+- adv-r.had.co.nz/Vocabulary.html
+- A website by Hadley Wickham on essential R vocabularies
+- Google Search "Advanced R Vocabulary"
+
+## Exercise
+
+Given a vector **x** create a single-value boolean variable, **y**, such that **y** is true if there is a turning point in the vector. A turning point is either the largest/smallest value in the vector and all values before it follow a monotonic upward/downward trend and all the values after it follow a monotonic downward/upward trend.
+```{r}
+# example
+# c(5, 7.5, 10, 9, 2) # 10 is a turning point
+# c(9, 7 , -2, 5, 10) # -2 is a turning point
+# c(1, 2, 100, 20 , 35) # has no turning point
+
+# Hints:
+# Use the following functions: 
+# sign
+# diff
+# abs
+# sum
 ```
 
 ## Tips

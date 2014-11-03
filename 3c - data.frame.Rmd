@@ -12,12 +12,19 @@ output: ioslides_presentation
 
 
 ```{r, results='hide'}
-training <- read.csv("~/Dropbox/AnalytixWare/Data/Kaggle/cs-training-sample.csv")
-require(gdata)
-data.dict <- read.xls("~/Dropbox/AnalytixWare/Data/Kaggle/Data Dictionary.xls")
+# getwd() # get the current working directory
+# if path is unspecified files input/output goes to the working directory
+
+# write.csv("cars.csv")
+# cars1 <- read.csv("cars.csv")
+
+
+# You can read in Excel spreadsheets too
+#require(gdata)
+#data.dict <- read.xls("~/Dropbox/AnalytixWare/Data/Kaggle/Data Dictionary.xls")
 
 # view the data
-# Viewz(training)
+# View1(cars1)
 
 ```
 
@@ -30,6 +37,23 @@ data.dict <- read.xls("~/Dropbox/AnalytixWare/Data/Kaggle/Data Dictionary.xls")
 - **head** function and **tails** function will show you the first & last few rows of the data.frame
 ```{r}
 head(cars)
+```
+
+##  View your data.frame
+```{r}
+View(cars)
+```
+
+## attach
+You can **attach** a data.frame so that all variable are accessible without $
+```{r}
+names(cars) # show all the variables in cars
+head(cars$speed)
+
+attach(cars)
+head(speed)
+
+detach(cars) # removes the variables 
 ```
 
 ## data.farme structrue
@@ -72,7 +96,7 @@ cars[1,] # keeps the first row of data
 cars[5:10,] # the 5th to 10th row
 ```
 
-## data.frame subsetting
+## data.frame index subsetting
 
 ```{r}
 cars[5:10, 2] # the 5th to 10th row's second vector
@@ -89,6 +113,15 @@ cars[5:10, ][2]
 ```{r}
 mean(cars$speed)
 cars[cars$dist == max(cars$dist),]
+```
+
+## subset function
+```{r}
+# you can use boolean subsetting
+cars[cars$dist < 10,]
+
+# to save some typing you can use the subset function
+subset(cars, dist < 10)
 ```
 
 ## data.frame functions
@@ -222,4 +255,23 @@ cars$ratio <- cars$speed/cars$dist
 cars$ratio2 <- cars$ratio^2
 cars$raio <- NULL
 sum(cars$ratio)
+```
+
+## Renaming
+
+```{r}
+cars1 <- cars
+
+names(cars1) # show the variable names
+
+names(cars1)[1] <- "speed1" # change the first variable to speed1
+
+
+# if you don't know where the variable is you can use which
+var.names <- names(cars1)
+
+# use which to locate where the variable is located
+index <- which(var.names == "speed1")
+
+names(cars1)[index] <- "speed2"
 ```

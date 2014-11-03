@@ -10,6 +10,7 @@ output: ioslides_presentation
 - The apply family of functions is important in the R world
 - Most of what they can do can also be done with for/while loops 
 - But apply is much faster
+- Using the ply-family of functions instead of for loops is called vectorisation
 
 ## The apply function
 
@@ -28,8 +29,8 @@ The apply function
 
 ```{r}
 ## Prepare a simple matix
-x <- cbind(x1 = 3, x2 = c(4:1, 2:4))
-
+x <- cbind(x1 = 3, x2 = c(3:1, 2:3))
+x
 # column sum
 col.sums1 <- apply(x, 2, sum)
 col.sums1
@@ -49,13 +50,15 @@ col.sums2
 ## The other ply functions
 
 In the same family of functions
-- lapply(X, FUN) 
-  - use the FUN on every element in X
+
+- lapply(a.list, FUN) 
+  - use the FUN on every element in a.list
   - the output is a list 
-- sapply(X,FUN)
+  
+- sapply(a.list, FUN)
   - the s stands for simplify
   - it's the same as lapply, except
-  - its output is an array
+  - its output is a vector
   
 ## The other ply functions (code)
 
@@ -78,6 +81,9 @@ sapply(x, mean)
 - As much as possible use apply family of functions instead of for/while loops
   - It's faster
   - the more common R paradigm
+
+- On the ply-family of functions
+  - http://stackoverflow.com/questions/3505701/r-grouping-functions-sapply-vs-lapply-vs-apply-vs-tapply-vs-by-vs-aggrega
   
 ## Exercises
 

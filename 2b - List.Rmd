@@ -19,7 +19,7 @@ a.list <- list(element1 = 1, element2 = c(1,2,3))
 ## List
 
 - Each list can have many child elements
-- Child Elements are access by the $. E.g. list.name$child.element
+- Child Elements are access by the \$ E.g. list.name\$child.element
 - The child element can be of any type. E.g. you can have a list of lists
 - The child elements don't have to be the same type of things
 - Useful for grouping related information together
@@ -44,14 +44,20 @@ a.list[c("element1","element2")] # gives a list
 a.list[["element1"]] 
 ```
 
-## Exercises
+## Exercise
 
-Create a list named dog, with 3 child elements 
+1. Create a list named dog, with 3 child elements 
 - weight.kg = 3, 
 - age.yrs = 2, 
 - name = "Lassie"
 
-## Exercises (Solution)
+2. Inspecting the result of a linear model fit using str
+```{r}
+cars.linear.model <- lm(dist ~ speed, data = cars) # this builds a linear model
+str(cars.linear.model)
+```
+
+## Exercise (Solution)
 
 ```{r}
 # Create a list named dog, 

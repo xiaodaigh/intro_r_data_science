@@ -39,6 +39,9 @@ substr("abcef", 3, 4)
 ```{r}
 # a vector of the alphabet
 letters
+
+# Capitals
+LETTERS
 ```
 
 ## Exercise

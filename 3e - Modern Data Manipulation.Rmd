@@ -190,8 +190,8 @@ head(select(iris, -(Petal.Length:Species)))
 
 Creating new factors
 ```{r}
-iris.ratio <- iris %.% 
-  mutate(Petal.ratio = Petal.Length / Petal.Width) %.% 
+iris.ratio <- iris %>% 
+  mutate(Petal.ratio = Petal.Length / Petal.Width) %>% 
   select(Petal.Length:Species, Petal.ratio)
 head(iris.ratio)
 ```
@@ -209,10 +209,10 @@ head(iris.ratio)
 
 ```{r}
 # chaining solution
-iris %.%  
-  mutate(petal.ratio = Petal.Width / Petal.Length) %.% #creating a new var 
-  filter(petal.ratio < 0.3) %.% # filtering.
-  group_by(Species) %.%
+iris %>%  
+  mutate(petal.ratio = Petal.Width / Petal.Length) %>% #creating a new var 
+  filter(petal.ratio < 0.3) %>% # filtering.
+  group_by(Species) %>%
   summarise(mean.ratio = mean(petal.ratio), cnt = n()) 
 ```
 

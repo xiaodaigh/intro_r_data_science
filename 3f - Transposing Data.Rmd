@@ -1,0 +1,85 @@
+---
+title: "3f - Tranposing Data with tidyr"
+author: "ZJ"
+date: "2/3/2015"
+output:
+  ioslides_presentation:
+    smaller: yes
+    transition: faster
+---
+
+## Tranposing Data
+
+In SAS this is accomplished with *proc transpose*
+
+
+
+## A little theory
+
+Every dataset can be represented using a dataset of only 3 columns. The 3 columns are
+
+- Primary Key
+- Name of the Variable e.g. "Age" or "Income"
+- Value of variable i.e. "28" or "$100,000"
+
+## A little theory cont.
+
+For example this data frame
+
+Customer ID | Age | Income
+------------- | -------------
+12345678  | 18  | $10,000
+87654321  | 28| $100,000
+
+
+can be represented as
+
+
+Primary Key | Variable | Value
+------------- | -------------
+12345678  | Age  | 18
+12345678  | Income  | $10,000
+87654321  | Age| 28
+87654321| Income  | $100,000
+
+## A little theory cont.
+
+Let's call this 3 column data set the *long* data format
+The original format is often called the *wide* data format
+
+Let's rephrase our statement using the new terminology
+** Every wide-format data can be presented uniquely as a long-format data **
+
+## Exercise
+... some exercise on converting datasets from long format to wide format
+
+## The tidyr package
+
+* The tidyr package is by Hadley Wickham (also the author of plyr, dplyr, lubridate)
+* It has two key functions
+    + *gather* to make wide formats into long formats
+    + *spread* to make long formats into wide formats
+
+    
+## Examples of gather
+
+## Exercises of gather
+
+## Examples of spread
+
+## Exercises of spread
+
+## Once you have understood
+- *Wide* & *long* and
+- *gather* & *spread*
+- You know how to transpose any dataset now
+
+## Before tidyr
+- Ther are popular packages such as reshape and reshape2
+- they used functions such as *melt* and *cast*
+    + *melt* converts wide data to long format
+    + *cast* converts long data to wide format
+
+## Some examles of melt and cast
+
+## Exercises on melt and cast

@@ -1,0 +1,49 @@
+---
+title: "3g - data.table a replacement for data.frame"
+author: "ZJ"
+date: "2/4/2015"
+output:
+  ioslides_presentation:
+    logo: logo.PNG
+    transition: faster
+---
+
+## data.table
+
+- The data.table package is a an increasing popular package
+- It is a a **much** faster replacement for data.frame
+- It's compatitable with most code that operate on data.frames
+- It's syntax can be a bit cryptic and takes some getting used to
+
+## A speed comparison
+
+... an example of speed ...
+
+## Pros & Cons
+Pro
+
+- Very fast
+- *Indexing* - benefits group by and search
+- *In-place replacement* - replaces values in a data.table without making copies
+
+Cons
+
+- Syntax takes a bit getting used to
+
+## data.table
+
+- data.tables extend the data.frame [ syntax 
+- normally the syntax is described as dt[i,j,by]
+- It's better to remember this 
+    - a.data.table[*row subsetting*, *calculations*, *group by*]
+- This contrasts with the data.frame syntax where the most common usage
+    - a.data.frame[*row subsetting*, *columns subsetting*]
+
+## row subsetting
+
+- data.table operate on keys
+- if you want fast subsetting of data.tables by some key columns then you need to create keys
+
+```{r}
+r <- data.table()
+```

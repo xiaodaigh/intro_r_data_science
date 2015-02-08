@@ -1,0 +1,14 @@
+&&
+reflow comments
+setwd
+save
+load
+anova
+summary
+confint
+plot
+
+# code that be improved
+for( i in 28:30) {
+	j[i] = k[i]
+}

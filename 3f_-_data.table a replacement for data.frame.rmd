@@ -10,10 +10,11 @@ output:
 
 ## data.table
 
-- The data.table package is a an increasing popular package
-- It is a a **much** faster replacement for data.frame
+- The data.table package is an increasinlyg popular package for data manipulation
+- It is a **much** faster replacement for data.frame
 - It's compatitable with most code that operate on data.frames
-- It's syntax can be a bit cryptic and takes some getting used to
+  - But notably not the column filtering syntax of base R
+- Its syntax can be a bit cryptic and takes some getting used to
 
 ## A speed comparison
 

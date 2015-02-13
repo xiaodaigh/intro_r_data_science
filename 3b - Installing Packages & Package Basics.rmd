@@ -1,0 +1,58 @@
+## Modern data manipulation
+
+- R is continually improving 
+- R programmers write packages and publish them for others to use for free
+  - Alot of academic papers now publish a R pacakge along with their paper
+- number of R packages on CRAN has recently exceeded 6000
+
+
+## Important Repositories of R packages
+
+* The Comprehensive R Archive Network (CRAN)
+  *  The largest repository; easy to install things
+  *  cran.rstudio.com
+  
+- GitHub
+  - Easy installation with the devtools package
+  - Increasingly popular
+  
+- Bioconductor (bioconductor.org)
+  - Bioscience related package
+  - High quality packages; more curated
+  
+## Installing packages
+
+```{r}
+# install a package from CRAN by name
+# install.packages("devtools")
+
+# install a package from github
+# devtools::install_github("hadley/dplyr")
+```
+
+## Package Basics {.smaller}
+
+- Once a package has been installed you can use the **require** or **library** functions to include them
+- alternatively you can simply copy built packages into the **library** folder in the path where R is installed.
+```{r,eval=FALSE}
+# either of the below is sufficient to include the package in your code
+library(dplyr) # errors immediately if package is not installed
+require(dplyr) # does not raise an error immediately; so you can use it to check if a package exists
+
+# if the package is not installed
+if(!require(dplyr)) {
+  install.packages("dplyr")
+  library(dplyr)
+}
+
+```
+
+## Package Basics
+
+- You can access a package's functions via ::
+- The form is package::function
+- using :: I can run functions and do not need to *library* or *require* the pacakge first
+
+```{r}
+# dplyr::filter # this will run the filter function from the dplyr package
+```

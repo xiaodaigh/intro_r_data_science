@@ -8,7 +8,7 @@ output:
     transition: faster
 ---
 
-## Modern data manipulation
+## R & packages
 
 - R is continually improving 
 - R programmers write packages and publish them for others to use for free
@@ -20,11 +20,13 @@ output:
 
 * The Comprehensive R Archive Network (CRAN)
   *  The largest repository; easy to install things
+  *  It does not contain the bleeding edge of the packages
   *  cran.rstudio.com
   
 - GitHub
   - Easy installation with the devtools package
   - Increasingly popular
+  - Bleeding edge packages
   
 - Bioconductor (bioconductor.org)
   - Bioscience related package

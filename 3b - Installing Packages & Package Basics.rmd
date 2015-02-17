@@ -10,10 +10,12 @@ output:
 
 ## R & packages
 
-- R is continually improving 
+- R is continually improving
+- The improvements to R often comes in the form of a **package**
+- A **package** is a set of related R functions and codes
 - R programmers write packages and publish them for others to use for free
   - Alot of academic papers now publish a R pacakge along with their paper
-- number of R packages on CRAN has recently exceeded 6000
+- The number of R packages on CRAN has recently exceeded 6000
 
 
 ## Important Repositories of R packages
@@ -45,10 +47,10 @@ output:
 ## Package Basics {.smaller}
 
 - Once a package has been installed you can use the **require** or **library** functions to include them
-- alternatively you can simply copy built packages into the **library** folder in the path where R is installed.
+- alternatively you can simply copy the **binaries** (basically pre-built packages) into the **library** folder in the path where R is installed.
 ```{r,eval=FALSE}
 # either of the below is sufficient to include the package in your code
-library(dplyr) # errors immediately if package is not installed
+library(dplyr) # raises an error immediately if package is not installed
 require(dplyr) # does not raise an error immediately; so you can use it to check if a package exists
 
 # if the package is not installed
@@ -68,3 +70,9 @@ if(!require(dplyr)) {
 ```{r}
 # dplyr::filter # this will run the filter function from the dplyr package
 ```
+
+## Installing packages manually
+
+- This include a short tutorial on how to install packages manually
+- This is important for those working behind firewalls etc 
+- Usually in corporation where IT has control over security

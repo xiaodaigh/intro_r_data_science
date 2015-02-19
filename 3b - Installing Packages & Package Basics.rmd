@@ -50,8 +50,11 @@ output:
 - alternatively you can simply copy the **binaries** (basically pre-built packages) into the **library** folder in the path where R is installed.
 ```{r,eval=FALSE}
 # either of the below is sufficient to include the package in your code
-library(dplyr) # raises an error immediately if package is not installed
-require(dplyr) # does not raise an error immediately; so you can use it to check if a package exists
+# library(dplyr) raises an error immediately if package is not installed
+library(dplyr) 
+# require(dplyr) returns TRUE if the package is already installed; so you can use it to check if a package exists
+# Also it does not raise an error immediately if the package as not installed
+require(dplyr) 
 
 # if the package is not installed
 if(!require(dplyr)) {
@@ -60,6 +63,18 @@ if(!require(dplyr)) {
 }
 
 ```
+
+## Installing packages from Github
+
+- The devtools package allows you to install packages from Github
+- Firstly, install devtools from CRAN
+```{r}
+ # install.package(devtools)
+ # the below code (if run) will install the shinysky package from analytixare
+ # devtools::install_github("analytixware/shinysky")
+```
+
+
 
 ## Package Basics
 

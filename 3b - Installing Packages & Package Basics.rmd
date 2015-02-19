@@ -47,7 +47,6 @@ output:
 ## Package Basics {.smaller}
 
 - Once a package has been installed you can use the **require** or **library** functions to include them
-- alternatively you can simply copy the **binaries** (basically pre-built packages) into the **library** folder in the path where R is installed.
 ```{r,eval=FALSE}
 # either of the below is sufficient to include the package in your code
 # library(dplyr) raises an error immediately if package is not installed
@@ -86,19 +85,36 @@ if(!require(dplyr)) {
  # devtools::install_github("user_id/package_repository")
 ```
 
+## Common package issues
+You may find it difficult to install packages from CRAN and Github especially in corporate IT environments
+- CRAN Issue: If install.packages fails under Windows try running
+```{r}
+# This will tell R to use the same internet proxy settings as Internet Explorer
+# If not R may not be able to access the internet
+setInternet2()
+```
+- Github Issue: If install_github fails the issue could be caused by corporate virus scanners
+- You may need to follow the instructions on installing packages manually
+
+## Installing packages manually
+- Go to your packages's page
+- on CRAN there should be a link to a file called *platform* binaries e.g. Windows binaries
+  - if there are multiple binaries you may want to choose the one labelled r-release 
+  - it is likely to be the stable version
+- In RStudio go to "Tools" -> "Install Packages..."
+- In the "Install from:" dropdown choose "Package Archive File (.zip; .tar.gz)" 
+- In "Package archive" choose the binaires archive file that you have download 
+- Click "Install"
+- Alternatively you can simply copy the **binaries** (basically pre-built packages) into the **library** folder in the path where R is installed
+- If you are interested in building your own package watch this space
 
 ## Package Basics
 
 - You can access a package's functions via ::
 - The form is package::function
-- using :: I can run functions and do not need to *library* or *require* the pacakge first
+- using :: I can run functions and do not need to *library* or *require* the package first
+
 
 ```{r}
 # dplyr::filter # this will run the filter function from the dplyr package
 ```
-
-## Installing packages manually
-
-- This include a short tutorial on how to install packages manually
-- This is important for those working behind firewalls etc 
-- Usually in corporation where IT has control over security

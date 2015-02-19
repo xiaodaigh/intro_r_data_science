@@ -67,13 +67,24 @@ if(!require(dplyr)) {
 ## Installing packages from Github
 
 - The devtools package allows you to install packages from Github
-- Firstly, install devtools from CRAN
+- Increasingly the latest bleeding edge versions of packages are hosted on Github
+- However the CRAN version is often more stable 
+- The below code will let you install packages from Github 
 ```{r}
  # install.package(devtools)
  # the below code (if run) will install the shinysky package from analytixare
  # devtools::install_github("analytixware/shinysky")
 ```
 
+## Brief overview of Github
+- Github is a website for hosting source code repositories
+- Each respositories will have a unique name
+- user_id/package_repository
+- If another user wants to improve the package_repository he/she can fork the repository
+- the forked repository will take from of anothter_user_id/package_repository
+```{r}
+ # devtools::install_github("user_id/package_repository")
+```
 
 
 ## Package Basics

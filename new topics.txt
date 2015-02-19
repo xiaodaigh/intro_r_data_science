@@ -1,4 +1,5 @@
 &&
+how to read R documentation
 reflow comments
 setwd
 save

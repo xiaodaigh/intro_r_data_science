@@ -11,10 +11,10 @@ output:
 ## R & packages
 
 - R is continually improving
-- The improvements to R often comes in the form of a **package**
+- The improvements to R often come in the form of **packages**
 - A **package** is a set of related R functions and codes
 - R programmers write packages and publish them for others to use for free
-  - Alot of academic papers now publish a R pacakge along with their paper
+  - Increasingly, academics now publish R packages along with their papers
 - The number of R packages on CRAN has recently exceeded 6000
 
 
@@ -22,11 +22,13 @@ output:
 
 * The Comprehensive R Archive Network (CRAN)
   *  The largest repository; easy to install things
+  *  **install.packages** uses CRAN by default
   *  It does not contain the bleeding edge of the packages
   *  cran.rstudio.com
   
 - GitHub
   - Easy installation with the devtools package
+  - devtools::install_github
   - Increasingly popular
   - Bleeding edge packages
   
@@ -41,6 +43,8 @@ output:
 # install.packages("devtools")
 
 # install a package from github
+# devtools::install_github("user_id/package_repository")
+# for example
 # devtools::install_github("hadley/dplyr")
 ```
 
@@ -51,11 +55,12 @@ output:
 # either of the below is sufficient to include the package in your code
 # library(dplyr) raises an error immediately if package is not installed
 library(dplyr) 
-# require(dplyr) returns TRUE if the package is already installed; so you can use it to check if a package exists
-# Also it does not raise an error immediately if the package as not installed
+# require(dplyr) returns TRUE if the package is already installed; so you can use it to check so
+# Also it does not raise an error immediately if the package is not installed
 require(dplyr) 
 
-# if the package is not installed
+# if the package is not installed you can use this structure to install it
+# and prevent errors
 if(!require(dplyr)) {
   install.packages("dplyr")
   library(dplyr)
@@ -67,21 +72,22 @@ if(!require(dplyr)) {
 
 - The devtools package allows you to install packages from Github
 - Increasingly the latest bleeding edge versions of packages are hosted on Github
-- However the CRAN version is often more stable 
+- However the CRAN version is often more stable with less bugs
 - The below code will let you install packages from Github 
 ```{r}
  # install.package(devtools)
- # the below code (if run) will install the shinysky package from analytixare
- # devtools::install_github("analytixware/shinysky")
+ # the below code (if run) will install the dplyr package from hadley which is the user id for Hadley Wickham
+ # devtools::install_github("hadley/dplyr")
 ```
 
 ## Brief overview of Github
 - Github is a website for hosting source code repositories
-- Each respositories will have a unique name
+- Each repository will have a unique name
 - user_id/package_repository
 - If another user wants to improve the package_repository he/she can fork the repository
-- the forked repository will take from of anothter_user_id/package_repository
+- the forked repository will take from of another_user_id/package_repository
 ```{r}
+ # example usage of install_github
  # devtools::install_github("user_id/package_repository")
 ```
 

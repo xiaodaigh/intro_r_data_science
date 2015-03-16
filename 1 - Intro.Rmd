@@ -6,6 +6,9 @@ output:
   ioslides_presentation:
     logo: logo.PNG
     widescreen: yes
+    css: styles.css
+  slidy_presentation:
+    css: styles.css
 ---
 
 ## About Me

@@ -1,0 +1,25 @@
+p {
+color:black
+  
+}
+
+ul {
+  color:black
+}
+
+ul li {
+  color:black;
+}
+
+li {
+  color:black;
+}
+
+body {
+  color:black;}
+  
+  h1 { color : black;}
+  
+  slides > slide, .title-slide hgroup h1, h2, pre, .prettyprint pre, .prettyprint .pln, .prettyprint .pun {color:black;}
+  
+  h2

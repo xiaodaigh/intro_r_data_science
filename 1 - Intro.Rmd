@@ -2,7 +2,10 @@
 title: 'Introduction to R and Data Science: Lesson 1'
 author: "ZJ"
 date: "2 October, 2014"
-output: ioslides_presentation
+output:
+  ioslides_presentation:
+    logo: logo.PNG
+    widescreen: yes
 ---
 
 ## About Me

@@ -3,37 +3,45 @@ title: 'Introduction to R and Data Science: Lesson 1'
 author: "ZJ"
 date: "2 October, 2014"
 output:
+  beamer_presentation: default
   ioslides_presentation:
+    css: styles.css
     logo: logo.PNG
     widescreen: yes
-    css: styles.css
   slidy_presentation:
     css: styles.css
 ---
 
 ## About Me
 
-- Name: Dai Zhuo Jia (ZJ)
-- Australian-Chinese
-- B.Sc (Pure maths) and Master of Statistics
-- Been a useR since 2003
-- Author of R package ShinySky (https://github.com/AnalytixWare/ShinySky)
-- Worked in Banking (risk analysis) in Australia and Singapore
+* Name: Dai Zhuo Jia (ZJ)
+    + Australian-Chinese
+    + B.Sc (Pure maths) and Master of Statistics
+* Worked in Banking (credit risk modelling and analysis) in Australia and Singapore
+* Been a useR since 2003
+    + Author of R package ShinySky (https://github.com/AnalytixWare/ShinySky)
 
 ## What is R?
 
 **R** is 
 
 - a programming *environment*, not just a language
-- for doing statistics (2000's - analytics, 2010's data science)
-- first developed in New Zealand in 1998 by **R**oss Ihaka and **R**obert Gentleman
-- it's actually based on the S language deviced in mid-1970's
-- S is for statistics
+    - for doing statistics (2000's - analytics, 2010's data science)
+- R was first developed in New Zealand in 1998 by **R**oss Ihaka and **R**obert Gentleman
+- R is a descendant the S language deviced in mid-1970's
+    - S is for statistics
 
 ## Why Learn R?
 
 - Data Science is one of fastest growing fields
+    - New York Times suggested Data Science is one of the 
 - R is one of the premiere languages in this field
+
+## Data Science
+- Some musing about data science
+  - "Data science is statistics done on a Mac"
+  - A data scientist is someone who knows more statistics than software engineers and know more about software engineering than statisticians
+
 
 
 ## What is R great for?
@@ -66,7 +74,7 @@ plot(cars)
 ## R is interactive
   
 - The result of what you type will get reflected right away
-- R does not do integer arithmetics, so 3 / 2 does NOT give you 1
+- R does NOT do integer arithmetics, so 3 / 2 does NOT give you 1
 ```{r}
 3 / 2
 ```

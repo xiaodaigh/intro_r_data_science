@@ -34,10 +34,9 @@ as.numeric(mf)
 ```
 
 ## Factors - continued
-
-- Factors can be ordinal or non-ordinal
-- Ordinal - there is some natural order structure to it e.g. Income Brackets
-- non-ordinal - no necessary order to it e..g apple, oranges, banana
+Factors can be ordinal or non-ordinal
+- **Ordinal** there is some natural order structure to it e.g. Income Brackets
+- **non-ordinal** - no necessary order to it e.g. apple, oranges, banana
   
 ## Factors - Basic summary
 

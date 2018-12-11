@@ -1,0 +1,60 @@
+---
+title: "6 - XGBoost.rmd"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## XGBoost workshop
+
+### Kaggle competition
+Online data science competition
+
+We will work through the GiveMeSomeCredit competition about building credit scoring application
+https://www.kaggle.com/c/GiveMeSomeCredit/data
+
+### Read in the data
+
+```{r}
+library(data.table)
+df = fread("data/cs-training.csv")
+```
+
+### Simple Data profiler
+
+```{r data profile, include=FALSE}
+library(DataExplorer)
+?DataExplorer::create_report(df)
+```
+
+## Creating plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+df_column = df[,-"SeriousDlqin2yrs", with = F]
+df_label = df[,SeriousDlqin2yrs]
+
+xdm = xgboost::xgb.DMatrix(
+  label = df_label, 
+  data = as.matrix(df_column))
+```
+
+##
+```{r}
+xgm = xgboost::xgboost(
+  data=xdm,
+  objective = "binary:logitraw",
+  nrounds = 2,
+  tree_method="exact",)
+```
+
+
+
+
+## How to learn data science?
+
+For R read r-bloggers.com everyday.
+

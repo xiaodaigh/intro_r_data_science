@@ -1,3 +1,5 @@
+library(data.table)
+
 xgboost::xgb.dump(xgm)
 
 str(xgm)
@@ -23,4 +25,10 @@ df_test = fread("data/cs-test.csv")
 
 df_test_data = xgboost::xgb.DMatrix(data=as.matrix(df_test[,-"SeriousDlqin2yrs", with=F]))
 
-predict(xgm, df_test_data)
+score = predict(xgm, df_test_data)
+
+write.csv(df_test[,.(Id = V1, Probability=1/(1+exp(-score)))], "ok.csv", row.names = F)
+
+View(xgboost::xgb.model.dt.tree(model = xgm))
+
+

@@ -42,7 +42,7 @@ xdm = xgboost::xgb.DMatrix(
   data = as.matrix(df_column))
 ```
 
-##
+## Subit to kaggle
 ```{r}
 xgm = xgboost::xgboost(
   data=xdm,
@@ -51,8 +51,13 @@ xgm = xgboost::xgboost(
   tree_method="exact",)
 ```
 
+## But how does XGBoost work?
 
+## Why is popular?
 
+## What is Gain?
+
+https://stackoverflow.com/questions/33520460/how-is-xgboost-cover-calculated
 
 ## How to learn data science?
 

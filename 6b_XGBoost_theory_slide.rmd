@@ -77,7 +77,7 @@ Recall that
 $$f(x + \Delta x) \approx f(x) + f'(x)\Delta x + \frac{1}{2}\Delta x^2$$
 $$f = ll$$, $ev = x$ and $av = \Delta x$
 
-## What is Gain?
+## What is Gain and why is XGBoost so fast?
 
 See Excel example
 

@@ -1,0 +1,123 @@
+---
+title: "6a - Intro to XGBoost"
+output:
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## XGBoost workshop
+
+**What can you expect from this workshop?**
+
+* Be able to explain what a *Gradient Boosting Trees (GBT)* is?
+  * XGBoost is the most prominent example of a GBT
+* Be able to apply GBT to binary classificaton/prediction problems
+* Gain an understanding of the theory of XGBoost's boosting algorithm
+  * enabling further self-study
+* Get paid more and a promotion!
+  * can't hurt
+
+### What is XGBoost?
+XGBoost is a software that can build emsemble binary regression tree models.
+
+The most common business problem is Binary classification
+
+* Default vs non-default
+* Churn vs Stay
+* Propoensity of take up a product vs not
+
+XGBoost can also solve
+
+* Regression: house prices based on factors
+* Multi-label classification: cats vs dogs vs horses
+* Ranking/relevance: ranks documents by relevance to keywords (google searches)
+  + see https://medium.com/@purbon/learning-to-rank-101-5755f2797a3a
+
+Not covered in this workshop
+
+### Kaggle competition
+Online data science competition
+
+We will work through the GiveMeSomeCredit competition about building credit scoring application
+https://www.kaggle.com/c/GiveMeSomeCredit/data
+
+There is a **training data** used to build the models
+```{r}
+library(data.table)
+df = fread("data/cs-training.csv")
+```
+
+There is a **test data** that you are meant to apply your model to, and submit online for assessment
+
+Have a quick look at the data
+```{r data profile, echo=TRUE}
+library(DataExplorer)
+#DataExplorer::create_report(df)
+```
+
+## The data and the problem
+
+The target/label is
+
+* **SeriousDlqin2yrs** - Did the customer experience serious delinquency in the next 2 years
+  + 0s and 1s
+
+The features/columns are
+
+* Revolving Utilization Of Unsecured Lines
+* age
+* NumberOfTime30-59DaysPastDueNotWorse
+* DebtRatio
+* MonthlyIncome
+* NumberOfOpenCreditLinesAndLoans
+* NumberOfTimes90DaysLate
+* NumberRealEstateLoansOrLines
+* NumberOfTime60-89DaysPastDueNotWorse
+* NumberOfDependents
+
+**The business problem**
+Based on the given data with the features as above, build a model to predict **SeriousDlqin2yrs**
+
+## What is regression (binary) tree?
+```{r pressure, echo=FALSE}
+df_column = df[,-"SeriousDlqin2yrs", with = F]
+df_label = df[,SeriousDlqin2yrs]
+
+xdm = xgboost::xgb.DMatrix(
+  label = df_label, 
+  data = as.matrix(df_column))
+```
+
+**Gain**: Improvement in prediction (cover this in the underlying theory)
+**Cover**: proportion of observations in the branch (relates to the 2nd derivative; covered later)
+**Value**: The prediction/score that you assign observation that end up in the leaf
+
+
+```{r include=FALSE}
+df_column = df[,-"SeriousDlqin2yrs", with = F]
+df_label = df[,SeriousDlqin2yrs == 1]
+
+xdm = xgboost::xgb.DMatrix(
+  label = df_label, 
+  data = as.matrix(df_column))
+
+xgm = xgboost::xgboost(
+  data=xdm,
+  nrounds = 1, # number of trees to build
+  max_depth = 2, 
+  tree_method="exact",
+  objective = "binary:logitraw"
+  )
+```
+
+```{r echo=FALSE}
+xgboost::xgb.plot.tree(model = xgm)
+```
+<!-- #You can conver the Value to probability -->
+
+$$prob = \frac{1}{1 + exp(-value)}$$
+
+

@@ -1,0 +1,84 @@
+---
+title: "Fit some models"
+author: "ZJ D"
+date: "12/12/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r}
+library(data.table)
+df = fread("data/cs-training.csv")
+```
+
+### As I mentioned you can have many many rounds
+
+Split data into development and validation sample
+```{r}
+# very popular package
+library(caret)
+
+dev_ids = createDataPartition(y = df$SeriousDlqin2yrs, p = 0.70)
+
+dev_df = df[dev_ids[[1]],]
+val_df = df[-dev_ids[[1]],]
+
+
+nrow(dev_df)
+```
+
+```{r include=FALSE}
+df2xgb_matrix = function(df) {
+  df_column = df[,-"SeriousDlqin2yrs", with = F]
+  df_label = df[,SeriousDlqin2yrs == 1]
+  xdm = xgboost::xgb.DMatrix(
+    label = df_label, 
+    data = as.matrix(df_column))
+  
+  xdm
+}
+
+# create the xgb_matrices for XGBoost
+xdm_dev = df2xgb_matrix(dev_df)
+xdm_val = df2xgb_matrix(val_df)
+
+watchlist <- list(train = xdm_dev, eval = xdm_val)
+```
+
+Train it
+see https://stats.stackexchange.com/questions/171043/how-to-tune-hyperparameters-of-xgboost-trees 
+```{r}
+# xgm = xgboost::xgb.train(
+#   params = list(
+#     objective = "binary:logitraw", 
+#     max_depth = 3,
+#     eval_metric = "auc"),
+#   data=xdm_dev,
+#   nrounds = 100, # number of trees to build
+#   tree_method="exact",
+#   verbose=1
+#   )
+
+fit_data = xgb.train(
+  data=xdm_dev, 
+  max.depth=3, 
+  nrounds=100, 
+  watchlist=watchlist, 
+  objective = "binary:logitraw")
+```
+
+```{r}
+fdel = fit_data$evaluation_log
+setDT(fdel)
+```
+
+```{r}
+plot(fdel[,train_auc], main = "AUC in dev vs val sample", type="l", col="blue")
+lines(fdel[,eval_auc], col="red")
+legend("topleft",c("Dev", "Val"), col=c("blue","red"), lty=1)
+```

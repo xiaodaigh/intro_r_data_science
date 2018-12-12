@@ -1,0 +1,109 @@
+---
+title: "6b Theory XGBoost explained"
+author: "ZJ D"
+date: "12/12/2018"
+output:
+  ioslides_presentation: default
+  slidy_presentation: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## The theory of XGBoost
+
+**Original paper**
+
+* https://arxiv.org/pdf/1603.02754.pdf
+  + very readable; 
+* Good slides (https://homes.cs.washington.edu/~tqchen/pdf/BoostedTree.pdf)
+
+How do you grow a Decision Tree?
+
+* What is one type of THING/metric that you would like to know? 
+
+## A measure of how good a tree is - loss function
+A loss function measures. If we have a loss function
+
+If you have a loss function then we compare
+
+* if we should split further
+  + loss(on unsplit tree) vs loss(on split tree)
+* loss(A as cut point) vs loss(B as cut point) for all A, B
+
+## What is a good loss function for binary?
+
+Why not $$loss(actual, score) = (actual (1\ or\ 0) - prob)^2$$
+
+* Compare all possible splits for all variables! And see which split gives the **smallest** loss
+
+**logloss**, **cross entropy**, **negative loss likelihood** all mean the same thing and is the most popular choice for binary XGBoost
+
+
+## Some maths{.smaller}
+
+$$logloss(l, v) = (1-l)\times log(1-\frac{1}{1+exp(-v)})+l\times log(\frac{1}{1+exp(-v)}) $$
+
+To simplify this, let $p = \frac{1}{1+exp(-v)}$
+
+$$logloss(l, v) = (1-l)\times log(1-p)+l\times log(p) $$
+
+
+
+$$ \frac{d\ logloss}{d\ v} =p - l$$
+
+
+$$ \frac{d^2\ logloss}{d\ v^2} = p*(1-p)$$
+
+## Machine learning = minimize loss
+
+For each record we can compute the loss function - logloss. 
+
+We try to optimise the total loss
+
+$$objective = total\ loss = \sum_i logloss(label_i, value_i) $$
+where $i$ is the record id.
+
+For **boosting**, we optimise
+
+$$objective = \sum_i logloss(label_i, \\ existing\ value_i+ \\ additional\ value_i \\) $$
+
+## Taylor series expansion
+
+$$l = logloss(label_i, existing\ value_i +additional\ value_i)$$
+Recall that
+
+$$f(x + \Delta x) \approx f(x) + f'(x)\Delta x + \frac{1}{2}\Delta x^2$$
+$$f = l$$, $ev = x$ and $av = \Delta x$
+
+## What is Gain?
+
+https://stackoverflow.com/questions/33520460/how-is-xgboost-cover-calculated
+
+
+## You always will prefer to split
+
+Therefore add in the **regularization** terms:
+
+* let $T$ be number of leaves
+* let $w_j$ be the weight/value of the $j$th leaf node
+
+$$objective = \sum_i logloss(label_i, \\ existing\ value_i+ \\ additional\ value_i \\) \\ + \gamma T \\ + \lambda\sum_jw_j^2$$
+
+
+## Tomorrow
+
+Learn how to find appropriate values of $\lambda$ and $\gamma$. 
+
+The methodology is often referred to as cross-validation (CV)
+
+
+
+## Learn
+
+Full documention
+
+* https://github.com/dmlc/xgboost/blob/master/doc/parameter.rst
+
+For R read r-bloggers.com everyday.

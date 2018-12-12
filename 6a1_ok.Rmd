@@ -1,0 +1,107 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Fitting a XGBoost model
+
+1st step - prepare your dataset
+```{r include=FALSE}
+library(data.table)
+library(disk.frame)
+```
+
+
+```{r echo=TRUE}
+df = fread("data/cs-training.csv")
+df_column = df[,-"SeriousDlqin2yrs", with = F]
+df_label = df[,SeriousDlqin2yrs == 1]
+```
+
+2nd step - convert your R data.frame to `xgb.DMatrix` format
+```{r echo=TRUE}
+xdm = xgboost::xgb.DMatrix(
+  label = df_label, # the thing you are trying to predict
+  data = as.matrix(df_column) # the features you can use to predict the label
+  )
+xdm
+```
+
+3rd step - fitting the model
+```{r echo=TRUE}
+xgm = xgboost::xgboost(
+  data=xdm,
+  nrounds = 1, # number of trees to build
+  max_depth = 3, # number of layers in the tree
+  tree_method="exact", # go through this algorithm; use this when data set is small
+  objective = "binary:logitraw"
+  )
+xgm
+```
+
+So the probability of
+```{r}
+xgm = xgboost::xgboost(
+  data=xdm,
+  nrounds = 2, # number of trees to build
+  max_depth = 3,
+  tree_method="exact",
+  objective = "binary:logitraw"
+  #,base_score = df[,sum(SeriousDlqin2yrs)/.N]
+  )
+
+xgmdt  = xgboost::xgb.model.dt.tree(model = xgm)
+xgmdt[Feature == "Leaf", prob := 1/(1 + exp(-Quality))]
+xgmdt
+```
+
+```{r echo=FALSE}
+df[, value := predict(xgm, xdm)]
+df[, value1 := predict(xgm, xdm, outputmargin = T)]
+df[, leaf_index := predict(xgm, xdm, predleaf = T)]
+#disk.frame::auc(df$SeriousDlqin2yrs, df$value)
+df[, .(value, value1, leaf_index)]
+```
+
+```{r}
+df_summ = df[,.(actual = sum(SeriousDlqin2yrs)/.N, value = mean(value), min=min(value), max = max(value)), leaf_index]
+df_summ[, prob := 1/(1+exp(-value))]
+df_summ
+```
+
+```{r}
+plot(df_summ[,.(actual, prob)], ylim = c(0,1), xlab = "Actual Default Rate", ylab = "Predicted Default Rate", main="Actual vs Predicted Default Rate (base_score = 0.5)")
+abline(a=0,b=1)
+```
+
+
+You can fit the model by supplying a `base_score`
+```{r echo=TRUE}
+xgm = xgboost::xgboost(
+  data=xdm,
+  nrounds = 1, # number of trees to build
+  max_depth = 3,
+  tree_method="exact",
+  objective = "binary:logitraw"
+  ,base_score = df[,sum(SeriousDlqin2yrs)/.N]
+  )
+
+df[, value := predict(xgm, xdm)]
+df[, value1 := predict(xgm, xdm, outputmargin = T)]
+df[, leaf_index := predict(xgm, xdm, predleaf = T)]
+df_summ = df[,.(actual = sum(SeriousDlqin2yrs)/.N, value = mean(value)), leaf_index]
+df_summ[, prob := 1/(1+exp(-value))]
+```
+
+
+Plotting result
+```{r echo=FALSE}
+plot(df_summ[,.(actual, prob)], ylim = c(0,1), xlab = "Actual Default Rate", ylab = "Predicted Default Rate", main="Actual vs Predicted Default Rate (base_score = 0.066)")
+abline(a=0,b=1)
+```

@@ -34,14 +34,14 @@ If you have a loss function then we compare
 
 ## What is a good loss function for binary?
 
-Why not $$loss(actual, score) = (actual (1\ or\ 0) - prob)^2$$
+Why not $$loss(label (1\ or\ 0), value (or \ score)) = (label - prob)^2$$
 
 * Compare all possible splits for all variables! And see which split gives the **smallest** loss
 
-**logloss**, **cross entropy**, **negative loss likelihood** all mean the same thing and is the most popular choice for binary XGBoost
-
 
 ## Some maths{.smaller}
+
+**logloss**, **cross entropy**, **negative loss likelihood** all mean the same thing and is the most popular choice for binary XGBoost
 
 $$logloss(l, v) = (1-l)\times log(1-\frac{1}{1+exp(-v)})+l\times log(\frac{1}{1+exp(-v)}) $$
 
@@ -71,13 +71,15 @@ $$objective = \sum_i logloss(label_i, \\ existing\ value_i+ \\ additional\ value
 
 ## Taylor series expansion
 
-$$l = logloss(label_i, existing\ value_i +additional\ value_i)$$
+$$ll = logloss(label_i, existing\ value_i +additional\ value_i)$$
 Recall that
 
 $$f(x + \Delta x) \approx f(x) + f'(x)\Delta x + \frac{1}{2}\Delta x^2$$
-$$f = l$$, $ev = x$ and $av = \Delta x$
+$$f = ll$$, $ev = x$ and $av = \Delta x$
 
 ## What is Gain?
+
+See Excel example
 
 https://stackoverflow.com/questions/33520460/how-is-xgboost-cover-calculated
 

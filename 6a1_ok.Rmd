@@ -105,3 +105,46 @@ Plotting result
 plot(df_summ[,.(actual, prob)], ylim = c(0,1), xlab = "Actual Default Rate", ylab = "Predicted Default Rate", main="Actual vs Predicted Default Rate (base_score = 0.066)")
 abline(a=0,b=1)
 ```
+
+
+## What is AUC?
+
+We often do not assess the model on accurary but rather of ranking ability. Which is measured by AUC
+
+AUC = area under the curve?
+
+**What is the curve?**
+
+```{r}
+df[,random_value := runif(.N)]
+setkey(df, random_value)
+df[,.(SeriousDlqin2yrs, random_value)]
+```
+
+Plot of cumulative %defaults vs %total
+```{r}
+dfc = df[,.(cum_tot = (1:.N)/.N , cum_defaults = cumsum(SeriousDlqin2yrs)/sum(SeriousDlqin2yrs))]
+dfc
+```
+
+```{r}
+plot(dfc, main="AUC with random prediction", col="red", type="l")
+abline(a=0, b=1, col="black", lty=2)
+legend("topleft", c("Random Model", "Straight line y = x"), col=c("red","black"), lty=c(1,2))
+```
+
+
+
+Plot of cumulative %defaults vs %total
+```{r}
+df[,neg_value := -value]
+setkey(df, neg_value)
+dfc_value = df[,.(cum_tot = (1:.N)/.N , cum_defaults = cumsum(SeriousDlqin2yrs)/sum(SeriousDlqin2yrs))]
+dfc_value
+```
+
+```{r}
+plot(dfc_value, main="AUC with random prediction", type="l", col= "blue")
+lines(dfc, col = "red")
+legend("topleft", c("XGBoost Model", "Random Model"), lty=1, col=c("blue","red"))
+```

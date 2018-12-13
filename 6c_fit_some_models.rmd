@@ -9,24 +9,114 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+## Recap
+
+Yesterday we learned:
+
+* XGBoost and how it learns
+* For binary classification problems AUC is the main measure
+* We can easily overfit by running 100s of trees
+
+## What is AUC?
+
+We often do not assess the model on accurary but rather of ranking ability. Which is measured by AUC
+
+AUC = area under the curve?
+
+**What is the curve?**
+
+```{r}
+library(data.table)
+df = fread("data/cs-training.csv")
+
+# assign a random_value
+df[,random_value := runif(.N)]
+
+# sorts the data by random_value
+setkey(df, random_value)
+
+df[,.(SeriousDlqin2yrs, random_value)]
+```
+
+Plot of cumulative %defaults vs %total
+```{r}
+dfc = df[,.(cum_tot = (1:.N)/.N , cum_defaults = cumsum(SeriousDlqin2yrs)/sum(SeriousDlqin2yrs))]
+dfc
+```
+
+```{r}
+plot(dfc, main="AUC with random prediction", col="red", type="l", xlab="% of Total", ylab="% of Distress")
+abline(a=0, b=1, col="black", lty=2)
+legend("topleft", c("Random Model", "Straight line y = x"), col=c("red","black"), lty=c(1,2))
+```
+
+
+
+Plot of cumulative %defaults vs %total
+```{r}
+
+
+df_column = df[,-"SeriousDlqin2yrs", with = F]
+df_label = df[,SeriousDlqin2yrs == 1]
+
+# convert data to DMatrix for XGBoost
+xdm = xgboost::xgb.DMatrix(
+  label = df_label, # the thing you are trying to predict
+  data = as.matrix(df_column) # the features you can use to predict the label
+  )
+
+# fit the model
+xgm = xgboost::xgboost(
+  data=xdm,
+  nrounds = 2, # number of trees to build
+  max_depth = 3,
+  tree_method="exact",
+  objective = "binary:logitraw"
+  ,base_score = df[,sum(SeriousDlqin2yrs)/.N]
+  )
+
+# prediction
+df[, value := predict(xgm, xdm)]
+
+# negative value
+df[,neg_value := -value]
+
+setkey(df, neg_value)
+dfc_value = df[,.(cum_tot = (1:.N)/.N , cum_defaults = cumsum(SeriousDlqin2yrs)/sum(SeriousDlqin2yrs))]
+dfc_value
+```
+
+```{r}
+plot(dfc_value, main="AUC XGBoost", type="l", col= "blue", xlab="% of Total", ylab="% of Distress")
+lines(dfc, col = "red")
+legend("topleft", c("XGBoost Model", "Random Model"), lty=1, col=c("blue","red"))
+```
+
+## Overfit
+
+**Overfit** is when you model only describes the data you have fitted the model on and the model does not predict as well outside of that data.
+
+
+**Good model development practice**: create a development dataset and a validation dataset.
 ```{r}
 library(data.table)
 library(xgboost)
 df = fread("data/cs-training.csv")
 ```
 
-### As I mentioned you can have many many rounds
-
 Split data into development and validation sample
 ```{r}
 # very popular package
 library(caret)
 
-dev_ids = createDataPartition(y = df$SeriousDlqin2yrs, p = 0.70)
 
+dev_ids = caret::createDataPartition(y = df$SeriousDlqin2yrs, p = 0.70)
+
+# put 70% of records into development
 dev_df = df[dev_ids[[1]],]
-val_df = df[-dev_ids[[1]],]
 
+# put 30% of records into validation
+val_df = df[-dev_ids[[1]],]
 
 nrow(dev_df)
 ```
@@ -34,7 +124,7 @@ nrow(dev_df)
 ```{r include=FALSE}
 df2xgb_matrix = function(df) {
   df_column = df[,-"SeriousDlqin2yrs", with = F]
-  df_label = df[,SeriousDlqin2yrs == 1]
+  df_label = df[,SeriousDlqin2yrs]
   xdm = xgboost::xgb.DMatrix(
     label = df_label, 
     data = as.matrix(df_column))
@@ -46,29 +136,27 @@ df2xgb_matrix = function(df) {
 xdm_dev = df2xgb_matrix(dev_df)
 xdm_val = df2xgb_matrix(val_df)
 
+# the datasets in the watch will be evaluated using the evaluation metric AUC
 watchlist <- list(train = xdm_dev, eval = xdm_val)
 ```
 
 Train it
 see https://stats.stackexchange.com/questions/171043/how-to-tune-hyperparameters-of-xgboost-trees 
 ```{r}
-# xgm = xgboost::xgb.train(
-#   params = list(
-#     objective = "binary:logitraw", 
-#     max_depth = 3,
-#     eval_metric = "auc"),
-#   data=xdm_dev,
-#   nrounds = 100, # number of trees to build
-#   tree_method="exact",
-#   verbose=1
-#   )
 library(xgboost)
+
+# you need to xgb.train function instead of xgboost
 fit_data = xgb.train(
   data=xdm_dev, 
-  max.depth=3, 
-  nrounds=100, 
+  nrounds=500, 
   watchlist=watchlist, 
-  objective = "binary:logitraw")
+  objective = "binary:logitraw"
+  ,max.depth=3
+  # ,colsample_bytree = 0.3
+  #,subsample = 0.4
+  ,eta = 0.1
+  ,early_stopping_rounds = 10
+  )
 ```
 
 ```{r}
@@ -80,4 +168,133 @@ setDT(fdel)
 plot(fdel[,train_auc], main = "AUC in dev vs val sample", type="l", col="blue")
 lines(fdel[,eval_auc], col="red")
 legend("topleft",c("Dev", "Val"), col=c("blue","red"), lty=1)
+```
+
+
+## Some ways to prevent overfitting
+
+**Ideas from random forest**:
+
+1. at each node, subsample a proportion of rows, and subsample a proportion of columns
+  + controlled by `subsample` and `colsample_bytree` `colsample_bylevel`. Defaults are 1
+  
+**Other ideas**:
+2. `max_depth` controls the depth of the tree
+3. `gamma` minimum loss reduction requirement
+4. `lambda` L2 regularization. Default 0
+5. `alpha` L1 regularization. Default 0
+6. `eta` contribution of new trees. Learning rate. Default 0.3
+
+## K-fold cross validation
+
+```{r}
+fit_cv = xgb.cv(
+  data=xdm, 
+  nrounds=500, 
+  nfold = 5,
+  objective = "binary:logitraw"
+  ,max.depth=3
+  ,colsample_bylevel = 0.3
+  ,subsample = 0.4
+  ,eta = 0.1
+  ,early_stopping_rounds = 10
+  ,lambda = 1000
+  )
+```
+
+```{r}
+fit_cv$params
+```
+
+```{r}
+fdel_cv = fit_cv$evaluation_log
+setDT(fdel_cv)
+```
+
+```{r}
+plot(fdel_cv[,train_auc_mean], main = "AUC in CV dev vs val sample", type="l", col="blue")
+lines(fdel_cv[,test_auc_mean], col="red")
+legend("topleft",c("Dev", "Val"), col=c("blue","red"), lty=1)
+```
+## Hyper parameter grid search
+List down all the hyper-parameters
+
+1. at each node, subsample a proportion of rows, and subsample a proportion of columns
+  + controlled by `subsample` and `colsample_bytree` `colsample_bylevel`. Defaults are 1
+  
+**Other ideas**:
+2. `max_depth` controls the depth of the tree
+3. `gamma` minimum loss reduction requirement
+4. `lambda` L2 regularization. Default 0
+5. `alpha` L1 regularization. Default 0
+6. `eta` contribution of new trees. Learning rate. Default 0.3
+
+
+```{r}
+subsample = seq(0.5, 0.8, 0.1)
+colsample_bytree = seq(0.5, 0.8, 0.1)
+max_depths = 2:5
+gamma = c(10, 100)
+lambdas = c(10, 100)
+eta = c(0.001, 0.1, 0.2, 0.3, 0.4)
+
+params_grid = expand.grid(subsample, colsample_bytree, max_depths, gamma, lambdas, eta)
+
+data.table(params_grid)
+setnames(params_grid, names(params_grid), c("subsample","colsample_bytree", "max_depths", "gamma", "lambda", "eta"))
+params_grid
+```
+```{r}
+params_grid = dplyr::sample_n(params_grid, 5)
+
+system.time(res <- mapply(function(subsample, colsample_bytree, max_depths, gamma, lambda, eta) {
+  xgb.cv(
+  data=xdm, 
+  nrounds=500, 
+  nfold = 5,
+  objective = "binary:logitraw"
+  ,subsample = subsample
+  ,colsample_bytree = colsample_bytree
+  ,gamma = gamma
+  ,lambda = lambda
+  ,max.depth=max_depths
+  ,eta = eta
+  ,early_stopping_rounds = 1
+  )
+}, params_grid$subsample, params_grid$colsample_bytree, params_grid$max_depths, params_grid$gamma, params_grid$lambda, params_grid$eta, SIMPLIFY = F))
+
+saveRDS(res, glue::glue("params {Sys.Date()}.rds"))
+```
+
+
+```{r}
+# obtain the best
+res1 = purrr::map_dfr(res, ~{
+  .x$evaluation_log[.x$best_iteration]
+})
+
+
+best_params_id = which.max(res1$test_auc_mean)
+
+best_params = res[[best_params_id]]$params
+```
+use the best params to refit
+
+```{r}
+fit_data_fnl = xgb.train(
+  data=xdm_dev
+  , nrounds=1000
+  ,params = best_params
+  ,watchlist = list(dev = xdm_dev, val = xdm_val)
+  )
+```
+
+Apply the model to the test data
+```{r}
+test = fread("data/cs-test.csv")
+test_column = test[,-"SeriousDlqin2yrs", with = F]
+
+submission = data.table(Probability = predict(fit_data_fnl, as.matrix(test_column)))
+submission[,id:=test$V1]
+write.csv(submission, "submission.csv", row.names = F)
 ```

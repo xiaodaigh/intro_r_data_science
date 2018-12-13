@@ -247,7 +247,7 @@ params_grid
 ```{r}
 params_grid = dplyr::sample_n(params_grid, 5)
 
-system.time(res <- mapply(function(subsample, colsample_bytree, max_depths, gamma, lambda, eta) {
+fit_with_params = function(subsample, colsample_bytree, max_depths, gamma, lambda, eta) {
   xgb.cv(
   data=xdm, 
   nrounds=500, 
@@ -261,7 +261,19 @@ system.time(res <- mapply(function(subsample, colsample_bytree, max_depths, gamm
   ,eta = eta
   ,early_stopping_rounds = 1
   )
-}, params_grid$subsample, params_grid$colsample_bytree, params_grid$max_depths, params_grid$gamma, params_grid$lambda, params_grid$eta, SIMPLIFY = F))
+}
+
+system.time(
+  res <- 
+    mapply(
+      fit_with_params, 
+      params_grid$subsample, 
+      params_grid$colsample_bytree, 
+      params_grid$max_depths, 
+      params_grid$gamma, 
+      params_grid$lambda, 
+      params_grid$eta, 
+      SIMPLIFY = F))
 
 saveRDS(res, glue::glue("params {Sys.Date()}.rds"))
 ```
@@ -274,20 +286,33 @@ res1 = purrr::map_dfr(res, ~{
 })
 
 
-best_params_id = which.max(res1$test_auc_mean)
+best_params_id = which.max(res1[,4, with=F][[1]])
 
 best_params = res[[best_params_id]]$params
 ```
-use the best params to refit
+
 
 ```{r}
 fit_data_fnl = xgb.train(
   data=xdm_dev
-  , nrounds=1000
+  , nrounds=500
   ,params = best_params
   ,watchlist = list(dev = xdm_dev, val = xdm_val)
   )
 ```
+
+
+```{r}
+fdel_fnl = fit_data_fnl$evaluation_log
+setDT(fdel_fnl)
+```
+
+```{r}
+plot(fdel_fnl[,dev_auc  ], main = "AUC in CV dev vs val sample", type="l", col="blue")
+lines(fdel_fnl[,val_auc], col="red")
+legend("topleft",c("Dev", "Val"), col=c("blue","red"), lty=1)
+```
+
 
 Apply the model to the test data
 ```{r}

@@ -98,7 +98,7 @@ xdm = xgboost::xgb.DMatrix(
 
 ```{r include=FALSE}
 df_column = df[,-"SeriousDlqin2yrs", with = F]
-df_label = df[,SeriousDlqin2yrs == 1]
+df_label = df[,SeriousDlqin2yrs]
 
 xdm = xgboost::xgb.DMatrix(
   label = df_label, 

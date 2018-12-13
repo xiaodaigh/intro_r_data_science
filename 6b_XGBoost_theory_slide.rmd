@@ -101,7 +101,6 @@ Learn how to find appropriate values of $\lambda$ and $\gamma$.
 The methodology is often referred to as cross-validation (CV)
 
 
-
 ## Learn
 
 Full documention

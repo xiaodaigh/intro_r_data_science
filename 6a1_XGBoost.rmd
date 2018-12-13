@@ -116,7 +116,6 @@ xgm = xgboost::xgboost(
 ```{r echo=FALSE}
 xgboost::xgb.plot.tree(model = xgm)
 ```
-<!-- #You can conver the Value to probability -->
 
 $$prob = \frac{1}{1 + exp(-value)}$$
 

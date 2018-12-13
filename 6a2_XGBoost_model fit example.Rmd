@@ -85,7 +85,7 @@ You can fit the model by supplying a `base_score`
 ```{r echo=TRUE}
 xgm = xgboost::xgboost(
   data=xdm,
-  nrounds = 1, # number of trees to build
+  nrounds = 2, # number of trees to build
   max_depth = 3,
   tree_method="exact",
   objective = "binary:logitraw"

@@ -9,10 +9,9 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-
-
 ```{r}
 library(data.table)
+library(xgboost)
 df = fread("data/cs-training.csv")
 ```
 
